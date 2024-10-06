@@ -2,6 +2,14 @@
 
 Frontend of the XiaoPotato application
 
+## Installation
+
+```bash
+git clone https://github.com/XiaoPotato-Team/XiaoPotato-FE.git
+cd XiaoPotato-FE
+pnpm install & pnpm run dev
+```
+
 ## React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
