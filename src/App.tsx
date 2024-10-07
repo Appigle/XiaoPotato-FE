@@ -2,11 +2,19 @@ import '@src/styles/reset.css';
 import '@src/styles/starry.scss';
 import '@src/styles/tailwind.css';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Link, NavLink } from 'react-router-dom';
+import { IndexMenu } from './@types/common';
 import './App.css';
+import CityWeather from './components/CityWeather';
+import CountTimer from './components/CountTimer';
+import { indexMenuList } from './constants/constants';
 import githubMark from '/github-mark.png';
 import xiaoPotato from '/xiaoPotato.png';
 
 function App() {
+  const { t } = useTranslation();
+  const [menu] = useState<IndexMenu[]>(indexMenuList);
   const [count, setCount] = useState(0);
 
   return (
@@ -22,15 +30,40 @@ function App() {
             </a>
           </div>
           <h1 className="my-4 inline-block bg-gradient-to-r from-pink-600 via-slate-200 to-yellow-400 bg-clip-text font-bold text-transparent">
-            Xiao Potato Art Platform
+            {t('XiaoPotatoArtPlatform')}
           </h1>
+          <div>
+            <CountTimer />
+            <CityWeather />
+          </div>
+          <div className="flex h-fit items-center justify-center py-2 text-lg">
+            {menu.map((item) => {
+              return item.redirect ? (
+                <Link key={item.path} reloadDocument className="p-2 text-blue-500" to={item.path}>
+                  {item.name}
+                </Link>
+              ) : (
+                <NavLink
+                  to={item.path}
+                  key={item.path}
+                  className={({ isActive }) =>
+                    [isActive ? 'text-blue-500' : 'text-blue-300', 'p-2'].join(' ')
+                  }
+                >
+                  {item.name}
+                </NavLink>
+              );
+            })}
+          </div>
           <div className="my-4 flex flex-col items-center justify-center gap-4">
-            <button className="w-fit px-4 py-2" onClick={() => setCount((count) => count + 1)}>
-              count is {count}
-            </button>
-            <button className="w-fit px-4 py-2" onClick={() => alert('Login -> TODO')}>
-              Login
-            </button>
+            <div className="flex justify-center gap-4">
+              <button className="w-fit px-4 py-2" onClick={() => setCount((count) => count + 1)}>
+                Click count is {count}
+              </button>
+              <button className="w-fit px-4 py-2" onClick={() => alert('Login -> TODO')}>
+                Login
+              </button>
+            </div>
             <p>
               Edit <code>src/App.tsx</code> and save to test HMR
             </p>

@@ -1,0 +1,17 @@
+{
+  "XiaoPotatoArtPlatform": "Xiao Potato Art Platform",
+  "title": "Welcome {{name}}, to react using react-i18next fully type-safe",
+  "description": {
+    "part1": "This is a simple example.",
+    "part2": "😉"
+  },
+  "userMessagesUnread_one": "You have {{count}} unread message.",
+  "userMessagesUnread_other": "You have {{count}} unread messages.",
+  "IELTS_Practice": "IELTS PRACTICE -- {{type}}",
+  "Err_400": "Error, parameter error!",
+  "Err_401": "Error, authorization error!",
+  "Err_403": "Error, forbidden request!",
+  "Err_404": "Error, not found!",
+  "Err_500": "Error, server error!",
+  "Err_503": "Error, server error!"
+}
