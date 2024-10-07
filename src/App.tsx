@@ -1,3 +1,4 @@
+import { Button } from '@material-tailwind/react';
 import '@src/styles/reset.css';
 import '@src/styles/starry.scss';
 import '@src/styles/tailwind.css';
@@ -29,7 +30,7 @@ function App() {
               <img src={xiaoPotato} className="my-4 h-32 w-32" alt="xiaoPotato logo" />
             </a>
           </div>
-          <h1 className="my-4 inline-block bg-gradient-to-r from-pink-600 via-slate-200 to-yellow-400 bg-clip-text font-bold text-transparent">
+          <h1 className="via-slate-200 my-4 inline-block bg-gradient-to-r from-pink-600 to-yellow-400 bg-clip-text font-bold text-transparent">
             {t('XiaoPotatoArtPlatform')}
           </h1>
           <div>
@@ -57,12 +58,12 @@ function App() {
           </div>
           <div className="my-4 flex flex-col items-center justify-center gap-4">
             <div className="flex justify-center gap-4">
-              <button className="w-fit px-4 py-2" onClick={() => setCount((count) => count + 1)}>
+              <Button className="w-fit px-4 py-2" onClick={() => setCount((count) => count + 1)}>
                 Click count is {count}
-              </button>
-              <button className="w-fit px-4 py-2" onClick={() => alert('Login -> TODO')}>
+              </Button>
+              <Button className="w-fit px-4 py-2" onClick={() => alert('Login -> TODO')}>
                 Login
-              </button>
+              </Button>
             </div>
             <p>
               Edit <code>src/App.tsx</code> and save to test HMR
@@ -73,7 +74,7 @@ function App() {
             <a
               href="https://github.com/Appigle/XiaoPotato-FE"
               target="_blank"
-              className="mx-4 inline-block h-6 w-6 rounded-full bg-slate-500"
+              className="bg-slate-500 mx-4 inline-block h-6 w-6 rounded-full"
             >
               <img src={githubMark} alt="Github mark" width="32px" height="32px" />
             </a>
