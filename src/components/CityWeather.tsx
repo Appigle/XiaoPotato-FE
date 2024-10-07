@@ -18,7 +18,7 @@ const CityWeather = (props: CityWeatherProps): JSX.Element => {
   return (
     <div className="flex items-center justify-center">
       {airIconUrl && <img className="h-8 w-8" src={`https:${airIconUrl}`} alt="air_icon" />}
-      <span className="inline-block px-4">{currentWeather}</span>
+      <span className="inline-block px-4 text-white">{currentWeather}</span>
     </div>
   );
 };

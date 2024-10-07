@@ -12,11 +12,21 @@ import CountTimer from './components/CountTimer';
 import NAV_MENU from './constants/navMenu';
 import githubMark from '/github-mark.png';
 import xiaoPotato from '/xiaoPotato.png';
+import { LoginModal } from '@src/components/LoginModal';
+import { RegisterModal } from '@src/components/RegisterModal';
 
 function App() {
   const { t } = useTranslation();
   const [menu] = useState<NavMenu[]>(NAV_MENU);
   const [count, setCount] = useState(0);
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [isSignUpOpen, setIsSignUpOpen] = useState(false);
+  const handleLoginClick = () => {
+    setIsLoginOpen(!isLoginOpen);
+  };
+  const handleSignUpClick = () => {
+    setIsSignUpOpen(true);
+  };
 
   return (
     <div className="page-content">
@@ -61,15 +71,18 @@ function App() {
               <Button className="w-fit px-4 py-2" onClick={() => setCount((count) => count + 1)}>
                 Click count is {count}
               </Button>
-              <Button className="w-fit px-4 py-2" onClick={() => alert('Login -> TODO')}>
+              <Button className="w-fit px-4 py-2" onClick={handleLoginClick}>
                 Login
+              </Button>
+              <Button className="w-fit px-4 py-2" onClick={handleSignUpClick}>
+                Sign Up
               </Button>
             </div>
             <p>
               Edit <code>src/App.tsx</code> and save to test HMR
             </p>
           </div>
-          <p className="absolute bottom-14">
+          <p className="absolute bottom-14 text-white">
             &#169; 2024, M,Y/Z,Q/L,C Welcome the Xiao Potato World!
             <a
               href="https://github.com/Appigle/XiaoPotato-FE"
@@ -81,6 +94,22 @@ function App() {
           </p>
         </div>
       </div>
+      <LoginModal
+        open={isLoginOpen}
+        setOpen={setIsLoginOpen}
+        openSignUp={() => {
+          setIsLoginOpen(false);
+          setIsSignUpOpen(true);
+        }}
+      />
+      <RegisterModal
+        open={isSignUpOpen}
+        setOpen={setIsSignUpOpen}
+        openLogin={() => {
+          setIsSignUpOpen(false);
+          setIsLoginOpen(true);
+        }}
+      />
     </div>
   );
 }
