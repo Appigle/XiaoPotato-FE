@@ -5,17 +5,17 @@ import '@src/styles/tailwind.css';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, NavLink } from 'react-router-dom';
-import { IndexMenu } from './@types/common';
+import { NavMenu } from './@types/common';
 import './App.css';
 import CityWeather from './components/CityWeather';
 import CountTimer from './components/CountTimer';
-import { indexMenuList } from './constants/constants';
+import NAV_MENU from './constants/navMenu';
 import githubMark from '/github-mark.png';
 import xiaoPotato from '/xiaoPotato.png';
 
 function App() {
   const { t } = useTranslation();
-  const [menu] = useState<IndexMenu[]>(indexMenuList);
+  const [menu] = useState<NavMenu[]>(NAV_MENU);
   const [count, setCount] = useState(0);
 
   return (

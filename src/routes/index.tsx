@@ -1,4 +1,5 @@
 import ErrorPage from '@/views/ErrorPage.tsx';
+import Home from '@/views/home/index.tsx';
 import Starry from '@/views/starry';
 import type { RouteObject } from 'react-router-dom';
 import { createBrowserRouter } from 'react-router-dom';
@@ -23,7 +24,7 @@ const routers: RouteObject[] = [
   },
   {
     path: '/home',
-    element: <Starry />,
+    element: <Home />,
     errorElement: <ErrorPage />,
   },
 ];

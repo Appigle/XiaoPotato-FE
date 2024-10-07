@@ -1,4 +1,4 @@
 import otherApi from './otherApi';
 import weatherApi from './weatherApi';
-
-export default { weatherApi, otherApi };
+import xPotatoApi from './xPotatoApi';
+export default { weatherApi, otherApi, xPotatoApi };
