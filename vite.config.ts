@@ -24,7 +24,10 @@ const alias: AliasOptions = directories.reduce<Record<string, string>>(
 export default defineConfig({
   plugins: [react()],
   resolve: {
-    alias,
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+      ...alias,
+    },
   },
   base: './',
   envDir: './.env',
