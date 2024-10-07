@@ -2,35 +2,42 @@ import { useState } from 'react';
 import { Card, Input, Button, Typography, Dialog } from '@material-tailwind/react';
 import axios from 'axios';
 
-export function LoginModal({ open, setOpen, openSignUp }) {
+export function RegisterModal({ open, setOpen, openLogin }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleLogin = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!email || !password) {
-      alert('Please enter both email and password.');
+    if (!email || !password || !confirmPassword) {
+      alert('Please fill in all fields.');
       return;
     }
-
+    if (password !== confirmPassword) {
+      alert('Passwords do not match.');
+      return;
+    }
     setIsLoading(true);
     try {
-      // Ziqi API
-      const response = await axios.post('/api/login', { email, password });
-      console.log('Login successful', response.data);
-      // 处理登录成功后的逻辑，例如保存token、更新用户状态等
+      // Ziqi 's API
+      const response = await axios.post('api/register', {
+        email,
+        password,
+      });
+      console.log('Sign up successful:', response.data);
       setOpen(false);
     } catch (error) {
-      console.error('Login failed', error.response?.data || error.message);
-      alert('Login failed. Please check your email and password.');
+      console.error(error);
+      alert('Sign up failed. Please check your email and password.');
     } finally {
       setIsLoading(false);
     }
   };
-  const handleSignUpClick = () => {
+
+  const handleSignInClick = () => {
     setOpen(false);
-    openSignUp();
+    openLogin();
   };
 
   return (
@@ -42,12 +49,12 @@ export function LoginModal({ open, setOpen, openSignUp }) {
     >
       <Card color="transparent" shadow={false}>
         <Typography variant="h4" color="blue-gray">
-          Sign In
+          Sign Up
         </Typography>
         <Typography color="gray" className="mt-1 font-normal">
-          Welcome. Enter your details to Sign In.
+          Create your account to join us.
         </Typography>
-        <form className="mb-2 mt-8 w-80 max-w-screen-lg sm:w-96" onSubmit={handleLogin}>
+        <form className="mb-2 mt-8 w-80 max-w-screen-lg sm:w-96" onSubmit={handleSubmit}>
           <div className="mb-4 flex flex-col gap-4">
             <label htmlFor="email" className="block text-sm font-medium text-gray-700">
               Your Email
@@ -60,6 +67,7 @@ export function LoginModal({ open, setOpen, openSignUp }) {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="border-t-blue-gray-200 focus:border-t-gray-900"
+              required
             />
 
             <label htmlFor="password" className="block text-sm font-medium text-gray-700">
@@ -73,39 +81,38 @@ export function LoginModal({ open, setOpen, openSignUp }) {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="border-t-blue-gray-200 focus:border-t-gray-900"
+              required
+            />
+            <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
+              Confirm Password
+            </label>
+            <Input
+              id="confirmPassword"
+              type="password"
+              size="lg"
+              placeholder="********"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              className="border-t-blue-gray-200 focus:border-t-gray-900"
             />
           </div>
 
           <Button className="mt-6" fullWidth type="submit" disabled={isLoading}>
-            {isLoading ? 'Signing In...' : 'Sign In'}
+            {isLoading ? 'Signing Up...' : 'Sign Up'}
           </Button>
           <Typography color="gray" className="mt-4 text-center font-normal">
-            You don't have an account?{' '}
+            Have an account?{' '}
             <Button
               variant="text"
               color="blue-gray"
               className="font-medium"
-              onClick={handleSignUpClick}
+              onClick={handleSignInClick}
             >
-              Sign Up
+              Sign In
             </Button>
           </Typography>
         </form>
       </Card>
     </Dialog>
   );
-}
-
-// set the login function
-async function loginFunction(email, password) {
-  // 模拟 API 调用
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      if (email === 'test@example.com' && password === 'password') {
-        resolve();
-      } else {
-        reject(new Error('Invalid credentials'));
-      }
-    }, 1000);
-  });
 }
