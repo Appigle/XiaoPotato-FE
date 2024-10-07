@@ -1,5 +1,5 @@
-import ErrorPage from '@src/views/ErrorPage.tsx';
-import Starry from '@src/views/starry';
+import ErrorPage from '@/views/ErrorPage.tsx';
+import Starry from '@/views/starry';
 import type { RouteObject } from 'react-router-dom';
 import { createBrowserRouter } from 'react-router-dom';
 import App from '../App.tsx';
@@ -18,6 +18,11 @@ const routers: RouteObject[] = [
   },
   {
     path: '/demo/starry',
+    element: <Starry />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: '/home',
     element: <Starry />,
     errorElement: <ErrorPage />,
   },
