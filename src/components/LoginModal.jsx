@@ -1,14 +1,43 @@
+import { useState } from 'react';
 import { Card, Input, Button, Typography, Dialog } from '@material-tailwind/react';
+import { Link } from 'react-router-dom'; // React Router
 
 export function LoginModal({ open, setOpen }) {
-  const handleLogin = (e) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleLogin = async (e) => {
     e.preventDefault();
-    //login logic here
-    console.log('login submitted');
-    setOpen(false);
+    if (!email) {
+      alert('Please enter your email.');
+      return;
+    }
+    if (!password) {
+      alert('Please enter your password.');
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      // Ziqi 's API
+      await loginFunction(email, password);
+      setOpen(false);
+    } catch (error) {
+      console.error(error);
+      alert('Login failed. Please check your email and password.');
+    } finally {
+      setIsLoading(false);
+    }
   };
+
   return (
-    <Dialog open={open} handler={() => setOpen(false)} size="xs">
+    <Dialog
+      open={open}
+      handler={() => setOpen(false)}
+      size="sm"
+      className="flex items-center justify-center bg-gray-300 p-5"
+    >
       <Card color="transparent" shadow={false}>
         <Typography variant="h4" color="blue-gray">
           Sign In
@@ -17,43 +46,59 @@ export function LoginModal({ open, setOpen }) {
           Welcome. Enter your details to Sign In.
         </Typography>
         <form className="mb-2 mt-8 w-80 max-w-screen-lg sm:w-96" onSubmit={handleLogin}>
-          <div className="mb-1 flex flex-col gap-6">
-            <Typography variant="h6" color="blue-gray" className="-mb-3">
+          <div className="mb-4 flex flex-col gap-4">
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
               Your Email
-            </Typography>
+            </label>
             <Input
+              id="email"
+              type="email"
               size="lg"
               placeholder="name@mail.com"
-              className="!border-t-blue-gray-200 focus:!border-t-gray-900"
-              labelProps={{
-                className: 'before:content-none after:content-none',
-              }}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="border-t-blue-gray-200 focus:border-t-gray-900"
             />
-            <Typography variant="h6" color="blue-gray" className="-mb-3">
+
+            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
               Password
-            </Typography>
+            </label>
             <Input
+              id="password"
               type="password"
               size="lg"
               placeholder="********"
-              className="!border-t-blue-gray-200 focus:!border-t-gray-900"
-              labelProps={{
-                className: 'before:content-none after:content-none',
-              }}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="border-t-blue-gray-200 focus:border-t-gray-900"
             />
           </div>
 
-          <Button className="mt-6" fullWidth type="submit">
-            sign In
+          <Button className="mt-6" fullWidth type="submit" disabled={isLoading}>
+            {isLoading ? 'Signing In...' : 'Sign In'}
           </Button>
           <Typography color="gray" className="mt-4 text-center font-normal">
             You don't have an account?{' '}
-            <a href="#" className="font-medium text-gray-900">
+            <Link to="/signup" className="font-medium text-gray-900">
               Sign Up
-            </a>
+            </Link>
           </Typography>
         </form>
       </Card>
     </Dialog>
   );
+}
+
+// set the login function
+async function loginFunction(email, password) {
+  // 模拟 API 调用
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      if (email === 'test@example.com' && password === 'password') {
+        resolve();
+      } else {
+        reject(new Error('Invalid credentials'));
+      }
+    }, 1000);
+  });
 }

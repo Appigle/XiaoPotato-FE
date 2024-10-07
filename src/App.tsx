@@ -62,17 +62,11 @@ function App() {
             })}
           </div>
           <div className="my-4 flex flex-col items-center justify-center gap-4">
-            <button className="w-fit px-4 py-2" onClick={() => setCount((count) => count + 1)}>
-              count is {count}
-            </button>
-            <button className="w-fit px-4 py-2" onClick={handleLoginClick}>
-              Login
-            </button>
             <div className="flex justify-center gap-4">
               <Button className="w-fit px-4 py-2" onClick={() => setCount((count) => count + 1)}>
                 Click count is {count}
               </Button>
-              <Button className="w-fit px-4 py-2" onClick={() => alert('Login -> TODO')}>
+              <Button className="w-fit px-4 py-2" onClick={handleLoginClick}>
                 Login
               </Button>
             </div>
