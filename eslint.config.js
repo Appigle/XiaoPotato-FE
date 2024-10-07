@@ -20,8 +20,8 @@ export default tseslint.config(
     rules: {
       ...reactHooks.configs.recommended.rules,
       'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
-      // 'no-unused-expressions': 'on',
-      // '@typescript-eslint/no-unused-expressions': 'on',
+      'no-unused-expressions': 'off',
+      '@typescript-eslint/no-unused-expressions': 'off',
     },
   },
 );
