@@ -5,9 +5,14 @@ import { useState } from 'react';
 import './App.css';
 import githubMark from '/github-mark.png';
 import xiaoPotato from '/xiaoPotato.png';
+import { LoginModal } from '@src/components/LoginModal';
 
 function App() {
   const [count, setCount] = useState(0);
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const handleLoginClick = () => {
+    setIsLoginOpen(!isLoginOpen);
+  };
 
   return (
     <div className="page-content">
@@ -28,7 +33,7 @@ function App() {
             <button className="w-fit px-4 py-2" onClick={() => setCount((count) => count + 1)}>
               count is {count}
             </button>
-            <button className="w-fit px-4 py-2" onClick={() => alert('Login -> TODO')}>
+            <button className="w-fit px-4 py-2" onClick={handleLoginClick}>
               Login
             </button>
             <p>
@@ -47,6 +52,7 @@ function App() {
           </p>
         </div>
       </div>
+      <LoginModal open={isLoginOpen} setOpen={setIsLoginOpen} />
     </div>
   );
 }
