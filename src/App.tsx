@@ -12,8 +12,8 @@ import CountTimer from './components/CountTimer';
 import NAV_MENU from './constants/navMenu';
 import githubMark from '/github-mark.png';
 import xiaoPotato from '/xiaoPotato.png';
-import { LoginModal } from '@src/components/LoginModal';
-import { RegisterModal } from '@src/components/RegisterModal';
+import { LoginModal } from '@/components/LoginModal';
+import { RegisterModal } from '@/components/RegisterModal';
 
 function App() {
   const { t } = useTranslation();
