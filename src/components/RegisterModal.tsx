@@ -1,14 +1,20 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Card, Input, Button, Typography, Dialog } from '@material-tailwind/react';
 import axios from 'axios';
 
-export function RegisterModal({ open, setOpen, openLogin }) {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+interface RegisterModalProps {
+  open: boolean;
+  setOpen: (open: boolean) => void;
+  openLogin: () => void;
+}
 
-  const handleSubmit = async (e) => {
+export function RegisterModal({ open, setOpen, openLogin }: RegisterModalProps): JSX.Element {
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [confirmPassword, setConfirmPassword] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!email || !password || !confirmPassword) {
       alert('Please fill in all fields.');
@@ -65,9 +71,10 @@ export function RegisterModal({ open, setOpen, openLogin }) {
               size="lg"
               placeholder="name@mail.com"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
               className="border-t-blue-gray-200 focus:border-t-gray-900"
               required
+              crossOrigin="anonymous"
             />
 
             <label htmlFor="password" className="block text-sm font-medium text-gray-700">
@@ -79,9 +86,10 @@ export function RegisterModal({ open, setOpen, openLogin }) {
               size="lg"
               placeholder="********"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
               className="border-t-blue-gray-200 focus:border-t-gray-900"
               required
+              crossOrigin="anonymous"
             />
             <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
               Confirm Password
@@ -92,8 +100,12 @@ export function RegisterModal({ open, setOpen, openLogin }) {
               size="lg"
               placeholder="********"
               value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setConfirmPassword(e.target.value)
+              }
               className="border-t-blue-gray-200 focus:border-t-gray-900"
+              required
+              crossOrigin="anonymous"
             />
           </div>
 

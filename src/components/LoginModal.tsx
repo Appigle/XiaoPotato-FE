@@ -1,13 +1,19 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Card, Input, Button, Typography, Dialog } from '@material-tailwind/react';
 import axios from 'axios';
 
-export function LoginModal({ open, setOpen, openSignUp }) {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+interface LoginModalProps {
+  open: boolean;
+  setOpen: (open: boolean) => void;
+  openSignUp: () => void;
+}
 
-  const handleLogin = async (e) => {
+export function LoginModal({ open, setOpen, openSignUp }: LoginModalProps): JSX.Element {
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!email || !password) {
       alert('Please enter both email and password.');
@@ -22,12 +28,13 @@ export function LoginModal({ open, setOpen, openSignUp }) {
       // 处理登录成功后的逻辑，例如保存token、更新用户状态等
       setOpen(false);
     } catch (error) {
-      console.error('Login failed', error.response?.data || error.message);
+      console.error('Login failed', axios.isAxiosError(error) ? error.response?.data : error);
       alert('Login failed. Please check your email and password.');
     } finally {
       setIsLoading(false);
     }
   };
+
   const handleSignUpClick = () => {
     setOpen(false);
     openSignUp();
@@ -58,8 +65,9 @@ export function LoginModal({ open, setOpen, openSignUp }) {
               size="lg"
               placeholder="name@mail.com"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
               className="border-t-blue-gray-200 focus:border-t-gray-900"
+              crossOrigin="anonymous"
             />
 
             <label htmlFor="password" className="block text-sm font-medium text-gray-700">
@@ -71,8 +79,9 @@ export function LoginModal({ open, setOpen, openSignUp }) {
               size="lg"
               placeholder="********"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
               className="border-t-blue-gray-200 focus:border-t-gray-900"
+              crossOrigin="anonymous"
             />
           </div>
 
@@ -94,18 +103,4 @@ export function LoginModal({ open, setOpen, openSignUp }) {
       </Card>
     </Dialog>
   );
-}
-
-// set the login function
-async function loginFunction(email, password) {
-  // 模拟 API 调用
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      if (email === 'test@example.com' && password === 'password') {
-        resolve();
-      } else {
-        reject(new Error('Invalid credentials'));
-      }
-    }, 1000);
-  });
 }
