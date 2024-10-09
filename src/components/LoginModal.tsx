@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
-import { Card, Input, Button, Typography, Dialog } from '@material-tailwind/react';
+import { Button, Card, Dialog, Input, Typography } from '@material-tailwind/react';
+import Api from '@src/Api';
 import axios from 'axios';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 interface LoginModalProps {
   open: boolean;
@@ -12,6 +14,7 @@ export function LoginModal({ open, setOpen, openSignUp }: LoginModalProps): JSX.
   const [userAccount, setUserAccount] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -19,10 +22,11 @@ export function LoginModal({ open, setOpen, openSignUp }: LoginModalProps): JSX.
     setIsLoading(true);
     try {
       // Ziqi API
-      const response = await axios.post('/api/login', { userAccount, password });
+      const response = await Api.xPotatoApi.userLogin({ userAccount, userPassword: password });
       console.log('Login successful', response.data);
       // 处理登录成功后的逻辑，例如保存token、更新用户状态等
       setOpen(false);
+      navigate('/home');
     } catch (error) {
       console.error('Login failed', axios.isAxiosError(error) ? error.response?.data : error);
 

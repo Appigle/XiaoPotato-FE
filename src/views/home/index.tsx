@@ -14,13 +14,14 @@ const Home = (): JSX.Element => {
     });
   }, []);
   const onLogin = useCallback(() => {
-    Api.xPotatoApi.userLogin({ userAccount: 'ray002', userPassword: 'pwd12345' }).then((res) => {
+    Api.xPotatoApi.userLogin({ userAccount: 'ray001', userPassword: 'pwd12345' }).then((res) => {
       const { data, code } = res;
-      code === HTTP_RES_CODE.SUCCESS_CODE && setUser(data);
+      code === HTTP_RES_CODE.SUCCESS && setUser(data);
     });
   }, []);
   return (
-    <div className="flex w-screen items-center justify-center p-10 text-2xl">
+    <div className="flex w-screen flex-col items-center justify-center gap-4 p-10 text-2xl">
+      <h1 className="text-3xl">HOME PAGE</h1>
       {userProfile && <>Login Successfully: {JSON.stringify(userProfile, null, 2) || 'Failed'}</>}
       {!userProfile && <Button onClick={onLogin}>Login</Button>}
     </div>

@@ -1,6 +1,6 @@
+import { Button, Card, Dialog, Input, Typography } from '@material-tailwind/react';
+import Api from '@src/Api';
 import React, { useState } from 'react';
-import { Card, Input, Button, Typography, Dialog } from '@material-tailwind/react';
-import axios from 'axios';
 import { FormErrors, validateRegisterForm } from './common/formValidation';
 
 interface RegisterModalProps {
@@ -40,8 +40,7 @@ export function RegisterModal({ open, setOpen, openLogin }: RegisterModalProps):
     }
     setIsLoading(true);
     try {
-      // Ziqi 's API
-      const response = await axios.post('api/register', {
+      const response = await Api.xPotatoApi.registerAccount({
         firstName,
         lastName,
         userAccount,
