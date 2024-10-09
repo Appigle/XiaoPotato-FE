@@ -14,7 +14,7 @@ const CityWeather = (props: CityWeatherProps): JSX.Element => {
       setCurrentWeather(weather);
       setAirIconUrl(current.condition?.icon ?? '');
     });
-  }, []);
+  }, [city]);
   return (
     <div className="flex items-center justify-center">
       {airIconUrl && <img className="h-8 w-8" src={`https:${airIconUrl}`} alt="air_icon" />}

@@ -15,7 +15,6 @@ export function retry(
     `Retry: ${config.currentCount}`,
   );
   if (config.currentCount >= count) {
-    // eslint-disable-next-line
     onRetryEnd && onRetryEnd(err, count);
     return Promise.reject(err);
   }

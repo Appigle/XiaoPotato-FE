@@ -54,7 +54,7 @@ class AxiosRequest {
     this.axiosInstance.interceptors.response.use(
       (res: AxiosResponse) => {
         // remove the exist request from the pending list
-        // eslint-disable-next-line
+
         res && abortAxios.removePending(res.config);
 
         if (responseInterceptor) {
