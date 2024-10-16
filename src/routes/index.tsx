@@ -4,6 +4,7 @@ import Starry from '@/views/starry';
 import type { RouteObject } from 'react-router-dom';
 import { createBrowserRouter } from 'react-router-dom';
 import App from '../App.tsx';
+import ProfilePage from '@/views/profile/ProfileIndex.tsx';
 
 const routers: RouteObject[] = [
   {
@@ -25,6 +26,11 @@ const routers: RouteObject[] = [
   {
     path: '/home',
     element: <Home />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: '/profile',
+    element: <ProfilePage />,
     errorElement: <ErrorPage />,
   },
 ];

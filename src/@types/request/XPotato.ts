@@ -38,4 +38,23 @@ export interface type_res_user_login {
 
 export interface user_profile extends type_res_user_login {
   token?: string;
+  followingsCount: number;
+  followersCount: number;
+  commentsCount: number;
+  bio: string;
+}
+export type type_res_user_profile = user_profile;
+
+export interface type_req_update_profile {
+  firstName: string;
+  lastName: string;
+  userAvatar?: string | null;
+  email?: string;
+  phone?: string;
+  gender?: string;
+  bio?: string;
+}
+export interface type_res_update_profile {
+  success: boolean;
+  message: string;
 }
