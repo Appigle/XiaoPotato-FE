@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import './ProfileIndex.css';
-import EditProfileModal from '@/components/EditProfileModal';
-import { type_res_user_profile, type_req_update_profile } from '@/@types/request/XPotato';
+import { type_req_update_profile, type_res_user_profile } from '@/@types/request/XPotato';
 import xPotatoApi from '@/Api/xPotatoApi';
+import EditProfileModal from '@/components/EditProfileModal';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import './ProfileIndex.css';
 
 const mockProfile: type_res_user_profile = {
   id: 1,
@@ -26,6 +27,7 @@ const ProfilePage: React.FC = () => {
   const [profile, setProfile] = useState<type_res_user_profile | null>(null);
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchProfile();
@@ -88,6 +90,25 @@ const ProfilePage: React.FC = () => {
           }}
         >
           <span id="blackOverlay" className="absolute h-full w-full bg-black opacity-50"></span>
+        </div>
+        <div
+          className="absolute left-4 top-4 flex h-8 w-8 cursor-pointer items-center justify-center overflow-hidden rounded-full p-1 hover:bg-gray-200"
+          onClick={() => navigate(-1)}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            className="size-6"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3"
+            />
+          </svg>
         </div>
         <div
           className="pointer-events-none absolute bottom-0 left-0 right-0 top-auto h-[70px] w-full overflow-hidden"

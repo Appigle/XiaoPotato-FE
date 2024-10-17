@@ -38,7 +38,7 @@ interface AppState {
 }
 
 const useAppStore = create<AppState>((set) => ({
-  selectedCategory: 'all',
+  selectedCategory: 'All',
   setSelectedCategory: (category) => set({ selectedCategory: category }),
   isLoading: false,
   setIsLoading: (isLoading) => set({ isLoading }),
@@ -64,27 +64,35 @@ const Sidebar: React.FC = () => {
 
   return (
     <div
-      className={`bg-gray-900 text-white transition-all duration-300 ${isExpanded ? 'w-64' : 'w-16'} flex flex-col justify-between`}
+      className={`bg-gray-900 text-white transition-all duration-300 ${isExpanded ? 'w-56' : 'w-16'} flex flex-col justify-between`}
     >
       <nav className="p-4">
         <ul>
-          <li className="mb-2">
+          <li className="mb-2 pl-2">
             <Link to="/discover" className="flex h-10 items-center justify-start transition-all">
               <IconButton variant="text" color="white">
                 <MagnifyingGlassIcon className="h-5 w-5" />
               </IconButton>
-              {isExpanded && <span className="ml-2">Discovery</span>}
+              {isExpanded && (
+                <span className="ml-2 inline-block w-fit overflow-hidden text-ellipsis whitespace-nowrap">
+                  Discovery
+                </span>
+              )}
             </Link>
           </li>
-          <li className="mb-2">
+          <li className="mb-2 pl-2">
             <Link to="/publish" className="flex h-10 items-center justify-start transition-all">
               <IconButton variant="text" color="white">
                 <Bars3Icon className="h-5 w-5" />
               </IconButton>
-              {isExpanded && <span className="ml-2">Post</span>}
+              {isExpanded && (
+                <span className="ml-2 inline-block w-fit overflow-hidden text-ellipsis whitespace-nowrap">
+                  Post
+                </span>
+              )}
             </Link>
           </li>
-          <li className="mb-2">
+          <li className="mb-2 pl-2">
             <Link
               to="/notifications"
               className="flex h-10 items-center justify-start transition-all"
@@ -92,15 +100,26 @@ const Sidebar: React.FC = () => {
               <IconButton variant="text" color="white">
                 <HeartIcon className="h-5 w-5" />
               </IconButton>
-              {isExpanded && <span className="ml-2">Notification</span>}
+              {isExpanded && (
+                <span className="ml-2 inline-block w-fit overflow-hidden text-ellipsis whitespace-nowrap">
+                  Notification
+                </span>
+              )}
             </Link>
           </li>
-          <li>
-            <Link to="/profile" className="flex h-10 items-center justify-start transition-all">
+          <li className="mb-2 pl-2">
+            <Link
+              to="/profile"
+              className="flex h-10 items-center justify-start overflow-hidden transition-all"
+            >
               <IconButton variant="text" color="white">
                 <UserCircleIcon className="h-5 w-5" />
               </IconButton>
-              {isExpanded && <span className="ml-2">Me</span>}
+              {isExpanded && (
+                <span className="ml-2 inline-block w-fit overflow-hidden text-ellipsis whitespace-nowrap">
+                  Me
+                </span>
+              )}
             </Link>
           </li>
         </ul>
@@ -150,7 +169,7 @@ const Sidebar: React.FC = () => {
             </ul>
           </PopoverContent>
         </Popover>
-        <IconButton variant="text" color="white" onClick={toggleSidebar}>
+        <IconButton variant="text" color="white" onClick={toggleSidebar} className="transition-all">
           {isExpanded ? (
             <ChevronDoubleLeftIcon className="h-5 w-5" />
           ) : (
@@ -171,22 +190,15 @@ const CategoryList: React.FC<{ scrollTop: number }> = ({ scrollTop }) => {
   const [inActiveStyle, setInActiveStyle] = useState({});
   const [textStyle, setTextStyle] = useState({});
 
-  console.log('%c [ scrollTop ]-182', 'font-size:13px; background:pink; color:#bf2c9f;', scrollTop);
   const style = {
     background: `rgba(255, 255, 255, ${opacity})`,
     color: `rgba(0, 0, 0, ${opacity})`,
   };
-  const { selectedCategory, setSelectedCategory } = useAppStore();
-  console.log(
-    '%c [ selectedCategory ]-180',
-    'font-size:13px; background:pink; color:#bf2c9f;',
-    selectedCategory,
-  );
+  const { selectedCategory = 'All', setSelectedCategory } = useAppStore();
   const categoriesRef = useRef(null);
 
   useEffect(() => {
     setOpacity(calcOpacity());
-    console.log('%c [ opacity ]-201', 'font-size:13px; background:pink; color:#bf2c9f;', opacity);
     // 0~0.5 -> bg-> transparent~0.5 text -> black 0~0.5
     // 0.5~1 -> bg-> 0.5~1 text -> black 0.5~1
     let color = `rgba(0, 0, 0, ${opacity})`;
@@ -229,7 +241,7 @@ const CardList: React.FC = () => {
   const [cards, setCards] = useState<CardData[]>([]);
   const { selectedCategory, isLoading, setIsLoading } = useAppStore();
   const [page, setPage] = useState(1);
-  console.log('%c [ page ]-173', 'font-size:13px; background:pink; color:#bf2c9f;', page);
+  console.log('%c [ page ]-244', 'font-size:13px; background:pink; color:#bf2c9f;', page);
 
   const loadMoreCards = useCallback(async () => {
     if (isLoading) return;

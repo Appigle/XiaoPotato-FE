@@ -24,7 +24,7 @@ const HorizontalList: React.FC<HorizontalListProps> = ({
   activeStyle = { color: 'blue' },
   inActiveStyle = { color: 'black' },
   textStyle = { color: 'white' },
-  activeId = '',
+  activeId = 'All',
   onItemClick,
 }) => {
   const [visibleItems, setVisibleItems] = useState<ListItem[]>([]);
