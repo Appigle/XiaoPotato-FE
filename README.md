@@ -19,6 +19,33 @@ Currently, two official plugins are available:
 - [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
 - [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
+## dependencies list
+
+### UI Library
+
+- [@material-tailwind/react@beta](https://www.material-tailwind.com/docs/v3/react/badge)
+- option: [daisyui](https://daisyui.com/components/toast/)
+- option: [magicui](https://magicui.design/docs/components/tweet-card)
+- option: [pagedone](https://pagedone.io/docs/modal)
+- option: [flowbite-react](https://flowbite-react.com/docs/getting-started/introduction)
+- [Top 5 Tailwind Component Libraries: Apestein 2023](https://dev.to/apestein/top-5-tailwind-component-libraries-m0c)
+
+### React
+
+- [React-Hook-Form](https://react-hook-form.com/)
+- [React-Query](https://react-query.tanstack.com/)
+- [React-Table](https://react-table.tanstack.com/)
+- [React-Select](https://react-select.com/)
+- [React-Icons](https://react-icons.github.io/react-icons/)
+- [React-Router](https://reactrouter.com/)
+- [React-Spinners](https://www.npmjs.com/package/react-spinners)
+- [React-Toastify](https://fkhadra.github.io/react-toastify/introduction/)
+- [React-Datepicker](https://reactdatepicker.com/)
+- [React-Dropzone](https://react-dropzone.js.org/)
+- [React-Aria](https://react-spectrum.adobe.com/react-aria/)
+- [React-Hotkeys-Hook](https://github.com/markusenglund/react-hotkeys-hook)
+- [React-Textarea-Autosize](https://github.com/Andarist/react-textarea-autosize)
+
 ## Expanding the ESLint configuration
 
 If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:

@@ -18,7 +18,6 @@ import xiaoPotato from '/xiaoPotato.png';
 function App() {
   const { t } = useTranslation();
   const [menu] = useState<NavMenu[]>(NAV_MENU);
-  const [count, setCount] = useState(0);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isSignUpOpen, setIsSignUpOpen] = useState(false);
   const handleLoginClick = () => {
@@ -68,9 +67,6 @@ function App() {
           </div>
           <div className="my-4 flex flex-col items-center justify-center gap-4">
             <div className="flex justify-center gap-4">
-              <Button className="w-fit px-4 py-2" onClick={() => setCount((count) => count + 1)}>
-                Click count is {count}
-              </Button>
               <Button className="w-fit px-4 py-2" onClick={handleLoginClick}>
                 Login
               </Button>
@@ -78,9 +74,6 @@ function App() {
                 Sign Up
               </Button>
             </div>
-            <p>
-              Edit <code>src/App.tsx</code> and save to test HMR
-            </p>
           </div>
           <p className="absolute bottom-14 text-white">
             &#169; 2024, M,Y/Z,Q/L,C Welcome the Xiao Potato World!

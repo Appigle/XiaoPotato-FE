@@ -1,17 +1,17 @@
 const NAV_MENU = [
   {
-    name: 'index',
+    name: 'Index',
     path: '/',
     icon: 'index',
     // redirect: true,
   },
+  // {
+  //   name: 'Starry',
+  //   path: '/demo/starry',
+  //   icon: 'star',
+  // },
   {
-    name: 'Starry',
-    path: '/demo/starry',
-    icon: 'star',
-  },
-  {
-    name: 'home',
+    name: 'Home',
     path: '/home',
     icon: 'home',
   },
