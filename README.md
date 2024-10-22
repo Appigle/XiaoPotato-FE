@@ -45,6 +45,7 @@ Currently, two official plugins are available:
 - [React-Aria](https://react-spectrum.adobe.com/react-aria/)
 - [React-Hotkeys-Hook](https://github.com/markusenglund/react-hotkeys-hook)
 - [React-Textarea-Autosize](https://github.com/Andarist/react-textarea-autosize)
+- [React-hooks-ts](https://usehooks-ts.com/react-hook/use-media-query)
 
 ## Expanding the ESLint configuration
 

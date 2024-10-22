@@ -1,4 +1,6 @@
-const ART_TYPES = [
+import { ArtItemType, ArtNameMap } from '@src/@types/artTypes';
+
+const ALL_ART_TYPES: ArtItemType[] = [
   {
     emoji: '💯',
     name: 'All',
@@ -61,4 +63,8 @@ const ART_TYPES = [
   },
 ];
 
-export default ART_TYPES;
+export const ART_NAME_TYPE = ALL_ART_TYPES.map((m) => ({
+  [m.name]: m.name,
+})) as unknown as ArtNameMap;
+
+export default ALL_ART_TYPES;

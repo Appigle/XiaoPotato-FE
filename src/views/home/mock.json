@@ -1,15 +1,15 @@
 [
   {
     "id": 1,
-    "title": "在加拿大呆久后不再需要的东西",
+    "title": "Things You No Longer Need After Living in Canada for a Long Time",
     "image": "/src/assets/MonaLisa.png",
-    "username": "Aries在加拿大",
+    "username": "Aries in Canada",
     "likes": 2,
     "userAvatar": "/src/assets/MonaLisaAvatar.png"
   },
   {
     "id": 2,
-    "title": "突然发现普通家庭留学的孩子有一个共性...",
+    "title": "Suddenly found a commonality among children from ordinary families studying abroad...",
     "image": "/src/assets/MonaLisa.png",
     "username": "DECO",
     "likes": 3783,
@@ -17,145 +17,145 @@
   },
   {
     "id": 3,
-    "title": "一起聊聊Lululemon Aritza的羽绒服",
+    "title": "Let's talk about Lululemon Aritza's down jacket",
     "image": "/src/assets/MonaLisa.png",
-    "username": "毛茸茸的白",
+    "username": "Fluffy White",
     "likes": 390,
     "userAvatar": "/src/assets/MonaLisaAvatar.png"
   },
   {
     "id": 4,
-    "title": "加拿大公民/永居/临居，待遇差别好大",
+    "title": "The difference in treatment between Canadian citizens/permanent residents/temporary residents is huge",
     "image": "/src/assets/MonaLisa.png",
-    "username": "吴老师移民",
+    "username": "Mr. Wu Immigration",
     "likes": 146,
     "userAvatar": "/src/assets/MonaLisaAvatar.png"
   },
   {
     "id": 5,
-    "title": "牙齿卡东西了英文怎么说？",
+    "title": "How do you say 'something is stuck in my tooth' in English?",
     "image": "/src/assets/MonaLisa.png",
-    "username": "樱米和真太郎Lilian",
+    "username": "Sakura and Shintaro Lilian",
     "likes": 123,
     "userAvatar": "/src/assets/MonaLisaAvatar.png"
   },
   {
     "id": 6,
-    "title": "历时半年月我刷了爆肝的一份正式工作合同",
+    "title": "After half a year, I finally got a full-time job contract that I worked hard for",
     "image": "/src/assets/MonaLisa.png",
-    "username": "木子的留日记本",
+    "username": "Muzi's Diary",
     "likes": 28,
     "userAvatar": "/src/assets/MonaLisaAvatar.png"
   },
   {
     "id": 7,
-    "title": "我的money都去哪了？",
+    "title": "Where did my money go?",
     "image": "/src/assets/MonaLisa.png",
-    "username": "大喵在德国",
+    "username": "Big Cat in Germany",
     "likes": 71,
     "userAvatar": "/src/assets/MonaLisaAvatar.png"
   },
   {
     "id": 8,
-    "title": "机场遇见的，好酷的姑娘！",
+    "title": "Met a cool girl at the airport!",
     "image": "/src/assets/MonaLisa.png",
-    "username": "西水断灯",
+    "username": "Western Water Lights Out",
     "likes": 2649,
     "userAvatar": "/src/assets/MonaLisaAvatar.png"
   },
   {
     "id": 9,
-    "title": "加拿大今考G牌没过",
+    "title": "Failed the G-license test in Canada today",
     "image": "/src/assets/MonaLisa.png",
-    "username": "美丽与烤肉加拿大",
+    "username": "Beauty and BBQ Canada",
     "likes": 8,
     "userAvatar": "/src/assets/MonaLisaAvatar.png"
   },
   {
     "id": 10,
-    "title": "在这打了这一年",
+    "title": "Been here for a year",
     "image": "/src/assets/MonaLisa.png",
-    "username": "momo",
+    "username": "Momo",
     "likes": 84,
     "userAvatar": "/src/assets/MonaLisaAvatar.png"
   },
   {
     "id": 11,
-    "title": "留学生必备：10个实用英语口语表达",
+    "title": "10 Essential English Expressions for International Students",
     "image": "/src/assets/MonaLisa.png",
-    "username": "英语达人",
+    "username": "English Master",
     "likes": 567,
     "userAvatar": "/src/assets/MonaLisaAvatar.png"
   },
   {
     "id": 12,
-    "title": "探索温哥华最美徒步路线",
+    "title": "Exploring Vancouver's Most Beautiful Hiking Trails",
     "image": "/src/assets/MonaLisa.png",
-    "username": "户外爱好者",
+    "username": "Outdoor Enthusiast",
     "likes": 892,
     "userAvatar": "/src/assets/MonaLisaAvatar.png"
   },
   {
     "id": 13,
-    "title": "在德国超市买菜的省钱小技巧",
+    "title": "Money-Saving Tips for Grocery Shopping in German Supermarkets",
     "image": "/src/assets/MonaLisa.png",
-    "username": "德国省钱王",
+    "username": "German Money-Saving King",
     "likes": 1205,
     "userAvatar": "/src/assets/MonaLisaAvatar.png"
   },
   {
     "id": 14,
-    "title": "日本留学：如何快速适应新环境",
+    "title": "Studying in Japan: How to Adapt to a New Environment Quickly",
     "image": "/src/assets/MonaLisa.png",
-    "username": "樱花妹子",
+    "username": "Sakura Girl",
     "likes": 731,
     "userAvatar": "/src/assets/MonaLisaAvatar.png"
   },
   {
     "id": 15,
-    "title": "在美国找实习的5个实用网站",
+    "title": "5 Practical Websites for Finding Internships in the USA",
     "image": "/src/assets/MonaLisa.png",
-    "username": "职场达人",
+    "username": "Career Expert",
     "likes": 1567,
     "userAvatar": "/src/assets/MonaLisaAvatar.png"
   },
   {
     "id": 16,
-    "title": "澳洲留学：如何申请奖学金",
+    "title": "Studying in Australia: How to Apply for Scholarships",
     "image": "/src/assets/MonaLisa.png",
-    "username": "澳洲留学生",
+    "username": "Australian Student",
     "likes": 982,
     "userAvatar": "/src/assets/MonaLisaAvatar.png"
   },
   {
     "id": 17,
-    "title": "法国美食探索：巴黎最值得尝试的5家餐厅",
+    "title": "Exploring French Cuisine: 5 Must-Try Restaurants in Paris",
     "image": "/src/assets/MonaLisa.png",
-    "username": "美食家Jean",
+    "username": "Food Connoisseur Jean",
     "likes": 2341,
     "userAvatar": "/src/assets/MonaLisaAvatar.png"
   },
   {
     "id": 18,
-    "title": "英国留学：如何平衡学习和社交生活",
+    "title": "Studying in the UK: How to Balance Study and Social Life",
     "image": "/src/assets/MonaLisa.png",
-    "username": "伦敦生活家",
+    "username": "London Life",
     "likes": 876,
     "userAvatar": "/src/assets/MonaLisaAvatar.png"
   },
   {
     "id": 19,
-    "title": "新加坡工作签证申请全攻略",
+    "title": "Singapore Work Visa Application Guide",
     "image": "/src/assets/MonaLisa.png",
-    "username": "狮城打工人",
+    "username": "Singapore Worker",
     "likes": 1654,
     "userAvatar": "/src/assets/MonaLisaAvatar.png"
   },
   {
     "id": 20,
-    "title": "韩国留学：如何快速提高韩语水平",
+    "title": "Studying in Korea: How to Improve Your Korean Language Skills Quickly",
     "image": "/src/assets/MonaLisa.png",
-    "username": "首尔欧尼",
+    "username": "Seoul Girl",
     "likes": 2103,
     "userAvatar": "/src/assets/MonaLisaAvatar.png"
   }

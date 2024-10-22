@@ -4,14 +4,17 @@ import { RegisterModal } from '@src/components/RegisterModal';
 import '@src/styles/reset.css';
 import '@src/styles/starry.scss';
 import '@src/styles/tailwind.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, NavLink } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { NavMenu } from './@types/common';
 import './App.css';
 import CityWeather from './components/CityWeather';
 import CountTimer from './components/CountTimer';
+import ToastContainer from './components/ToastContainer';
 import NAV_MENU from './constants/navMenu';
+import useTheme from './utils/hooks/useTheme';
 import githubMark from '/github-mark.png';
 import xiaoPotato from '/xiaoPotato.png';
 
@@ -20,6 +23,13 @@ function App() {
   const [menu] = useState<NavMenu[]>(NAV_MENU);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isSignUpOpen, setIsSignUpOpen] = useState(false);
+
+  const { toggleTheme: initTheme } = useTheme();
+
+  useEffect(() => {
+    initTheme();
+  }, [initTheme]);
+
   const handleLoginClick = () => {
     setIsLoginOpen(!isLoginOpen);
   };
@@ -29,6 +39,7 @@ function App() {
 
   return (
     <div className="page-content">
+      <ToastContainer />
       <div className="star-wrapper overflow-hidden">
         <div className="star" id="star-1"></div>
         <div className="star" id="star-2"></div>
@@ -39,7 +50,10 @@ function App() {
               <img src={xiaoPotato} className="my-4 h-32 w-32" alt="xiaoPotato logo" />
             </a>
           </div>
-          <h1 className="via-slate-200 my-4 inline-block bg-gradient-to-r from-pink-600 to-yellow-400 bg-clip-text text-6xl font-bold text-transparent">
+          <h1
+            onClick={() => toast('Welcome to Potato art world!')}
+            className="via-slate-200 my-4 inline-block bg-gradient-to-r from-pink-600 to-yellow-400 bg-clip-text text-6xl font-bold text-transparent"
+          >
             {t('XiaoPotatoArtPlatform')}
           </h1>
           <div>

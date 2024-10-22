@@ -1,13 +1,13 @@
 import {
   BaseRes,
+  type_req_update_profile,
   type_req_user_login,
   type_req_user_register,
+  type_res_update_profile,
   type_res_user_login,
+  type_res_user_profile,
   type_res_user_register,
   user_profile,
-  type_res_user_profile,
-  type_req_update_profile,
-  type_res_update_profile,
 } from '@/@types/request/XPotato';
 import X_POTATO_URL from '@src/constants/xPotatoUrl';
 import useRequest from '@src/utils/request';
@@ -71,10 +71,9 @@ const getUserProfile = () => {
  * @returns Promise<BaseRes<type_res_update_profile>>
  */
 const updateUserProfile = (updateData: type_req_update_profile) => {
-  return useRequest.put<BaseRes<type_res_update_profile>>({
+  return useRequest.post<BaseRes<type_res_update_profile>>({
     baseURL,
     url: X_POTATO_URL.UPDATE_PROFILE,
-    abortRepetitiveRequest: true,
     data: updateData,
   });
 };

@@ -7,5 +7,5 @@ export default {
   USER_LOGIN: '/user/login',
   USER_CURRENT: '/user/current',
   USER_PROFILE: '/user/profile',
-  UPDATE_PROFILE: '/user/update-profile',
+  UPDATE_PROFILE: '/user/update',
 };

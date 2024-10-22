@@ -1,6 +1,7 @@
 import { X_ACCESS_TOKEN } from '@src/constants/LStorageKey';
 import type { AxiosError } from 'axios';
 import axios from 'axios';
+import Toast from '../toastUtils';
 import AxiosInstance from './axios';
 import { retry } from './axiosRetry';
 import { checkErrorStatus } from './checkErrorStatus';
@@ -40,10 +41,10 @@ const _RequestInterceptors: RequestInterceptors = {
     });
     return retry(axiosInstance, err as AxiosError, (err2) => {
       if (!window.navigator.onLine) {
-        alert('Network is disconnected!');
+        Toast.error('Network is disconnected!');
         return;
       }
-      alert(`Request Error: ${err2}`);
+      Toast.error(`Request Error: ${err2}`);
     });
   },
 };

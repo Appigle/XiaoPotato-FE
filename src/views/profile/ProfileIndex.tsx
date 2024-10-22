@@ -1,8 +1,8 @@
 import { type_req_update_profile, type_res_user_profile } from '@/@types/request/XPotato';
 import xPotatoApi from '@/Api/xPotatoApi';
 import EditProfileModal from '@/components/EditProfileModal';
+import { useGoBack } from '@src/utils/hooks/nav';
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import './ProfileIndex.css';
 
 const mockProfile: type_res_user_profile = {
@@ -27,7 +27,7 @@ const ProfilePage: React.FC = () => {
   const [profile, setProfile] = useState<type_res_user_profile | null>(null);
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const navigate = useNavigate();
+  const goBack = useGoBack();
 
   useEffect(() => {
     fetchProfile();
@@ -93,7 +93,7 @@ const ProfilePage: React.FC = () => {
         </div>
         <div
           className="absolute left-4 top-4 flex h-8 w-8 cursor-pointer items-center justify-center overflow-hidden rounded-full p-1 hover:bg-gray-200"
-          onClick={() => navigate(-1)}
+          onClick={() => goBack()}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
