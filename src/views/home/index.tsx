@@ -3,6 +3,7 @@ import ArtCardList from '@src/components/ArtCards/ArtCardList';
 import ArtTypeList from '@src/components/ArtTypeList';
 import { NavbarWithSearch } from '@src/components/NavbarWithSearch';
 import Sidebar from '@src/components/Sidebar';
+import useLoginCheck from '@src/utils/hooks/login';
 import React, { useRef, useState } from 'react';
 import { HiRefresh } from 'react-icons/hi';
 
@@ -28,6 +29,7 @@ const Main: React.FC = () => {
 
 // Main App component
 const App: React.FC = () => {
+  useLoginCheck();
   return (
     <div className="flex h-screen w-screen flex-col bg-potato-white dark:bg-blue-gray-900">
       <NavbarWithSearch />

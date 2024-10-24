@@ -11,10 +11,12 @@ import {
   Navbar,
   Typography,
 } from '@material-tailwind/react';
+import { user_profile } from '@src/@types/request/XPotato';
 import ALL_ART_TYPES from '@src/constants/ArtTypes';
+import { X_ACCESS_TOKEN } from '@src/constants/LStorageKey';
 import useGlobalStore from '@src/stores/useGlobalStore';
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import xiaoPotatoLogo from '/xiaoPotato.png';
 
 export function NavbarWithSearch() {
@@ -23,12 +25,21 @@ export function NavbarWithSearch() {
   }, []);
   const currentArtItem = useGlobalStore((s) => s.currentArtItem);
   const setCurrentArtType = useGlobalStore((s) => s.setCurrentArtType);
+  const userInfo = useGlobalStore((s) => s.userInfo) || ({} as user_profile);
+  console.log('%c [ userInfo ]-29', 'font-size:13px; background:pink; color:#bf2c9f;', userInfo);
+  const userDisplayName = useGlobalStore((s) => s.userDisplayName);
   const [openMenu, setOpenMenu] = React.useState(false);
   const [openNav, setOpenNav] = React.useState(false);
+  const navigate = useNavigate();
 
   React.useEffect(() => {
     window.addEventListener('resize', () => window.innerWidth >= 960 && setOpenNav(false));
   }, []);
+
+  const onLogout = () => {
+    localStorage.removeItem(X_ACCESS_TOKEN);
+    navigate('/');
+  };
 
   const navList = (
     <ul className="mb-4 mt-2 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-4">
@@ -38,8 +49,13 @@ export function NavbarWithSearch() {
         color="blue-gray"
         className="ml-4 flex items-center gap-x-1 p-1 font-medium"
       >
-        <NavLink to="/profile" key="profile">
-          <UserCircleIcon className="size-8 text-blue-gray-900 dark:text-gray-100" />
+        <NavLink
+          to="/profile"
+          key="profile"
+          className="flex flex-col items-center justify-center text-blue-gray-900 dark:text-gray-100"
+        >
+          <UserCircleIcon className="size-6" />
+          {userDisplayName}
         </NavLink>
       </Typography>
       <Menu>
@@ -55,7 +71,7 @@ export function NavbarWithSearch() {
         </MenuHandler>
         <MenuList>
           <MenuItem>Settings</MenuItem>
-          <MenuItem>Logout</MenuItem>
+          <MenuItem onClick={onLogout}>Logout</MenuItem>
         </MenuList>
       </Menu>
     </ul>

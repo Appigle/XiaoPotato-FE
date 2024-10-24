@@ -1,4 +1,5 @@
 import { ArtItemType, ArtNameType } from '@src/@types/artTypes';
+import { user_profile } from '@src/@types/request/XPotato';
 import ALL_ART_TYPES from '@src/constants/ArtTypes';
 import { create } from 'zustand';
 
@@ -12,6 +13,9 @@ interface GlobalStore {
   setIsLoading: (isLoading: boolean) => void;
   currentTheme: string;
   setCurrentTheme: (theme: string) => void;
+  setUserInfo: (user: user_profile | null) => void;
+  userInfo?: user_profile | null;
+  userDisplayName?: string;
 }
 
 const defaultArt = ALL_ART_TYPES[0];
@@ -27,6 +31,13 @@ const useGlobalStore = create<GlobalStore>((set) => {
     isDarkMode: true,
     currentTheme: 'dark',
     setCurrentTheme: (sTheme) => set({ currentTheme: sTheme, isDarkMode: sTheme === 'dark' }),
+    setUserInfo: (user) =>
+      set({
+        userInfo: user,
+        userDisplayName: `${user?.firstName || ''} ${((user?.lastName || '')[0] || '').toUpperCase()}.`,
+      }),
+    userInfo: null,
+    userDisplayName: '',
   };
 });
 

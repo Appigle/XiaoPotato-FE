@@ -13,7 +13,7 @@ export default function useTheme() {
     return storedTheme ? storedTheme : isSystemDarkMode ? 'dark' : 'light';
   };
 
-  const [currentTheme, setCurrentTheme] = useState<themeType>(getInitialTheme);
+  const [currentTheme, setCurrentTheme] = useState<themeType>(() => getInitialTheme());
 
   const isDarkMode = currentTheme === 'dark';
 
@@ -26,9 +26,8 @@ export default function useTheme() {
   }, []);
 
   const toggleTheme = () => {
-    const newTheme = isDarkMode ? 'light' : 'dark';
-    setCurrentTheme(newTheme);
-    storeTheme(newTheme);
+    setCurrentTheme(currentTheme);
+    storeTheme(currentTheme);
   };
 
   const resetToSystemTheme = () => {

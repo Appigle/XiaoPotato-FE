@@ -15,6 +15,7 @@ import CityWeather from './components/CityWeather';
 import CountTimer from './components/CountTimer';
 import ToastContainer from './components/ToastContainer';
 import NAV_MENU from './constants/navMenu';
+import useLoginCheck from './utils/hooks/login';
 import useTheme from './utils/hooks/useTheme';
 import githubMark from '/github-mark.png';
 import xiaoPotato from '/xiaoPotato.png';
@@ -25,6 +26,7 @@ function App() {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isSignUpOpen, setIsSignUpOpen] = useState(false);
   const [isRun, setIsRun] = useState(true);
+  useLoginCheck();
 
   useEffect(() => {
     setTimeout(() => {
@@ -36,7 +38,7 @@ function App() {
 
   useEffect(() => {
     initTheme();
-  }, [initTheme]);
+  }, []);
 
   const handleLoginClick = () => {
     setIsLoginOpen(!isLoginOpen);

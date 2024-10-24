@@ -18,6 +18,7 @@ const _RequestInterceptors: RequestInterceptors = {
     return err;
   },
   responseInterceptor(config) {
+    config.data?.data?.token && localStorage.setItem(X_ACCESS_TOKEN, config.data.data.token || '');
     return config;
   },
   responseInterceptorsCatch(axiosInstance, err: AxiosError) {
