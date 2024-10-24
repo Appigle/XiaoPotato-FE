@@ -1,3 +1,4 @@
+import { ArtNameType } from '@src/@types/artTypes';
 import ALL_ART_TYPES from '@src/constants/ArtTypes';
 import useGlobalStore from '@src/stores/useGlobalStore';
 import { useCallback, useEffect, useState } from 'react';
@@ -51,7 +52,7 @@ const ArtTypeList: React.FC<{ scrollTop: number }> = ({ scrollTop }) => {
         activeStyle={activeStyle}
         inActiveStyle={inActiveStyle}
         textStyle={textStyle}
-        onItemClick={(id) => {
+        onItemClick={(id: ArtNameType) => {
           setCurrentArtType(id);
         }}
         className="my-4 flex-1"

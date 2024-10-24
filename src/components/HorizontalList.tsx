@@ -1,5 +1,6 @@
 import { ChevronDownIcon } from '@heroicons/react/24/outline';
 import { Button, Menu, MenuHandler, MenuItem, MenuList } from '@material-tailwind/react';
+import { ArtNameType } from '@src/@types/artTypes';
 import React, { useEffect, useRef, useState } from 'react';
 
 interface ListItem {
@@ -14,7 +15,7 @@ interface HorizontalListProps {
   inActiveStyle?: React.CSSProperties;
   textStyle?: React.CSSProperties;
   activeId?: string;
-  onItemClick?: (id: string) => void;
+  onItemClick?: (id: ArtNameType) => void;
   onScroll?: (e: React.UIEvent<HTMLDivElement, UIEvent>) => void;
 }
 
@@ -42,7 +43,7 @@ const HorizontalList: React.FC<HorizontalListProps> = ({
       const hidden: ListItem[] = [];
 
       items.forEach((item) => {
-        const itemElement = itemsRef.current.get(item.id);
+        const itemElement = itemsRef.current.get(item.id as string);
         const itemWidth = itemElement?.offsetWidth || 120;
 
         if (currentWidth + itemWidth + (hidden.length === 0 ? 0 : 140) <= containerWidth) {
@@ -81,7 +82,7 @@ const HorizontalList: React.FC<HorizontalListProps> = ({
       }}
       className={`} flex w-fit min-w-fit items-center gap-2 !border-none text-base !font-normal !normal-case text-gray-400 outline-none transition-all hover:border-0 hover:border-none hover:outline-none focus:border-none focus:outline-none`}
       style={{ ...textStyle, ...(activeId === item.id ? activeStyle : inActiveStyle) }}
-      onClick={() => onItemClick?.(item.id)}
+      onClick={() => onItemClick?.(item.id as unknown as ArtNameType)}
       title={`item.id:${item.id}, activeId: ${activeId}`}
     >
       <span
@@ -112,7 +113,7 @@ const HorizontalList: React.FC<HorizontalListProps> = ({
               <MenuItem
                 key={item.id}
                 className={`px-4 py-2 text-white hover:bg-gray-800`}
-                onClick={() => onItemClick?.(item.id)}
+                onClick={() => onItemClick?.(item.id as unknown as ArtNameType)}
               >
                 <span
                   className={`${item.id === activeId ? 'inline-block bg-gradient-to-r from-pink-600 to-purple-400 bg-clip-text align-middle text-transparent' : ''}`}

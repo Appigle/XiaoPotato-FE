@@ -5,6 +5,7 @@ import '@src/styles/reset.css';
 import '@src/styles/starry.scss';
 import '@src/styles/tailwind.css';
 import { useEffect, useState } from 'react';
+import Confetti from 'react-confetti';
 import { useTranslation } from 'react-i18next';
 import { Link, NavLink } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -23,6 +24,13 @@ function App() {
   const [menu] = useState<NavMenu[]>(NAV_MENU);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isSignUpOpen, setIsSignUpOpen] = useState(false);
+  const [isRun, setIsRun] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsRun(false);
+    }, 4000);
+  }, []);
 
   const { toggleTheme: initTheme } = useTheme();
 
@@ -117,6 +125,7 @@ function App() {
           setIsLoginOpen(true);
         }}
       />
+      {isRun && <Confetti />}
     </div>
   );
 }

@@ -1,12 +1,12 @@
-import { ArtItemType } from '@src/@types/artTypes';
+import { ArtItemType, ArtNameType } from '@src/@types/artTypes';
 import ALL_ART_TYPES from '@src/constants/ArtTypes';
 import { create } from 'zustand';
 
 // Zustand store
 interface GlobalStore {
   currentArtItem: ArtItemType;
-  currentArtType: string;
-  setCurrentArtType: (category: string) => void;
+  currentArtType: ArtNameType;
+  setCurrentArtType: (type: ArtNameType) => void;
   isDarkMode: boolean;
   isLoading: boolean;
   setIsLoading: (isLoading: boolean) => void;
@@ -20,7 +20,7 @@ const useGlobalStore = create<GlobalStore>((set) => {
   return {
     currentArtItem: defaultArt,
     currentArtType: defaultArt['name'],
-    setCurrentArtType: (name) =>
+    setCurrentArtType: (name: ArtNameType) =>
       set({ currentArtType: name, currentArtItem: ALL_ART_TYPES.find((f) => f.name === name) }),
     isLoading: false,
     setIsLoading: (isLoading) => set({ isLoading }),

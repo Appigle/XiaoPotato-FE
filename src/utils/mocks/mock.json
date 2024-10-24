@@ -2,23 +2,25 @@
   {
     "id": 1,
     "title": "Things You No Longer Need After Living in Canada for a Long Time",
-    "image": "/src/assets/MonaLisa.png",
+    "image": ["/src/assets/MonaLisa.png", "/src/assets/Sunrise.png"],
     "username": "Aries in Canada",
     "likes": 2,
+    "isLiked": true,
     "userAvatar": "/src/assets/MonaLisaAvatar.png"
   },
   {
     "id": 2,
     "title": "Suddenly found a commonality among children from ordinary families studying abroad...",
-    "image": "/src/assets/MonaLisa.png",
+    "image": ["/src/assets/MonaLisa.png", "/src/assets/Sunrise.png"],
     "username": "DECO",
     "likes": 3783,
+    "isLiked": true,
     "userAvatar": "/src/assets/MonaLisaAvatar.png"
   },
   {
     "id": 3,
     "title": "Let's talk about Lululemon Aritza's down jacket",
-    "image": "/src/assets/MonaLisa.png",
+    "image": ["/src/assets/MonaLisa.png", "/src/assets/Sunrise.png"],
     "username": "Fluffy White",
     "likes": 390,
     "userAvatar": "/src/assets/MonaLisaAvatar.png"
@@ -26,7 +28,7 @@
   {
     "id": 4,
     "title": "The difference in treatment between Canadian citizens/permanent residents/temporary residents is huge",
-    "image": "/src/assets/MonaLisa.png",
+    "image": ["/src/assets/MonaLisa.png", "/src/assets/Sunrise.png"],
     "username": "Mr. Wu Immigration",
     "likes": 146,
     "userAvatar": "/src/assets/MonaLisaAvatar.png"
@@ -34,7 +36,7 @@
   {
     "id": 5,
     "title": "How do you say 'something is stuck in my tooth' in English?",
-    "image": "/src/assets/MonaLisa.png",
+    "image": ["/src/assets/MonaLisa.png", "/src/assets/Sunrise.png"],
     "username": "Sakura and Shintaro Lilian",
     "likes": 123,
     "userAvatar": "/src/assets/MonaLisaAvatar.png"
@@ -42,7 +44,7 @@
   {
     "id": 6,
     "title": "After half a year, I finally got a full-time job contract that I worked hard for",
-    "image": "/src/assets/MonaLisa.png",
+    "image": ["/src/assets/MonaLisa.png", "/src/assets/Sunrise.png"],
     "username": "Muzi's Diary",
     "likes": 28,
     "userAvatar": "/src/assets/MonaLisaAvatar.png"
@@ -50,7 +52,7 @@
   {
     "id": 7,
     "title": "Where did my money go?",
-    "image": "/src/assets/MonaLisa.png",
+    "image": ["/src/assets/MonaLisa.png", "/src/assets/Sunrise.png"],
     "username": "Big Cat in Germany",
     "likes": 71,
     "userAvatar": "/src/assets/MonaLisaAvatar.png"
@@ -58,7 +60,7 @@
   {
     "id": 8,
     "title": "Met a cool girl at the airport!",
-    "image": "/src/assets/MonaLisa.png",
+    "image": ["/src/assets/MonaLisa.png", "/src/assets/Sunrise.png"],
     "username": "Western Water Lights Out",
     "likes": 2649,
     "userAvatar": "/src/assets/MonaLisaAvatar.png"
@@ -66,7 +68,7 @@
   {
     "id": 9,
     "title": "Failed the G-license test in Canada today",
-    "image": "/src/assets/MonaLisa.png",
+    "image": ["/src/assets/MonaLisa.png", "/src/assets/Sunrise.png"],
     "username": "Beauty and BBQ Canada",
     "likes": 8,
     "userAvatar": "/src/assets/MonaLisaAvatar.png"
@@ -74,7 +76,7 @@
   {
     "id": 10,
     "title": "Been here for a year",
-    "image": "/src/assets/MonaLisa.png",
+    "image": ["/src/assets/MonaLisa.png", "/src/assets/Sunrise.png"],
     "username": "Momo",
     "likes": 84,
     "userAvatar": "/src/assets/MonaLisaAvatar.png"
@@ -82,7 +84,7 @@
   {
     "id": 11,
     "title": "10 Essential English Expressions for International Students",
-    "image": "/src/assets/MonaLisa.png",
+    "image": ["/src/assets/MonaLisa.png", "/src/assets/Sunrise.png"],
     "username": "English Master",
     "likes": 567,
     "userAvatar": "/src/assets/MonaLisaAvatar.png"
@@ -90,7 +92,7 @@
   {
     "id": 12,
     "title": "Exploring Vancouver's Most Beautiful Hiking Trails",
-    "image": "/src/assets/MonaLisa.png",
+    "image": ["/src/assets/MonaLisa.png", "/src/assets/Sunrise.png"],
     "username": "Outdoor Enthusiast",
     "likes": 892,
     "userAvatar": "/src/assets/MonaLisaAvatar.png"
@@ -98,7 +100,7 @@
   {
     "id": 13,
     "title": "Money-Saving Tips for Grocery Shopping in German Supermarkets",
-    "image": "/src/assets/MonaLisa.png",
+    "image": ["/src/assets/MonaLisa.png", "/src/assets/Sunrise.png"],
     "username": "German Money-Saving King",
     "likes": 1205,
     "userAvatar": "/src/assets/MonaLisaAvatar.png"
@@ -106,7 +108,7 @@
   {
     "id": 14,
     "title": "Studying in Japan: How to Adapt to a New Environment Quickly",
-    "image": "/src/assets/MonaLisa.png",
+    "image": ["/src/assets/MonaLisa.png", "/src/assets/Sunrise.png"],
     "username": "Sakura Girl",
     "likes": 731,
     "userAvatar": "/src/assets/MonaLisaAvatar.png"
@@ -114,7 +116,7 @@
   {
     "id": 15,
     "title": "5 Practical Websites for Finding Internships in the USA",
-    "image": "/src/assets/MonaLisa.png",
+    "image": ["/src/assets/MonaLisa.png", "/src/assets/Sunrise.png"],
     "username": "Career Expert",
     "likes": 1567,
     "userAvatar": "/src/assets/MonaLisaAvatar.png"
@@ -122,7 +124,7 @@
   {
     "id": 16,
     "title": "Studying in Australia: How to Apply for Scholarships",
-    "image": "/src/assets/MonaLisa.png",
+    "image": ["/src/assets/MonaLisa.png", "/src/assets/Sunrise.png"],
     "username": "Australian Student",
     "likes": 982,
     "userAvatar": "/src/assets/MonaLisaAvatar.png"
@@ -130,7 +132,7 @@
   {
     "id": 17,
     "title": "Exploring French Cuisine: 5 Must-Try Restaurants in Paris",
-    "image": "/src/assets/MonaLisa.png",
+    "image": ["/src/assets/MonaLisa.png", "/src/assets/Sunrise.png"],
     "username": "Food Connoisseur Jean",
     "likes": 2341,
     "userAvatar": "/src/assets/MonaLisaAvatar.png"
@@ -138,7 +140,7 @@
   {
     "id": 18,
     "title": "Studying in the UK: How to Balance Study and Social Life",
-    "image": "/src/assets/MonaLisa.png",
+    "image": ["/src/assets/MonaLisa.png", "/src/assets/Sunrise.png"],
     "username": "London Life",
     "likes": 876,
     "userAvatar": "/src/assets/MonaLisaAvatar.png"
@@ -146,7 +148,7 @@
   {
     "id": 19,
     "title": "Singapore Work Visa Application Guide",
-    "image": "/src/assets/MonaLisa.png",
+    "image": ["/src/assets/MonaLisa.png", "/src/assets/Sunrise.png"],
     "username": "Singapore Worker",
     "likes": 1654,
     "userAvatar": "/src/assets/MonaLisaAvatar.png"
@@ -154,7 +156,7 @@
   {
     "id": 20,
     "title": "Studying in Korea: How to Improve Your Korean Language Skills Quickly",
-    "image": "/src/assets/MonaLisa.png",
+    "image": ["/src/assets/MonaLisa.png", "/src/assets/Sunrise.png"],
     "username": "Seoul Girl",
     "likes": 2103,
     "userAvatar": "/src/assets/MonaLisaAvatar.png"
