@@ -1,5 +1,7 @@
 import {
   BaseRes,
+  type_req_get_post_by_page,
+  type_req_post_create,
   type_req_update_profile,
   type_req_user_login,
   type_req_user_register,
@@ -8,7 +10,7 @@ import {
   type_res_user_profile,
   type_res_user_register,
   user_profile,
-} from '@/@types/request/XPotato';
+} from '@src/@types/typeRequest';
 import X_POTATO_URL from '@src/constants/xPotatoUrl';
 import useRequest from '@src/utils/request';
 const baseURL = X_POTATO_URL.BASE_URL;
@@ -50,6 +52,9 @@ const userCurrent = () => {
     baseURL,
     url: X_POTATO_URL.USER_CURRENT,
     abortRepetitiveRequest: true,
+    params: {
+      noResCheck: true,
+    },
   });
 };
 
@@ -78,10 +83,76 @@ const updateUserProfile = (updateData: type_req_update_profile) => {
   });
 };
 
+/**
+ * common upload file
+ * @param file image/video(todo)
+ * @returns Promise<BaseRes<string>>
+ */
+const uploadFile = (formData: FormData) => {
+  return useRequest.uploadFile<BaseRes<string>>({
+    baseURL,
+    url: X_POTATO_URL.UPLOAD_FILE,
+    data: formData,
+  });
+};
+
+/**
+ * Like/dislike the post
+ * @returns Promise<BaseRes<boolean>>
+ */
+const postLike = (data: { id: number }) => {
+  return useRequest.post<BaseRes<boolean>>({
+    baseURL,
+    url: X_POTATO_URL.POST_LIKE,
+    data,
+  });
+};
+
+/**
+ * collection/cancel collection the post
+ * @returns Promise<BaseRes<boolean>>
+ */
+const postSave = (data: { id: string }) => {
+  return useRequest.post<BaseRes<boolean>>({
+    baseURL,
+    url: X_POTATO_URL.POST_SAVE,
+    data,
+  });
+};
+
+/**
+ * create a new post
+ * @returns Promise<BaseRes<number>>
+ */
+const postCreate = (data: type_req_post_create) => {
+  return useRequest.post<BaseRes<number>>({
+    baseURL,
+    url: X_POTATO_URL.POST_CREATE,
+    data,
+  });
+};
+
+/**
+ * Get post list by page and search work
+ * @returns Promise<BaseRes<number>>
+ */
+const getPostByPage = (data: type_req_get_post_by_page) => {
+  return useRequest.post<BaseRes<number>>({
+    baseURL,
+    url: X_POTATO_URL.POST_FILTER_PAGES,
+    data,
+  });
+};
+
 export default {
   registerAccount,
   userLogin,
   userCurrent,
   getUserProfile,
   updateUserProfile,
+  uploadFile,
+  postCreate,
+  postLike,
+  postSave,
+  getPostByPage,
 };

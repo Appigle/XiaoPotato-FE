@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { type_res_user_profile, type_req_update_profile } from '@/@types/request/XPotato';
+import { type_req_update_profile, type_res_user_profile } from '@src/@types/typeRequest';
+import React, { useEffect, useState } from 'react';
 
 interface EditProfileModalProps {
   isOpen: boolean;

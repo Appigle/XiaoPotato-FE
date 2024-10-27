@@ -1,4 +1,4 @@
-import { weather_res_type } from '@/@types/request/GET_WEATHER';
+import { weather_res_type } from '@src/@types/typeWeather';
 import WEATHER_URL from '@src/constants/WEATHER_URL';
 import useRequest from '@src/utils/request';
 const baseURL = WEATHER_URL.BASE_URL;

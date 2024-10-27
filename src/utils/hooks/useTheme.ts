@@ -1,4 +1,4 @@
-import { themeType } from '@src/@types/theme';
+import { typeTheme } from '@src/@types/typeTheme';
 import useGlobalStore from '@src/stores/useGlobalStore';
 import { useCallback, useEffect, useState } from 'react';
 import { useMediaQuery } from 'usehooks-ts';
@@ -8,20 +8,20 @@ export default function useTheme() {
   const setStoreTheme = useGlobalStore((state) => state.setCurrentTheme);
 
   // Retrieve the theme from localStorage on initialization
-  const getInitialTheme = (): themeType => {
-    const storedTheme = localStorage.getItem('theme') as themeType;
+  const getInitialTheme = (): typeTheme => {
+    const storedTheme = localStorage.getItem('theme') as typeTheme;
     return storedTheme ? storedTheme : isSystemDarkMode ? 'dark' : 'light';
   };
 
-  const [currentTheme, setCurrentTheme] = useState<themeType>(() => getInitialTheme());
+  const [currentTheme, setCurrentTheme] = useState<typeTheme>(() => getInitialTheme());
 
   const isDarkMode = currentTheme === 'dark';
 
-  const storeTheme = (theme: themeType) => {
+  const storeTheme = (theme: typeTheme) => {
     localStorage.setItem('theme', theme);
   };
 
-  const applyTheme = useCallback((theme: themeType) => {
+  const applyTheme = useCallback((theme: typeTheme) => {
     document.documentElement.classList.toggle('dark', theme === 'dark');
   }, []);
 

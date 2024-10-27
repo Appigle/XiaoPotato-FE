@@ -11,8 +11,8 @@ import {
   Navbar,
   Typography,
 } from '@material-tailwind/react';
-import { user_profile } from '@src/@types/request/XPotato';
-import ALL_ART_TYPES from '@src/constants/ArtTypes';
+import { user_profile } from '@src/@types/typeRequest';
+import allGenreList from '@src/constants/genreList';
 import { X_ACCESS_TOKEN } from '@src/constants/LStorageKey';
 import useGlobalStore from '@src/stores/useGlobalStore';
 import React from 'react';
@@ -23,8 +23,8 @@ export function NavbarWithSearch() {
   React.useEffect(() => {
     window.addEventListener('resize', () => window.innerWidth >= 960 && setOpenNav(false));
   }, []);
-  const currentArtItem = useGlobalStore((s) => s.currentArtItem);
-  const setCurrentArtType = useGlobalStore((s) => s.setCurrentArtType);
+  const currentGenreItem = useGlobalStore((s) => s.currentGenreItem);
+  const setCurrentPostType = useGlobalStore((s) => s.setCurrentPostType);
   const userInfo = useGlobalStore((s) => s.userInfo) || ({} as user_profile);
   console.log('%c [ userInfo ]-29', 'font-size:13px; background:pink; color:#bf2c9f;', userInfo);
   const userDisplayName = useGlobalStore((s) => s.userDisplayName);
@@ -102,7 +102,7 @@ export function NavbarWithSearch() {
                   className={`flex h-10 cursor-pointer flex-nowrap items-center gap-2 text-ellipsis rounded-r-none border border-r-0 border-blue-gray-200 bg-blue-gray-500/10 pl-3 capitalize text-blue-gray-900 dark:text-gray-100`}
                 >
                   <span className="whitespace-nowrap">
-                    {currentArtItem.emoji} {currentArtItem.name}
+                    {currentGenreItem.emoji} {currentGenreItem.name}
                   </span>
                   <ChevronDownIcon
                     strokeWidth={2.5}
@@ -111,11 +111,11 @@ export function NavbarWithSearch() {
                 </Button>
               </MenuHandler>
               <MenuList className="hidden max-h-72 w-20 lg:block">
-                {ALL_ART_TYPES.map(({ name, emoji }) => (
+                {allGenreList.map(({ name, emoji }) => (
                   <MenuItem
                     key={name}
                     className="hover:outline-none"
-                    onClick={() => setCurrentArtType(name)}
+                    onClick={() => setCurrentPostType(name)}
                   >
                     <span
                       title={name}

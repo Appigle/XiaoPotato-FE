@@ -1,4 +1,4 @@
-export type NavMenu = {
+export type typeNavMenuItem = {
   name?: string;
   path: string;
   icon?: string;

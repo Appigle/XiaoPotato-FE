@@ -1,7 +1,7 @@
-import { ArtCardListRefType } from '@src/@types/artCard';
-import ArtCardList from '@src/components/ArtCards/ArtCardList';
-import ArtTypeList from '@src/components/ArtTypeList';
+import { typePostListRef } from '@src/@types/typePostItem';
+import PostGenreList from '@src/components/ArtTypeList';
 import { NavbarWithSearch } from '@src/components/NavbarWithSearch';
+import ArtCardList from '@src/components/PostCards/PostCardList';
 import Sidebar from '@src/components/Sidebar';
 import useLoginCheck from '@src/utils/hooks/login';
 import React, { useRef, useState } from 'react';
@@ -9,7 +9,7 @@ import { HiRefresh } from 'react-icons/hi';
 
 const Main: React.FC = () => {
   const [scrollTop, setScrollTop] = useState(0);
-  const artCardListRef = useRef<ArtCardListRefType>(null);
+  const artCardListRef = useRef<typePostListRef>(null);
   const handleScroll = (e: React.UIEvent<HTMLElement, UIEvent>) => {
     setScrollTop((e.target as HTMLElement).scrollTop);
     artCardListRef.current?.handleScroll(e);
@@ -21,7 +21,7 @@ const Main: React.FC = () => {
         handleScroll(e);
       }}
     >
-      <ArtTypeList scrollTop={scrollTop} />
+      <PostGenreList scrollTop={scrollTop} />
       <ArtCardList ref={artCardListRef} />
     </main>
   );

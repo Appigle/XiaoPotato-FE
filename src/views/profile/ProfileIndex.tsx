@@ -1,6 +1,6 @@
-import { type_req_update_profile, type_res_user_profile } from '@/@types/request/XPotato';
 import xPotatoApi from '@/Api/xPotatoApi';
 import EditProfileModal from '@/components/EditProfileModal';
+import { type_req_update_profile, type_res_user_profile } from '@src/@types/typeRequest';
 import { useGoBack } from '@src/utils/hooks/nav';
 import React, { useEffect, useState } from 'react';
 import './ProfileIndex.css';

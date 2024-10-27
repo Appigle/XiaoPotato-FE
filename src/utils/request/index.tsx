@@ -6,11 +6,19 @@ import AxiosInstance from './axios';
 import { retry } from './axiosRetry';
 import { checkErrorStatus } from './checkErrorStatus';
 import staticAxiosConfig from './config';
+import HTTP_RES_CODE from './httpResCode';
 import { RequestInterceptors } from './type';
 
 const _RequestInterceptors: RequestInterceptors = {
   requestInterceptors(config) {
     const token = localStorage.getItem(X_ACCESS_TOKEN);
+    console.log(
+      '%c [ requestInterceptors token ]-14',
+      'font-size:13px; background:pink; color:#bf2c9f;',
+      config,
+      config.url,
+      token,
+    );
     config.headers.Authorization = token ? `Bearer ${token}` : '';
     return config;
   },
@@ -18,7 +26,30 @@ const _RequestInterceptors: RequestInterceptors = {
     return err;
   },
   responseInterceptor(config) {
+    console.log(
+      '%c [ responseInterceptor:config ]-22',
+      'font-size:13px; background:pink; color:#bf2c9f;',
+      config,
+      config.config.url,
+    );
     config.data?.data?.token && localStorage.setItem(X_ACCESS_TOKEN, config.data.data.token || '');
+    console.log(
+      '%c [ config.data?.data?.token ]-29',
+      'font-size:13px; background:pink; color:#bf2c9f;',
+      config.config.url,
+      config.data?.data?.token,
+    );
+    if (config.config.params?.noResCheck) return config;
+    console.log(
+      '%c [  (config.data?.code as number) > 0 + "  " + config.data?.code ]-37',
+      'font-size:13px; background:pink; color:#bf2c9f;',
+      config.data?.code,
+      `${(config.data?.code as number) > 0} --` + config.data?.code,
+    );
+    if ((config.data?.code as number) > 0 && config.data?.code !== HTTP_RES_CODE.SUCCESS) {
+      Toast.error(config.data?.message || 'Oops! Something went wrong!!!');
+      return config;
+    }
     return config;
   },
   responseInterceptorsCatch(axiosInstance, err: AxiosError) {
@@ -55,12 +86,12 @@ const BASE_URL = import.meta.env.VITE_BASE_URL;
 const useRequest = new AxiosInstance({
   directlyGetData: true,
   baseURL: BASE_URL || staticAxiosConfig.baseUrl,
-  timeout: 3000,
+  timeout: 30000,
   interceptors: _RequestInterceptors,
   abortRepetitiveRequest: true,
   retryConfig: {
-    count: 5,
-    waitTime: 500,
+    count: 1,
+    waitTime: 1500,
   },
 });
 

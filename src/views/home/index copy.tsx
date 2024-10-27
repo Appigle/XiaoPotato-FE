@@ -1,6 +1,6 @@
-import { user_profile } from '@/@types/request/XPotato';
 import HTTP_RES_CODE from '@/utils/request/httpResCode';
 import { Button } from '@material-tailwind/react';
+import { user_profile } from '@src/@types/typeRequest';
 import Api from '@src/Api';
 import { useCallback, useEffect, useState } from 'react';
 

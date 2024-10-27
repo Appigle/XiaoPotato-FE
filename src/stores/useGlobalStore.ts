@@ -1,13 +1,13 @@
-import { ArtItemType, ArtNameType } from '@src/@types/artTypes';
-import { user_profile } from '@src/@types/request/XPotato';
-import ALL_ART_TYPES from '@src/constants/ArtTypes';
+import { typePostGenre, typePostGenreItem } from '@src/@types/typePostItem';
+import { user_profile } from '@src/@types/typeRequest';
+import allGenreList from '@src/constants/genreList';
 import { create } from 'zustand';
 
 // Zustand store
 interface GlobalStore {
-  currentArtItem: ArtItemType;
-  currentArtType: ArtNameType;
-  setCurrentArtType: (type: ArtNameType) => void;
+  currentGenreItem: typePostGenreItem;
+  currentPostGenre: typePostGenre;
+  setCurrentPostType: (type: typePostGenre) => void;
   isDarkMode: boolean;
   isLoading: boolean;
   setIsLoading: (isLoading: boolean) => void;
@@ -16,16 +16,18 @@ interface GlobalStore {
   setUserInfo: (user: user_profile | null) => void;
   userInfo?: user_profile | null;
   userDisplayName?: string;
+  currentSearchWord?: string;
+  setCurrentSearchWord: (word: string) => void;
 }
 
-const defaultArt = ALL_ART_TYPES[0];
+const defaultGenre = allGenreList[0];
 
 const useGlobalStore = create<GlobalStore>((set) => {
   return {
-    currentArtItem: defaultArt,
-    currentArtType: defaultArt['name'],
-    setCurrentArtType: (name: ArtNameType) =>
-      set({ currentArtType: name, currentArtItem: ALL_ART_TYPES.find((f) => f.name === name) }),
+    currentGenreItem: defaultGenre,
+    currentPostGenre: defaultGenre['name'],
+    setCurrentPostType: (name: typePostGenre) =>
+      set({ currentPostGenre: name, currentGenreItem: allGenreList.find((f) => f.name === name) }),
     isLoading: false,
     setIsLoading: (isLoading) => set({ isLoading }),
     isDarkMode: true,
@@ -38,6 +40,12 @@ const useGlobalStore = create<GlobalStore>((set) => {
       }),
     userInfo: null,
     userDisplayName: '',
+    currentSearchWord: '',
+    setCurrentSearchWord: (word) => {
+      set({
+        currentSearchWord: word,
+      });
+    },
   };
 });
 

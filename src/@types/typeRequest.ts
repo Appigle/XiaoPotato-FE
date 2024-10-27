@@ -1,3 +1,5 @@
+import { IPostItem } from './typePostItem';
+
 export interface BaseRes<T> {
   code: number;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -58,3 +60,12 @@ export interface type_res_update_profile {
   success: boolean;
   message: string;
 }
+
+export interface type_req_get_post_by_page
+  extends Pick<IPostItem, 'postTitle' | 'postContent' | 'genre'> {
+  currentPage: number;
+  pageSize: number;
+}
+
+export interface type_req_post_create
+  extends Pick<IPostItem, 'postTitle' | 'postContent' | 'genre' | 'postImage'> {}

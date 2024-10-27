@@ -108,6 +108,14 @@ class AxiosRequest {
   delete<T = any>(config: AxiosOptions): Promise<T> {
     return this.request<T>({ ...config, method: 'DELETE' });
   }
+
+  uploadFile<T = any>(config: AxiosOptions): Promise<T> {
+    return this.request<T>({
+      ...config,
+      method: 'POST',
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+  }
 }
 
 export default AxiosRequest;

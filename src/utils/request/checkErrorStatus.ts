@@ -13,7 +13,5 @@ export function checkErrorStatus(
     const key = 'Err_' + status;
     errorMessage = i18n.t(key as any);
   }
-  if (errorMessage.length > 0) {
-    callback(errorMessage);
-  }
+  callback(errorMessage || 'Oops something went wrong!');
 }

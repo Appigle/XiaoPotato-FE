@@ -9,7 +9,7 @@ import Confetti from 'react-confetti';
 import { useTranslation } from 'react-i18next';
 import { Link, NavLink } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { NavMenu } from './@types/common';
+import { typeNavMenuItem } from './@types/common';
 import './App.css';
 import CityWeather from './components/CityWeather';
 import CountTimer from './components/CountTimer';
@@ -22,7 +22,7 @@ import xiaoPotato from '/xiaoPotato.png';
 
 function App() {
   const { t } = useTranslation();
-  const [menu] = useState<NavMenu[]>(NAV_MENU);
+  const [menu] = useState<typeNavMenuItem[]>(NAV_MENU);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isSignUpOpen, setIsSignUpOpen] = useState(false);
   const [isRun, setIsRun] = useState(true);

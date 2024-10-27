@@ -1,6 +1,6 @@
-import { ArtItemType, ArtNameMap } from '@src/@types/artTypes';
+import { typeGenreNameMap, typePostGenreItem } from '@src/@types/typePostItem';
 
-const ALL_ART_TYPES: ArtItemType[] = [
+const allGenreList: typePostGenreItem[] = [
   {
     emoji: '💯',
     name: 'All',
@@ -63,8 +63,8 @@ const ALL_ART_TYPES: ArtItemType[] = [
   },
 ];
 
-export const ART_NAME_TYPE = ALL_ART_TYPES.map((m) => ({
+export const GenreNameList = allGenreList.map((m) => ({
   [m.name]: m.name,
-})) as unknown as ArtNameMap;
+})) as unknown as typeGenreNameMap;
 
-export default ALL_ART_TYPES;
+export default allGenreList;

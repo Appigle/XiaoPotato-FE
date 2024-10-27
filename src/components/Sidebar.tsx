@@ -1,10 +1,10 @@
 import {
-  Bars3Icon,
   ChevronDoubleLeftIcon,
   ChevronDoubleRightIcon,
   EllipsisHorizontalIcon,
   HeartIcon,
   MagnifyingGlassIcon,
+  PlusCircleIcon,
   UserCircleIcon,
 } from '@heroicons/react/24/outline';
 import {
@@ -16,7 +16,8 @@ import {
   PopoverHandler,
 } from '@material-tailwind/react';
 import { color } from '@material-tailwind/react/types/components/alert';
-import { themeType } from '@src/@types/theme';
+import { typeTheme } from '@src/@types/typeTheme';
+import useEventBusStore from '@src/stores/useEventBusStore';
 import useTheme from '@src/utils/hooks/useTheme';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -25,11 +26,12 @@ import { Link } from 'react-router-dom';
 const Sidebar: React.FC = () => {
   const [isExpanded, setIsExpanded] = useState(true);
   const { currentTheme, setCurrentTheme, resetToSystemTheme, isDarkMode } = useTheme();
+  const setIsOpenPostFormModal = useEventBusStore((s) => s.setIsOpenPostFormModal);
 
   const toggleSidebar = () => {
     setIsExpanded(!isExpanded);
   };
-  const onChangeTheme = (theme: themeType | 'system') => {
+  const onChangeTheme = (theme: typeTheme | 'system') => {
     if (theme !== 'dark' && theme !== 'light') {
       resetToSystemTheme();
     } else {
@@ -44,6 +46,11 @@ const Sidebar: React.FC = () => {
   useEffect(() => {
     setIconColor(isDarkMode ? 'white' : 'black');
   }, [isDarkMode]);
+
+  const openPostModal = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    e.preventDefault();
+    setIsOpenPostFormModal(true);
+  };
 
   return (
     <div
@@ -64,16 +71,21 @@ const Sidebar: React.FC = () => {
             </Link>
           </li>
           <li className="mb-2 pl-2">
-            <Link to="/publish" className="flex h-10 items-center justify-start transition-all">
+            <a
+              onClick={(e) => {
+                openPostModal(e);
+              }}
+              className="flex h-10 cursor-pointer items-center justify-start transition-all"
+            >
               <IconButton variant="text" color={iconColor as color}>
-                <Bars3Icon className="h-5 w-5" />
+                <PlusCircleIcon className="h-5 w-5" />
               </IconButton>
               {isExpanded && (
                 <span className="ml-2 inline-block w-fit overflow-hidden text-ellipsis whitespace-nowrap">
                   Post
                 </span>
               )}
-            </Link>
+            </a>
           </li>
           <li className="mb-2 pl-2">
             <Link

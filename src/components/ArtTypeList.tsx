@@ -1,11 +1,11 @@
-import { ArtNameType } from '@src/@types/artTypes';
-import ALL_ART_TYPES from '@src/constants/ArtTypes';
+import { typePostGenre } from '@src/@types/typePostItem';
+import allGenreList from '@src/constants/genreList';
 import useGlobalStore from '@src/stores/useGlobalStore';
 import { useCallback, useEffect, useState } from 'react';
 import HorizontalList from './HorizontalList';
 
-// ArtTypeList component
-const ArtTypeList: React.FC<{ scrollTop: number }> = ({ scrollTop }) => {
+// PostGenreList component
+const PostGenreList: React.FC<{ scrollTop: number }> = ({ scrollTop }) => {
   const calcOpacity = useCallback(() => {
     return Math.min(0.8, scrollTop / 60);
   }, [scrollTop]);
@@ -20,7 +20,7 @@ const ArtTypeList: React.FC<{ scrollTop: number }> = ({ scrollTop }) => {
     color: `rgba(0, 0, 0, ${opacity})`,
   };
 
-  const { currentArtType = 'All', setCurrentArtType, isDarkMode } = useGlobalStore();
+  const { currentPostGenre = 'All', setCurrentPostType, isDarkMode } = useGlobalStore();
 
   useEffect(() => {
     setOpacity(calcOpacity());
@@ -35,7 +35,7 @@ const ArtTypeList: React.FC<{ scrollTop: number }> = ({ scrollTop }) => {
     setTextStyle({ color });
   }, [opacity, calcOpacity, isDarkMode]);
 
-  const items = ALL_ART_TYPES.map((m) => ({
+  const items = allGenreList.map((m) => ({
     id: m.name,
     content: (
       <span className="whitespace-nowrap">
@@ -48,12 +48,12 @@ const ArtTypeList: React.FC<{ scrollTop: number }> = ({ scrollTop }) => {
     <div className="sticky top-0 z-10 mt-4" style={style}>
       <HorizontalList
         items={items}
-        activeId={currentArtType}
+        activeId={currentPostGenre}
         activeStyle={activeStyle}
         inActiveStyle={inActiveStyle}
         textStyle={textStyle}
-        onItemClick={(id: ArtNameType) => {
-          setCurrentArtType(id);
+        onItemClick={(id: typePostGenre) => {
+          setCurrentPostType(id);
         }}
         className="my-4 flex-1"
       />
@@ -61,4 +61,4 @@ const ArtTypeList: React.FC<{ scrollTop: number }> = ({ scrollTop }) => {
   );
 };
 
-export default ArtTypeList;
+export default PostGenreList;

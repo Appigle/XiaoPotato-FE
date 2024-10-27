@@ -1,4 +1,5 @@
 import xPotatoApi from '@src/Api/xPotatoApi';
+import { X_ACCESS_TOKEN } from '@src/constants/LStorageKey';
 import useGlobalStore from '@src/stores/useGlobalStore';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -20,9 +21,10 @@ const useLoginCheck = () => {
       })
       .catch((e) => {
         console.log('%c [ e ]-23', 'font-size:13px; background:pink; color:#bf2c9f;', e);
-        // localStorage.removeItem(X_ACCESS_TOKEN);
-        // setUserInfo(null);
-        // if (location.pathname !== '/') navigate('/');
+        if (e.code === 'ERR_CANCELED') return;
+        localStorage.removeItem(X_ACCESS_TOKEN);
+        setUserInfo(null);
+        if (location.pathname !== '/') navigate('/');
       });
   }, []);
 };
