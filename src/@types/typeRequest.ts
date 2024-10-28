@@ -62,10 +62,17 @@ export interface type_res_update_profile {
 }
 
 export interface type_req_get_post_by_page
-  extends Pick<IPostItem, 'postTitle' | 'postContent' | 'genre'> {
+  extends Pick<IPostItem, 'postTitle' | 'postContent' | 'postGenre'> {
   currentPage: number;
   pageSize: number;
 }
+export interface type_res_get_post {
+  records: IPostItem[];
+  total: number;
+  size: number;
+  current: number;
+  pages: number;
+}
 
 export interface type_req_post_create
-  extends Pick<IPostItem, 'postTitle' | 'postContent' | 'genre' | 'postImage'> {}
+  extends Pick<IPostItem, 'postTitle' | 'postContent' | 'postGenre' | 'postImage'> {}

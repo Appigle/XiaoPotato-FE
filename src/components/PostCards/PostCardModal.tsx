@@ -1,7 +1,6 @@
 import { StarIcon } from '@heroicons/react/24/outline';
 import { Avatar, Button, Carousel, Dialog, DialogBody } from '@material-tailwind/react';
 import { IPostItem } from '@src/@types/typePostItem';
-import useGlobalStore from '@src/stores/useGlobalStore';
 import { useEffect, useState } from 'react';
 import { GoCommentDiscussion } from 'react-icons/go';
 import HeartEffect from '../HeartEffect';
@@ -13,7 +12,7 @@ interface PostDetailModalProps {
 const PostDetailModal = ({ post: _post, open = false, onClose }: PostDetailModalProps) => {
   const [post, setCardData] = useState(_post);
   const [isOpen, setIsOpen] = useState(open);
-  const userInfo = useGlobalStore((s) => s.userInfo);
+  // const post = useGlobalStore((s) => s.post);
   const handleOpen = (e: boolean) => {
     setIsOpen(!!e);
     !e && onClose?.();
@@ -44,7 +43,7 @@ const PostDetailModal = ({ post: _post, open = false, onClose }: PostDetailModal
         <div className="w-3/5">
           <Carousel className="rounded-ls rounded-r-none">
             <img
-              src={post.postImage?.[0]}
+              src={post.postImage}
               // src="https://images.unsplash.com/photo-1497436072909-60f360e1d4b1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2560&q=80"
               alt={post.postTitle}
               className="h-fit max-h-[80vh] w-full object-contain"
@@ -53,7 +52,7 @@ const PostDetailModal = ({ post: _post, open = false, onClose }: PostDetailModal
         </div>
         <div className="mt-4 flex w-2/5 flex-col">
           <div className="flex items-center justify-between gap-2">
-            <Avatar src={userInfo?.userAvatar || ''} alt={userInfo?.lastName} size="sm" />
+            <Avatar src={post.userAvatar || ''} alt={post.userFirstName} size="sm" />
             <Button
               size="sm"
               autoFocus={false}

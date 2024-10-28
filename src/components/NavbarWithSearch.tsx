@@ -11,7 +11,6 @@ import {
   Navbar,
   Typography,
 } from '@material-tailwind/react';
-import { user_profile } from '@src/@types/typeRequest';
 import allGenreList from '@src/constants/genreList';
 import { X_ACCESS_TOKEN } from '@src/constants/LStorageKey';
 import useGlobalStore from '@src/stores/useGlobalStore';
@@ -25,9 +24,12 @@ export function NavbarWithSearch() {
   }, []);
   const currentGenreItem = useGlobalStore((s) => s.currentGenreItem);
   const setCurrentPostType = useGlobalStore((s) => s.setCurrentPostType);
-  const userInfo = useGlobalStore((s) => s.userInfo) || ({} as user_profile);
-  console.log('%c [ userInfo ]-29', 'font-size:13px; background:pink; color:#bf2c9f;', userInfo);
   const userDisplayName = useGlobalStore((s) => s.userDisplayName);
+  console.log(
+    '%c [ userDisplayName ]-28',
+    'font-size:13px; background:pink; color:#bf2c9f;',
+    userDisplayName,
+  );
   const [openMenu, setOpenMenu] = React.useState(false);
   const [openNav, setOpenNav] = React.useState(false);
   const navigate = useNavigate();

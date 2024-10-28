@@ -5,6 +5,7 @@ import {
   type_req_update_profile,
   type_req_user_login,
   type_req_user_register,
+  type_res_get_post,
   type_res_update_profile,
   type_res_user_login,
   type_res_user_profile,
@@ -137,10 +138,10 @@ const postCreate = (data: type_req_post_create) => {
  * @returns Promise<BaseRes<number>>
  */
 const getPostByPage = (data: type_req_get_post_by_page) => {
-  return useRequest.post<BaseRes<number>>({
+  return useRequest.get<BaseRes<type_res_get_post>>({
     baseURL,
     url: X_POTATO_URL.POST_FILTER_PAGES,
-    data,
+    params: data,
   });
 };
 

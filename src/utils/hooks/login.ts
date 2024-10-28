@@ -20,13 +20,12 @@ const useLoginCheck = () => {
         return res.data;
       })
       .catch((e) => {
-        console.log('%c [ e ]-23', 'font-size:13px; background:pink; color:#bf2c9f;', e);
         if (e.code === 'ERR_CANCELED') return;
         localStorage.removeItem(X_ACCESS_TOKEN);
         setUserInfo(null);
         if (location.pathname !== '/') navigate('/');
       });
-  }, []);
+  }, [setUserInfo, navigate]);
 };
 
 export default useLoginCheck;

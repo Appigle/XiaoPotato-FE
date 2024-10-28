@@ -31,7 +31,12 @@ interface IPostItem {
   likeCount: number;
   isLiked: boolean;
   isSaved: boolean;
-  genre: typePostGenre;
+  postGenre: typePostGenre;
+  userId: number;
+  userFirstName: string;
+  userLastName: string;
+  userAccount: string;
+  userAvatar: string;
 }
 
 type typePostListRef = {

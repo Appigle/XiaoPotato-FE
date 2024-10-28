@@ -28,13 +28,13 @@ interface PostModalProps {
 }
 
 interface FormData {
-  genre: typePostGenre;
+  postGenre: typePostGenre;
   title: string;
   content: string;
   files: File[];
 }
 const defaultFormData: FormData = {
-  genre: 'All',
+  postGenre: 'All',
   title: '',
   content: '',
   files: [],
@@ -44,7 +44,7 @@ const PostModal: React.FC<PostModalProps> = ({ open, onClose, postCb }) => {
   const [formData, setFormData] = useState<FormData>(defaultFormData);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const currentPostGenre = useGlobalStore((s) => s.currentPostGenre);
-  const [genre, setGenre] = useState<typePostGenre>(currentPostGenre);
+  const [postGenre, setGenre] = useState<typePostGenre>(currentPostGenre);
 
   useEffect(() => {
     setGenre(currentPostGenre);
@@ -68,8 +68,8 @@ const PostModal: React.FC<PostModalProps> = ({ open, onClose, postCb }) => {
     e.preventDefault();
     setIsSubmitting(true);
     const submitData = new FormData();
-    submitData.append('title', formData.title);
-    submitData.append('content', formData.content);
+    submitData.append('post_title', formData.title);
+    submitData.append('post_content', formData.content);
     submitData.append('file', formData.files[0]);
     // Api.xPotatoApi
     //   .uploadFile(submitData)
@@ -88,7 +88,7 @@ const PostModal: React.FC<PostModalProps> = ({ open, onClose, postCb }) => {
     // https://fzqqq-test.oss-us-east-1.aliyuncs.com/74188bc7dd2042c5b634e64eba80a56f.png
     Api.xPotatoApi
       .postCreate({
-        genre: formData.genre,
+        postGenre: formData.postGenre,
         postTitle: formData.title,
         postContent: formData.content,
         postImage:
@@ -139,7 +139,7 @@ const PostModal: React.FC<PostModalProps> = ({ open, onClose, postCb }) => {
         {files.length === 0 && (
           <div
             {...getRootProps()}
-            className={`flex h-48 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed transition-colors ${
+            className={`flex h-[370px] w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed transition-colors ${
               isDragActive
                 ? 'border-blue-500 bg-blue-50 dark:border-blue-400 dark:bg-blue-900/50'
                 : 'border-blue-gray-200 hover:bg-gray-50 dark:border-blue-gray-700 dark:hover:bg-blue-gray-800'
@@ -234,49 +234,50 @@ const PostModal: React.FC<PostModalProps> = ({ open, onClose, postCb }) => {
             onFilesAdded={onFilesAdded}
           />
           <div className="flex w-2/5 flex-col gap-4 p-2">
-            <div className="flex w-3/5 gap-4">
-              <div>
-                <Typography
-                  variant="small"
-                  className="mb-2 font-medium text-blue-gray-900 dark:text-gray-100"
+            <div className=" ">
+              <Typography
+                variant="small"
+                className="mb-2 font-medium text-blue-gray-900 dark:text-gray-100"
+              >
+                Title
+              </Typography>
+              <Input
+                value={formData.title}
+                crossOrigin={'anonymous'}
+                onChange={handleTitleChange}
+                placeholder="Enter title"
+                className="!border-blue-gray-200 bg-white text-blue-gray-900 focus:!border-gray-900 dark:!border-blue-gray-700 dark:bg-blue-gray-800 dark:text-gray-100 dark:focus:!border-blue-400"
+                labelProps={{
+                  className: 'before:content-none after:content-none',
+                }}
+              />
+            </div>
+            <div>
+              <Typography
+                variant="small"
+                className="mb-2 font-medium text-blue-gray-900 dark:text-gray-100"
+              >
+                Genre
+              </Typography>
+              <div className="w-72">
+                <Select
+                  label="Select Genre"
+                  size="md"
+                  value={postGenre}
+                  onChange={(val) => setGenre((val || 'All') as typePostGenre)}
                 >
-                  Title
-                </Typography>
-                <Input
-                  value={formData.title}
-                  crossOrigin={'anonymous'}
-                  onChange={handleTitleChange}
-                  placeholder="Enter title"
-                  className="!border-blue-gray-200 bg-white text-blue-gray-900 focus:!border-gray-900 dark:!border-blue-gray-700 dark:bg-blue-gray-800 dark:text-gray-100 dark:focus:!border-blue-400"
-                  labelProps={{
-                    className: 'before:content-none after:content-none',
-                  }}
-                />
-              </div>
-              <div>
-                <Typography
-                  variant="small"
-                  className="mb-2 font-medium text-blue-gray-900 dark:text-gray-100"
-                >
-                  Genre
-                </Typography>
-                <div className="w-72">
-                  <Select
-                    label="Select Genre"
-                    size="md"
-                    value={genre}
-                    onChange={(val) => setGenre((val || 'All') as typePostGenre)}
-                  >
-                    {allGenreList.map(({ emoji, name, desc }) => {
-                      return (
-                        <Option value={name} title={`${name}:${desc}`}>{`${emoji} ${name}`}</Option>
-                      );
-                    })}
-                  </Select>
-                </div>
+                  {allGenreList.map(({ emoji, name, desc }) => {
+                    return (
+                      <Option
+                        key={name}
+                        value={name}
+                        title={`${name}:${desc}`}
+                      >{`${emoji} ${name}`}</Option>
+                    );
+                  })}
+                </Select>
               </div>
             </div>
-
             <div>
               <Typography
                 variant="small"

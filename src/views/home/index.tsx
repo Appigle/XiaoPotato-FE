@@ -1,18 +1,20 @@
+import { Spinner } from '@material-tailwind/react';
 import { typePostListRef } from '@src/@types/typePostItem';
-import PostGenreList from '@src/components/ArtTypeList';
+import PostGenreList from '@src/components/GenreTypeList';
 import { NavbarWithSearch } from '@src/components/NavbarWithSearch';
-import ArtCardList from '@src/components/PostCards/PostCardList';
+import PostCardList from '@src/components/PostCards/PostCardList';
 import Sidebar from '@src/components/Sidebar';
+import useGlobalStore from '@src/stores/useGlobalStore';
 import useLoginCheck from '@src/utils/hooks/login';
 import React, { useRef, useState } from 'react';
-import { HiRefresh } from 'react-icons/hi';
 
 const Main: React.FC = () => {
   const [scrollTop, setScrollTop] = useState(0);
-  const artCardListRef = useRef<typePostListRef>(null);
+  const postCardListRef = useRef<typePostListRef>(null);
+  const userInfo = useGlobalStore((s) => s.userInfo);
   const handleScroll = (e: React.UIEvent<HTMLElement, UIEvent>) => {
     setScrollTop((e.target as HTMLElement).scrollTop);
-    artCardListRef.current?.handleScroll(e);
+    postCardListRef.current?.handleScroll(e);
   };
   return (
     <main
@@ -22,7 +24,11 @@ const Main: React.FC = () => {
       }}
     >
       <PostGenreList scrollTop={scrollTop} />
-      <ArtCardList ref={artCardListRef} />
+      {userInfo ? (
+        <PostCardList ref={postCardListRef} />
+      ) : (
+        <Spinner color="amber" className="m-auto mt-64 h-12 w-12" />
+      )}
     </main>
   );
 };
@@ -37,10 +43,7 @@ const App: React.FC = () => {
         <Sidebar />
         <Main />
       </div>
-      <HiRefresh
-        className="hover:scale-120 fixed bottom-[50px] right-[50px] z-20 rounded-full text-2xl transition-all hover:cursor-pointer"
-        onClick={() => window.location.reload()}
-      ></HiRefresh>
+      s
     </div>
   );
 };
