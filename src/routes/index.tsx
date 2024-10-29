@@ -5,6 +5,7 @@ import type { RouteObject } from 'react-router-dom';
 import { createBrowserRouter } from 'react-router-dom';
 import App from '../App.tsx';
 import ProfilePage from '@/views/profile/ProfileIndex.tsx';
+import UserPostsPage from '@src/views/myPosts/myPosts.tsx';
 
 const routers: RouteObject[] = [
   {
@@ -31,6 +32,11 @@ const routers: RouteObject[] = [
   {
     path: '/profile',
     element: <ProfilePage />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: '/profile/:userId/posts',
+    element: <UserPostsPage />,
     errorElement: <ErrorPage />,
   },
 ];

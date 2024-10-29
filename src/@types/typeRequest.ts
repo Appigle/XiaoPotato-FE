@@ -76,3 +76,27 @@ export interface type_res_get_post {
 
 export interface type_req_post_create
   extends Pick<IPostItem, 'postTitle' | 'postContent' | 'postGenre' | 'postImage'> {}
+
+export interface type_req_post_query {
+  currentPage: number;
+  pageSize: number;
+  postTitle?: string;
+  postContent?: string;
+  postGenre?: string;
+}
+
+export interface PageResult<T> {
+  content: T[];
+  totalElements: number;
+  totalPages: number;
+  size: number;
+  number: number;
+}
+export interface Post extends IPostItem {
+  user?: {
+    userAccount: string;
+    userAvatar: string | null;
+  };
+}
+
+export type type_res_user_posts = PageResult<Post>;

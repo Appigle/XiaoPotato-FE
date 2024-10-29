@@ -2,12 +2,14 @@ import {
   BaseRes,
   type_req_get_post_by_page,
   type_req_post_create,
+  type_req_post_query,
   type_req_update_profile,
   type_req_user_login,
   type_req_user_register,
   type_res_get_post,
   type_res_update_profile,
   type_res_user_login,
+  type_res_user_posts,
   type_res_user_profile,
   type_res_user_register,
   user_profile,
@@ -145,6 +147,24 @@ const getPostByPage = (data: type_req_get_post_by_page) => {
   });
 };
 
+/**
+ * get user posts with pagination
+ * @param userId number
+ * @param queryParams type_req_post_query
+ * @returns Promise<BaseRes<type_res_user_posts>>
+ */
+const getUserPosts = (userId: number, queryParams: type_req_post_query) => {
+  return useRequest.get<BaseRes<type_res_user_posts>>({
+    baseURL,
+    url: `/post/selectByUserId`,
+    params: {
+      userId,
+      ...queryParams,
+    },
+    abortRepetitiveRequest: true,
+  });
+};
+
 export default {
   registerAccount,
   userLogin,
@@ -156,4 +176,5 @@ export default {
   postLike,
   postSave,
   getPostByPage,
+  getUserPosts,
 };

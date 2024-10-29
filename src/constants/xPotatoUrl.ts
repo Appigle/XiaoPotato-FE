@@ -16,4 +16,5 @@ export default {
   POST_DELETE: '/post/delete',
   POST_LIKE: '/like/likeByPostId',
   POST_SAVE: '/post/save',
+  GET_USER_POSTS: '/post/selectByUserId',
 };

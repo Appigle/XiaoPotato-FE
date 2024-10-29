@@ -4,6 +4,7 @@ import { type_req_update_profile, type_res_user_profile } from '@src/@types/type
 import { useGoBack } from '@src/utils/hooks/nav';
 import React, { useEffect, useState } from 'react';
 import './ProfileIndex.css';
+import { useNavigate } from 'react-router-dom';
 
 const mockProfile: type_res_user_profile = {
   id: 1,
@@ -28,7 +29,10 @@ const ProfilePage: React.FC = () => {
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const goBack = useGoBack();
-
+  const navigate = useNavigate();
+  const handleViewPosts = () => {
+    navigate(`/profile/${profile?.id}/posts`);
+  };
   useEffect(() => {
     fetchProfile();
   }, []);
@@ -146,6 +150,13 @@ const ProfilePage: React.FC = () => {
                 </div>
                 <div className="w-full px-4 lg:order-3 lg:w-4/12 lg:self-center lg:text-right">
                   <div className="mt-32 px-3 py-6 sm:mt-0">
+                    <button
+                      className="mb-1 rounded bg-pink-500 px-4 py-2 text-xs font-bold uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-md focus:outline-none active:bg-pink-600 sm:mr-2"
+                      onClick={handleViewPosts}
+                      type="button"
+                    >
+                      View Posts
+                    </button>
                     <button
                       className="mb-1 rounded bg-pink-500 px-4 py-2 text-xs font-bold uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-md focus:outline-none active:bg-pink-600 sm:mr-2"
                       onClick={onEditProfile}

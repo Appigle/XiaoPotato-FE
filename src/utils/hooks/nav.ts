@@ -11,4 +11,11 @@ const useGoBack = () => {
   );
 };
 
-export { useGoBack };
+const useGoToMyPost = () => {
+  const navigate = useNavigate();
+  return useCallback(() => {
+    navigate('/myPosts');
+  }, [navigate]);
+};
+
+export { useGoBack, useGoToMyPost };
