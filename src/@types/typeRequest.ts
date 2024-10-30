@@ -86,7 +86,7 @@ export interface type_req_post_query {
 }
 
 export interface PageResult<T> {
-  content: T[];
+  records: T[];
   totalElements: number;
   totalPages: number;
   size: number;

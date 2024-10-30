@@ -1,10 +1,12 @@
 import xPotatoApi from '@/Api/xPotatoApi';
 import EditProfileModal from '@/components/EditProfileModal';
 import { type_req_update_profile, type_res_user_profile } from '@src/@types/typeRequest';
+import useGlobalStore from '@src/stores/useGlobalStore';
+import useLoginCheck from '@src/utils/hooks/login';
 import { useGoBack } from '@src/utils/hooks/nav';
 import React, { useEffect, useState } from 'react';
-import './ProfileIndex.css';
 import { useNavigate } from 'react-router-dom';
+import './ProfileIndex.css';
 
 const mockProfile: type_res_user_profile = {
   id: 1,
@@ -25,17 +27,20 @@ const mockProfile: type_res_user_profile = {
 };
 
 const ProfilePage: React.FC = () => {
-  const [profile, setProfile] = useState<type_res_user_profile | null>(null);
+  useLoginCheck();
+  const [profile, setProfile] = useState<type_res_user_profile | null | undefined>(null);
   const [isOpenModal, setIsOpenModal] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const userInfo = useGlobalStore((s) => s.userInfo);
   const goBack = useGoBack();
   const navigate = useNavigate();
   const handleViewPosts = () => {
     navigate(`/profile/${profile?.id}/posts`);
   };
   useEffect(() => {
-    fetchProfile();
-  }, []);
+    // fetchProfile();
+    setProfile(userInfo);
+  }, [userInfo]);
 
   const fetchProfile = async () => {
     setIsLoading(true);
@@ -75,7 +80,7 @@ const ProfilePage: React.FC = () => {
     }
   };
 
-  if (isLoading) {
+  if (isLoading || !userInfo) {
     return <div>Loading...</div>;
   }
 
@@ -108,8 +113,8 @@ const ProfilePage: React.FC = () => {
             className="size-6"
           >
             <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeLinecap="round"
+              strokeLinejoin="round"
               d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3"
             />
           </svg>

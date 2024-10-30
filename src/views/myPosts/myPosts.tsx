@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
 import xPotatoApi from '@/Api/xPotatoApi';
 import { Post, type_req_post_query } from '@src/@types/typeRequest';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { useGoBack } from '@src/utils/hooks/nav';
@@ -32,9 +32,9 @@ const UserPostsPage: React.FC = () => {
       };
       const response = await xPotatoApi.getUserPosts(Number(userId), queryParams);
 
-      if (response.data.code === 200) {
-        const { content, totalPages, number } = response.data.data;
-        setPosts(content);
+      if (response.code === 200) {
+        const { records, totalPages, number } = response.data;
+        setPosts(records);
         setTotalPages(totalPages);
         setCurrentPage(number);
       } else {
