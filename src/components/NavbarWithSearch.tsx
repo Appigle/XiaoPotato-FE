@@ -25,11 +25,6 @@ export function NavbarWithSearch() {
   const currentGenreItem = useGlobalStore((s) => s.currentGenreItem);
   const setCurrentPostType = useGlobalStore((s) => s.setCurrentPostType);
   const userDisplayName = useGlobalStore((s) => s.userDisplayName);
-  console.log(
-    '%c [ userDisplayName ]-28',
-    'font-size:13px; background:pink; color:#bf2c9f;',
-    userDisplayName,
-  );
   const [openMenu, setOpenMenu] = React.useState(false);
   const [openNav, setOpenNav] = React.useState(false);
   const navigate = useNavigate();

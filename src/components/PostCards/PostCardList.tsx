@@ -4,7 +4,9 @@ import { Spinner } from '@material-tailwind/react';
 import { IPostItem, typePostGenre, typePostListRef } from '@src/@types/typePostItem';
 import { type_req_get_post_by_page, type_res_get_post } from '@src/@types/typeRequest';
 import Api from '@src/Api';
+import X_POTATO_URL from '@src/constants/xPotatoUrl';
 import useGlobalStore from '@src/stores/useGlobalStore';
+import useRequest from '@src/utils/request';
 import HTTP_RES_CODE from '@src/utils/request/httpResCode';
 import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useState } from 'react';
 import { HiRefresh } from 'react-icons/hi';
@@ -17,14 +19,14 @@ type PropsType = { title?: string };
 // Update PostList component to include infinite scroll
 const PostPostList = forwardRef<typePostListRef, PropsType>((_, ref) => {
   const [postList, setPostList] = useState<IPostItem[]>([]);
-  const { currentPostGenre, isLoading, setIsLoading } = useGlobalStore();
-  const [currentPage, setPage] = useState(1);
+  const { currentPostGenre: _currentPostGenre, isLoading, setIsLoading } = useGlobalStore();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPostGenre, setCurrentPostGenre] = useState(_currentPostGenre);
   const [isLoadEnd, setIsLoadEnd] = useState(false);
   const [total, setTotal] = useState(0);
   const currentSearchWord = useGlobalStore((s) => s.currentSearchWord);
   const getPostDataByPage = useCallback(
     (size: number, page: number, searchWord: string, postGenre: typePostGenre) => {
-      // return;
       const post: type_req_get_post_by_page = {
         postTitle: searchWord,
         postContent: searchWord,
@@ -35,21 +37,10 @@ const PostPostList = forwardRef<typePostListRef, PropsType>((_, ref) => {
       return Api.xPotatoApi
         .getPostByPage(post)
         .then((res) => {
-          console.log('%c [ res ]-32', 'font-size:13px; background:pink; color:#bf2c9f;', res);
           if (res.code === HTTP_RES_CODE.SUCCESS) {
             const { total, records } = (res.data || {}) as type_res_get_post;
-            console.log(
-              '%c [ records ]-41',
-              'font-size:13px; background:pink; color:#bf2c9f;',
-              JSON.stringify(records.map((m) => ({ id: m.id, postTitle: m.postTitle }))),
-            );
             setTotal(total);
             setPostList((pre) => {
-              console.log(
-                '%c [ pre ]-43',
-                'font-size:13px; background:pink; color:#bf2c9f;',
-                JSON.stringify(pre.map((m) => ({ id: m.id, postTitle: m.postTitle }))),
-              );
               return [...pre, ...records];
             });
           }
@@ -68,35 +59,20 @@ const PostPostList = forwardRef<typePostListRef, PropsType>((_, ref) => {
   }, [postList, total]);
 
   useEffect(() => {
-    console.log(
-      '%c [ currentPostGenre ]-57',
-      'font-size:13px; background:pink; color:#bf2c9f;',
-      currentPostGenre,
-    );
     setPostList([]);
-    setPage(0);
-  }, [currentPostGenre]);
+    setCurrentPostGenre(_currentPostGenre);
+    setCurrentPage(1);
+  }, [_currentPostGenre]);
 
   useEffect(() => {
-    if (isLoading) return;
     getPostDataByPage(20, currentPage, currentSearchWord || '', currentPostGenre);
-  }, [currentSearchWord, currentPage, currentPostGenre, isLoading, getPostDataByPage]);
+    return () => {
+      const abort = useRequest.getAbortAxios();
+      abort.removePending(abort.getRequestId(X_POTATO_URL.POST_FILTER_PAGES, 'get'));
+    };
+  }, [currentSearchWord, currentPage, currentPostGenre, getPostDataByPage]);
 
   const onRefreshPostList = useCallback(() => {
-    console.log(
-      `%c [   currentPage,
-    currentPostGenre,
-    currentSearchWord,
-    getPostDataByPage,
-    setIsLoading,
-    setIsLoadEnd,
-    isLoading, ]-103`,
-      'font-size:13px; background:pink; color:#bf2c9f;',
-      currentPage,
-      currentPostGenre,
-      currentSearchWord,
-      isLoading,
-    );
     if (isLoading) return;
     setPostList([]);
     setIsLoading(true);
@@ -104,7 +80,7 @@ const PostPostList = forwardRef<typePostListRef, PropsType>((_, ref) => {
     if (currentPage === 1) {
       getPostDataByPage(20, currentPage, currentSearchWord || '', currentPostGenre);
     } else {
-      setPage(1);
+      setCurrentPage(1);
     }
   }, [
     currentPage,
@@ -119,8 +95,8 @@ const PostPostList = forwardRef<typePostListRef, PropsType>((_, ref) => {
   const loadMoreCards = useCallback(async () => {
     if (isLoading) return;
     setIsLoading(true);
-    setPage(currentPage + 1);
-  }, [setPage, setIsLoading, currentPage, isLoading]);
+    setCurrentPage(currentPage + 1);
+  }, [setCurrentPage, setIsLoading, currentPage, isLoading]);
 
   const handleScroll = useCallback(
     (e?: React.UIEvent<HTMLElement, UIEvent>) => {
@@ -150,16 +126,14 @@ const PostPostList = forwardRef<typePostListRef, PropsType>((_, ref) => {
   };
 
   const onShowDetail = (postData: IPostItem) => {
-    console.log(
-      '%c [ onShowDetail ]-88',
-      'font-size:13px; background:pink; color:#bf2c9f;',
-      postData,
-    );
     setCurrentCardData(postData);
     openDetail();
   };
   const setIsOpenPostFormModal = useEventBusStore((s) => s.setIsOpenPostFormModal);
   const isOpenPostFormModal = useEventBusStore((s) => s.isOpenPostFormModal);
+  const onDeletePost = () => {
+    onRefreshPostList();
+  };
 
   return (
     <>
@@ -168,7 +142,13 @@ const PostPostList = forwardRef<typePostListRef, PropsType>((_, ref) => {
       {!!postList.length && (
         <div className="grid grid-cols-1 gap-4 p-4 pt-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {postList.map((post, index) => (
-            <PostCard key={post.id} post={post} index={index} onShowDetail={onShowDetail} />
+            <PostCard
+              key={post.id}
+              post={post}
+              index={index}
+              onShowDetail={onShowDetail}
+              onDelete={onDeletePost}
+            />
           ))}
         </div>
       )}

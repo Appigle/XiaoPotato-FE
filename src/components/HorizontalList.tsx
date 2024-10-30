@@ -64,7 +64,7 @@ const HorizontalList: React.FC<HorizontalListProps> = ({
 
     const timer = setTimeout(() => {
       calculateVisibleItems();
-    }, 500);
+    }, 10);
     window.addEventListener('resize', calculateVisibleItems);
 
     return () => {
@@ -78,8 +78,20 @@ const HorizontalList: React.FC<HorizontalListProps> = ({
       variant="text"
       key={item.id}
       ref={(el) => {
-        if (el) itemsRef.current.set(item.id, el);
+        if (el) {
+          itemsRef.current.set(item.id, el);
+        }
       }}
+      className={`flex w-fit min-w-fit items-center gap-2`}
+    >
+      <span>{item.content}</span>
+    </Button>
+  );
+
+  const renderItemReal = (item: ListItem) => (
+    <Button
+      variant="text"
+      key={`Real-${item.id}`}
       className={`} flex w-fit min-w-fit items-center gap-2 !border-none text-base !font-normal !normal-case text-gray-400 outline-none transition-all hover:border-0 hover:border-none hover:outline-none focus:border-none focus:outline-none`}
       style={{ ...textStyle, ...(activeId === item.id ? activeStyle : inActiveStyle) }}
       onClick={() => onItemClick?.(item.id as unknown as typePostGenre)}
@@ -94,8 +106,12 @@ const HorizontalList: React.FC<HorizontalListProps> = ({
   );
 
   return (
-    <div ref={containerRef} className={`flex items-center space-x-1 ${className} pl-2`}>
-      {visibleItems.map(renderItem)}
+    <div
+      ref={containerRef}
+      className={`relative flex w-full items-center space-x-1 ${className} overflow-hidden pl-2`}
+    >
+      <div className="absolute top-[-100px] flex w-full items-center">{items.map(renderItem)}</div>
+      {visibleItems.map(renderItemReal)}
 
       {hiddenItems.length > 0 && (
         <Menu>

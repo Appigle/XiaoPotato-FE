@@ -1,6 +1,9 @@
+import defaultUserAvatar from '@/assets/MonaLisaAvatar.png';
+import defaultPostImg from '@/assets/Sunrise.png';
 import { StarIcon } from '@heroicons/react/24/outline';
 import { Avatar, Button, Carousel, Dialog, DialogBody } from '@material-tailwind/react';
 import { IPostItem } from '@src/@types/typePostItem';
+import useGlobalStore from '@src/stores/useGlobalStore';
 import { useEffect, useState } from 'react';
 import { GoCommentDiscussion } from 'react-icons/go';
 import HeartEffect from '../HeartEffect';
@@ -12,13 +15,18 @@ interface PostDetailModalProps {
 const PostDetailModal = ({ post: _post, open = false, onClose }: PostDetailModalProps) => {
   const [post, setCardData] = useState(_post);
   const [isOpen, setIsOpen] = useState(open);
+  const [postImage, setPostImage] = useState(post?.postImage || '');
+  const [postAvatar, setPostAvatar] = useState(post?.userAvatar || '');
+  const userInfo = useGlobalStore((s) => s.userInfo);
   // const post = useGlobalStore((s) => s.post);
   const handleOpen = (e: boolean) => {
     setIsOpen(!!e);
     !e && onClose?.();
   };
   useEffect(() => {
-    setIsOpen(open);
+    setTimeout(() => {
+      setIsOpen(open);
+    }, 100);
   }, [open]);
   useEffect(() => {
     setCardData(_post);
@@ -26,12 +34,19 @@ const PostDetailModal = ({ post: _post, open = false, onClose }: PostDetailModal
   if (!post) {
     return null;
   }
+
+  const handleImageError = () => {
+    setPostImage(defaultPostImg);
+  };
+  const handleAvatarError = () => {
+    setPostAvatar(defaultUserAvatar);
+  };
   return (
     <Dialog
       open={isOpen}
       size="lg"
       handler={handleOpen}
-      className="bg-blue-gray-100 dark:bg-blue-gray-900"
+      className="arial-modal bg-blue-gray-100 dark:bg-blue-gray-900"
     >
       <DialogBody className="relative flex min-h-80 gap-4">
         <div
@@ -43,7 +58,8 @@ const PostDetailModal = ({ post: _post, open = false, onClose }: PostDetailModal
         <div className="w-3/5">
           <Carousel className="rounded-ls rounded-r-none">
             <img
-              src={post.postImage}
+              src={postImage}
+              onError={handleImageError}
               // src="https://images.unsplash.com/photo-1497436072909-60f360e1d4b1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2560&q=80"
               alt={post.postTitle}
               className="h-fit max-h-[80vh] w-full object-contain"
@@ -52,14 +68,21 @@ const PostDetailModal = ({ post: _post, open = false, onClose }: PostDetailModal
         </div>
         <div className="mt-4 flex w-2/5 flex-col">
           <div className="flex items-center justify-between gap-2">
-            <Avatar src={post.userAvatar || ''} alt={post.userFirstName} size="sm" />
-            <Button
+            <Avatar
+              src={postAvatar}
+              onError={handleAvatarError}
+              alt={post.userFirstName}
               size="sm"
-              autoFocus={false}
-              className="bg-blue-gray-900 text-potato-white dark:bg-potato-white dark:text-blue-gray-900"
-            >
-              Subscription
-            </Button>
+            />
+            {post.creatorId !== userInfo?.id && (
+              <Button
+                size="sm"
+                autoFocus={false}
+                className="bg-blue-gray-900 text-potato-white dark:bg-potato-white dark:text-blue-gray-900"
+              >
+                Subscription
+              </Button>
+            )}
           </div>
           <div className="flex flex-1 flex-col gap-4 py-4">
             <h3 className="text-xl">{post.postTitle}</h3>

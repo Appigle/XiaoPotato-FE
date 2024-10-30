@@ -1,3 +1,4 @@
+import ToastContainer from '@components/ToastContainer';
 import { Spinner } from '@material-tailwind/react';
 import { typePostListRef } from '@src/@types/typePostItem';
 import PostGenreList from '@src/components/GenreTypeList';
@@ -37,14 +38,16 @@ const Main: React.FC = () => {
 const App: React.FC = () => {
   useLoginCheck();
   return (
-    <div className="flex h-screen w-screen flex-col bg-potato-white dark:bg-blue-gray-900">
-      <NavbarWithSearch />
-      <div className="flex h-[calc(100%-80px)] flex-1">
-        <Sidebar />
-        <Main />
+    <>
+      <ToastContainer />
+      <div className="flex h-screen w-screen flex-col bg-potato-white dark:bg-blue-gray-900">
+        <NavbarWithSearch />
+        <div className="flex h-[calc(100%-80px)] flex-1">
+          <Sidebar />
+          <Main />
+        </div>
       </div>
-      s
-    </div>
+    </>
   );
 };
 

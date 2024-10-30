@@ -6,21 +6,21 @@ import { AxiosRequestConfig } from 'axios';
 const pendingMap = new Map<string, AbortController>();
 
 /**
- * Create each request unique identification
- * @param config
- * @returns identification
- */
-const getRequestId = (config: AxiosRequestConfig) => {
-  return [config.url, config.method].join(':');
-};
-
-/**
  * Abort request class encapsulation
  */
 class AbortAxios {
+  /**
+   * Create each request unique identification
+   * @param config
+   * @returns identification
+   */
+  getRequestId = (url?: string, method?: string) => {
+    return [url, method].join(':');
+  };
+
   addPending(config: AxiosRequestConfig) {
-    this.removePending(config);
-    const url = getRequestId(config);
+    this.removePending(config.url, config.method);
+    const url = this.getRequestId(config.url, config.method);
     const abortController = new AbortController();
     config.signal = abortController.signal;
     if (!pendingMap.has(url)) {
@@ -28,8 +28,8 @@ class AbortAxios {
     }
   }
 
-  removePending(config: AxiosRequestConfig) {
-    const url = getRequestId(config);
+  removePending(curl: string = '', method?: string) {
+    const url = this.getRequestId(curl, method);
     if (pendingMap.has(url)) {
       const abortController = pendingMap.get(url);
       abortController?.abort();

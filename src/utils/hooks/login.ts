@@ -12,7 +12,7 @@ const useLoginCheck = () => {
       .userCurrent()
       .then((res) => {
         if (res.data) {
-          setUserInfo(res.data);
+          setUserInfo(res.data?.user);
           if (location.pathname === '/') navigate('/home');
         } else {
           throw new Error('login failed');

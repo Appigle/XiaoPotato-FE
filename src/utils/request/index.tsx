@@ -35,10 +35,11 @@ const _RequestInterceptors: RequestInterceptors = {
         '%c [ "Cancel request" ]-28',
         'font-size:13px; background:pink; color:#bf2c9f;',
         'Cancel request',
+        err?.config?.url,
       );
       return Promise.reject(err);
     }
-    checkErrorStatus((err as AxiosError).response?.status, errMessage, (message) => {
+    checkErrorStatus((err as AxiosError)?.response?.status, errMessage, (message) => {
       errMessage = message;
       console.log(
         '%c [ Error: message ]-27',

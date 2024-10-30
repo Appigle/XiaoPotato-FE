@@ -1,3 +1,4 @@
+import { IPostItem } from '@src/@types/typePostItem';
 import {
   BaseRes,
   type_req_get_post_by_page,
@@ -136,6 +137,30 @@ const postCreate = (data: type_req_post_create) => {
 };
 
 /**
+ * delete a post
+ * @returns Promise<BaseRes<boolean>>
+ */
+const postDelete = (data: { id: number }) => {
+  return useRequest.post<BaseRes<boolean>>({
+    baseURL,
+    url: X_POTATO_URL.POST_DELETE,
+    data,
+  });
+};
+
+/**
+ * update a post
+ * @returns Promise<BaseRes<boolean>>
+ */
+const postUpdate = (data: Partial<IPostItem>) => {
+  return useRequest.post<BaseRes<boolean>>({
+    baseURL,
+    url: X_POTATO_URL.POST_DELETE,
+    data,
+  });
+};
+
+/**
  * Get post list by page and search work
  * @returns Promise<BaseRes<number>>
  */
@@ -176,5 +201,8 @@ export default {
   postLike,
   postSave,
   getPostByPage,
+  postDelete,
+  postUpdate,
+  useRequest,
   getUserPosts,
 };

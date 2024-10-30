@@ -32,7 +32,7 @@ interface IPostItem {
   isLiked: boolean;
   isSaved: boolean;
   postGenre: typePostGenre;
-  userId: number;
+  creatorId: number;
   userFirstName: string;
   userLastName: string;
   userAccount: string;

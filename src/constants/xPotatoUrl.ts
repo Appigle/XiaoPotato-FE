@@ -14,6 +14,7 @@ export default {
   POST_FILTER_ID: '/post/selectById',
   POST_UPLOAD: '/post/upload',
   POST_DELETE: '/post/delete',
+  POST_UPDATE: '/post/update',
   POST_LIKE: '/like/likeByPostId',
   POST_SAVE: '/post/save',
   GET_USER_POSTS: '/post/selectByUserId',

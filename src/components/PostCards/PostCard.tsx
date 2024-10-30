@@ -1,11 +1,15 @@
 import defaultUserAvatar from '@/assets/MonaLisaAvatar.png';
 import defaultPostImg from '@/assets/Sunrise.png';
+import { EllipsisVerticalIcon, TrashIcon } from '@heroicons/react/24/outline';
 import {
   Avatar,
   Card,
   CardBody,
   CardFooter,
   CardHeader,
+  Popover,
+  PopoverContent,
+  PopoverHandler,
   Typography,
 } from '@material-tailwind/react';
 import { IPostItem } from '@src/@types/typePostItem';
@@ -17,17 +21,20 @@ import { useEffect, useState } from 'react';
 type PostCardProps = {
   post: IPostItem;
   index: number;
+  onDelete?: (post: IPostItem) => void;
+  onLikeChange?: (isLike: boolean, post: IPostItem) => void;
   onShowDetail?: (post: IPostItem) => void;
 };
 const PostCard = (props: PostCardProps) => {
-  const { post: originalPost, onShowDetail } = props;
+  const { post: originalPost, onShowDetail, onDelete } = props;
   const [post, setPost] = useState(originalPost);
   const userInfo = useGlobalStore((s) => s.userInfo);
-  const [postImage, setPostImage] = useState(post.postImage?.[0] || '');
+  const [postImage, setPostImage] = useState(post.postImage || '');
   const [userAvatar, setUserAvatar] = useState(userInfo?.userAvatar || '');
   const [iconSize, setIconSize] = useState('h-8 w-8');
+
   const onLike = (isLike: boolean) => {
-    console.log('%c [ isLike ]-25', 'font-size:13px; background:pink; color:#bf2c9f;', isLike);
+    console.log('%c [ isLike ]-37', 'font-size:13px; background:pink; color:#bf2c9f;', isLike);
     Api.xPotatoApi.postLike({ id: post.id as number }).then((res) => {
       const { data: isLikeSuc, code } = res;
       if (code === HTTP_RES_CODE.SUCCESS) {
@@ -57,18 +64,21 @@ const PostCard = (props: PostCardProps) => {
     setPostImage(defaultPostImg);
   };
   const handleAvatarError = () => {
-    console.log(
-      '%c [ handleAvatarError ]-60',
-      'font-size:13px; background:pink; color:#bf2c9f;',
-      defaultUserAvatar,
-    );
     setUserAvatar(defaultUserAvatar);
+  };
+
+  const onDeletePost = () => {
+    Api.xPotatoApi.postDelete({ id: post.id }).then((res) => {
+      if (res.code === HTTP_RES_CODE.SUCCESS) {
+        onDelete?.(post);
+      }
+    });
   };
 
   return (
     <Card
       key={post.id}
-      className="aria-modal dark: max-w-sm overflow-hidden bg-gray-100 shadow-md shadow-blue-gray-500 dark:bg-blue-gray-900"
+      className="dark: max-w-sm overflow-hidden bg-gray-100 shadow-md shadow-blue-gray-500 dark:bg-blue-gray-900"
     >
       <CardHeader
         floated={false}
@@ -89,7 +99,7 @@ const PostCard = (props: PostCardProps) => {
         </Typography>
       </CardBody>
       <CardFooter className="flex items-center !p-4">
-        <div className="flex w-full flex-1 items-center justify-between">
+        <div className="flex w-full flex-1 items-center justify-between gap-2">
           <Typography
             variant="small"
             className="flex w-fit items-center overflow-hidden text-ellipsis whitespace-nowrap text-blue-gray-900 dark:text-gray-100"
@@ -108,18 +118,31 @@ const PostCard = (props: PostCardProps) => {
             <Typography
               variant="small"
               color="gray"
-              className="ml-2 flex items-center justify-end gap-1"
+              className="ml-2 flex items-center justify-end gap-1 text-blue-gray-900 dark:text-gray-100"
             >
               <span className="select-none">{post.likeCount}</span>
               <span className="hidden select-none text-sm xl:inline-block">likes</span>
             </Typography>
-
+            {post.isLiked}
             <HeartEffect
               checked={post.isLiked}
               height={60}
               width={60}
               onChange={(b: boolean) => onLike(b)}
             />
+            {userInfo?.id === post.creatorId && (
+              <Popover placement="top-start">
+                <PopoverHandler>
+                  <EllipsisVerticalIcon className="z-10 h-5 w-5 cursor-pointer rounded-sm dark:hover:bg-blue-gray-300 dark:hover:text-blue-gray-50" />
+                </PopoverHandler>
+                <PopoverContent className="bg-potato-white text-potato-white dark:border-blue-gray-300 dark:bg-blue-gray-800 dark:text-white">
+                  <TrashIcon
+                    className="h-5 w-5 cursor-pointer hover:text-red-500"
+                    onClick={onDeletePost}
+                  />
+                </PopoverContent>
+              </Popover>
+            )}
           </div>
         </div>
       </CardFooter>

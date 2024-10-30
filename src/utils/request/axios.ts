@@ -9,6 +9,8 @@ class AxiosRequest {
   private axiosInstance: AxiosInstance;
   // configuration
   private options: AxiosOptions;
+  // configuration
+  private abortAxios: AbortAxios;
   // interceptors
   private interceptors: RequestInterceptors | undefined;
   constructor(options: AxiosOptions) {
@@ -17,6 +19,12 @@ class AxiosRequest {
     this.interceptors = options.interceptors;
     // initialize the interceptors
     this.setInterceptors();
+    // Create cancel controller instance
+    this.abortAxios = new AbortAxios();
+  }
+
+  getAbortAxios() {
+    return this.abortAxios;
   }
 
   /**
@@ -32,16 +40,13 @@ class AxiosRequest {
       responseInterceptorsCatch,
     } = this.interceptors;
 
-    // Create cancel controller instance
-    const abortAxios = new AbortAxios();
-
     // request interceptors
     this.axiosInstance.interceptors.request.use((config: InternalAxiosRequestConfig) => {
       // whether cancel the request
       const abortRepetitiveRequest =
         (config as unknown as any)?.abortRepetitiveRequest ?? this.options.abortRepetitiveRequest;
       if (abortRepetitiveRequest) {
-        abortAxios.addPending(config);
+        this.abortAxios.addPending(config);
       }
       if (requestInterceptors) {
         // Handle the original config by custom requestInterceptors
@@ -54,8 +59,8 @@ class AxiosRequest {
     this.axiosInstance.interceptors.response.use(
       (res: AxiosResponse) => {
         // remove the exist request from the pending list
-
-        res && abortAxios.removePending(res.config);
+        // Todo: add params to disallow remove
+        res && this.abortAxios.removePending(res.config.url, res.config.method);
 
         if (responseInterceptor) {
           // Handle the response with custom responseInterceptors first
