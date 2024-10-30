@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import './index.css';
 interface HeartEffectProps {
   height?: number;
@@ -20,9 +20,23 @@ const HeartEffect = ({
     margin: `${(size / 4) * -1}px`,
   } as React.CSSProperties;
 
-  const [isChecked] = useState(checked);
+  const [isChecked, setIsChecked] = useState(checked);
   const labelRef = useRef<HTMLLabelElement>(null);
+  const cbRef = useRef<HTMLInputElement>(null);
   const [isInitial, setIsInitial] = useState(true);
+
+  useEffect(() => {
+    setIsChecked(checked);
+    if (cbRef.current && labelRef.current) {
+      if (checked) {
+        cbRef.current.setAttribute('checked', '');
+        labelRef.current.style.backgroundPosition = 'right';
+      } else {
+        cbRef.current.removeAttribute('checked');
+        labelRef.current.style.backgroundPosition = 'left';
+      }
+    }
+  }, [checked]);
 
   const [labelStyles, setLabelStyles] = useState<React.CSSProperties>(() => {
     return isChecked
@@ -47,6 +61,7 @@ const HeartEffect = ({
       <input
         type="checkbox"
         name="cbBox"
+        ref={cbRef}
         id={IDRef.current}
         className="cbBox_love"
         defaultChecked={isChecked}

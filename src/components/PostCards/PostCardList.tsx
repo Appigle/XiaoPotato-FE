@@ -20,6 +20,7 @@ type PropsType = { title?: string };
 const PostPostList = forwardRef<typePostListRef, PropsType>((_, ref) => {
   const [postList, setPostList] = useState<IPostItem[]>([]);
   const { currentPostGenre: _currentPostGenre, isLoading, setIsLoading } = useGlobalStore();
+  const [currentPostIndex, setCurrentPostIndex] = useState(-1);
   const [currentPage, setCurrentPage] = useState(1);
   const [currentPostGenre, setCurrentPostGenre] = useState(_currentPostGenre);
   const [isLoadEnd, setIsLoadEnd] = useState(false);
@@ -121,12 +122,17 @@ const PostPostList = forwardRef<typePostListRef, PropsType>((_, ref) => {
     setIsOpen(true);
   };
 
-  const onCloseModal = () => {
+  const onCloseModal = (post: IPostItem, index: number) => {
+    setCurrentCardData(undefined);
+    setCurrentPostIndex(-1);
+    postList.splice(index, 1, post);
+    setPostList(postList);
     setIsOpen(false);
   };
 
-  const onShowDetail = (postData: IPostItem) => {
+  const onShowDetail = (postData: IPostItem, index: number) => {
     setCurrentCardData(postData);
+    setCurrentPostIndex(index);
     openDetail();
   };
   const setIsOpenPostFormModal = useEventBusStore((s) => s.setIsOpenPostFormModal);
@@ -134,11 +140,25 @@ const PostPostList = forwardRef<typePostListRef, PropsType>((_, ref) => {
   const onDeletePost = () => {
     onRefreshPostList();
   };
+  const onSubmitPost = (suc: boolean) => {
+    !!suc && onRefreshPostList();
+  };
 
   return (
     <>
-      <PostDetailModal onClose={onCloseModal} open={isOpen} post={currentCardData} />
-      <PostFormModal open={isOpenPostFormModal} onClose={() => setIsOpenPostFormModal(false)} />
+      <PostDetailModal
+        index={currentPostIndex}
+        onClose={onCloseModal}
+        open={isOpen}
+        post={currentCardData}
+      />
+      <PostFormModal
+        open={isOpenPostFormModal}
+        onClose={() => setIsOpenPostFormModal(false)}
+        postCb={(suc) => {
+          onSubmitPost(suc);
+        }}
+      />
       {!!postList.length && (
         <div className="grid grid-cols-1 gap-4 p-4 pt-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {postList.map((post, index) => (

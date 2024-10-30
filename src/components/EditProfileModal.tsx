@@ -21,7 +21,7 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({
     email: '',
     phone: '',
     gender: '',
-    bio: '',
+    description: '',
   });
 
   useEffect(() => {
@@ -33,7 +33,7 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({
         email: profile.email,
         phone: profile.phone,
         gender: profile.gender,
-        bio: profile.bio,
+        description: profile.description,
       });
     }
   }, [profile]);
@@ -132,16 +132,15 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({
                 <option value="other">Other</option>
               </select>
             </div>
-            //update bio
             <div className="mb-4">
-              <label className="mb-2 block text-sm font-bold text-gray-700" htmlFor="bio">
-                Bio
+              <label className="mb-2 block text-sm font-bold text-gray-700" htmlFor="description">
+                description
               </label>
               <textarea
                 className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
-                id="bio"
-                name="bio"
-                value={formData.bio}
+                id="description"
+                name="description"
+                value={formData.description}
                 onChange={handleChange}
               />
             </div>

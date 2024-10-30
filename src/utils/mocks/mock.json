@@ -5,7 +5,7 @@
     "image": ["/src/assets/MonaLisa.png", "/src/assets/Sunrise.png"],
     "username": "Aries in Canada",
     "likes": 2,
-    "isLiked": true,
+    "liked": true,
     "userAvatar": "/src/assets/MonaLisaAvatar.png"
   },
   {
@@ -14,7 +14,7 @@
     "image": ["/src/assets/MonaLisa.png", "/src/assets/Sunrise.png"],
     "username": "DECO",
     "likes": 3783,
-    "isLiked": true,
+    "liked": true,
     "userAvatar": "/src/assets/MonaLisaAvatar.png"
   },
   {

@@ -134,7 +134,7 @@ export function NavbarWithSearch() {
               containerProps={{
                 className: 'min-w-0',
               }}
-              className="min-w-[300px] rounded-l-none !border-t-blue-gray-200 focus:!border-t-gray-900"
+              className="min-w-[300px] rounded-l-none !border-t-blue-gray-200 focus:!border-t-gray-900 dark:text-gray-200 dark:focus:bg-blue-gray-400"
             />
             <Button size="md" className="m-2 rounded-lg">
               Search

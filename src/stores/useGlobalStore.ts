@@ -14,6 +14,8 @@ interface GlobalStore {
   currentTheme: string;
   setCurrentTheme: (theme: string) => void;
   setUserInfo: (user: user_profile | null) => void;
+  userChecking: boolean;
+  setUserChecking: (checking: boolean) => void;
   userInfo?: user_profile | null;
   userDisplayName?: string;
   currentSearchWord?: string;
@@ -46,6 +48,8 @@ const useGlobalStore = create<GlobalStore>((set) => {
         currentSearchWord: word,
       });
     },
+    userChecking: true,
+    setUserChecking: (b) => set({ userChecking: b }),
   };
 });
 

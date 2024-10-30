@@ -12,6 +12,7 @@ import React, { useRef, useState } from 'react';
 const Main: React.FC = () => {
   const [scrollTop, setScrollTop] = useState(0);
   const postCardListRef = useRef<typePostListRef>(null);
+  const userChecking = useGlobalStore((s) => s.userChecking);
   const userInfo = useGlobalStore((s) => s.userInfo);
   const handleScroll = (e: React.UIEvent<HTMLElement, UIEvent>) => {
     setScrollTop((e.target as HTMLElement).scrollTop);
@@ -25,7 +26,7 @@ const Main: React.FC = () => {
       }}
     >
       <PostGenreList scrollTop={scrollTop} />
-      {userInfo ? (
+      {userInfo && !userChecking ? (
         <PostCardList ref={postCardListRef} />
       ) : (
         <Spinner color="amber" className="m-auto mt-64 h-12 w-12" />

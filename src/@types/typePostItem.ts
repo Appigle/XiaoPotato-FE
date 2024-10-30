@@ -29,14 +29,20 @@ interface IPostItem {
   updateTime: string;
   commentCount: number;
   likeCount: number;
-  isLiked: boolean;
-  isSaved: boolean;
   postGenre: typePostGenre;
   creatorId: number;
   userFirstName: string;
   userLastName: string;
   userAccount: string;
   userAvatar: string;
+  saveCount: number;
+  liked: boolean;
+  saved: boolean;
+  followed: boolean;
+  creatorFirstName: string;
+  creatorLastName: string;
+  creatorAccount: string;
+  creatorAvatar: string;
 }
 
 type typePostListRef = {

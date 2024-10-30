@@ -31,4 +31,16 @@ const formatStringWithTagAndUrl = (text: string): FormattedWord => {
     .join(' ');
 };
 
-export { formatStringWithTagAndUrl };
+function formatLargeNumber(number: number) {
+  if (number < 1000) {
+    return number.toString();
+  } else if (number < 10000) {
+    return (number / 1000).toFixed(1) + 'K+';
+  } else if (number < 1000000) {
+    return (number / 1000).toFixed(0) + 'K+';
+  } else {
+    return (number / 1000000).toFixed(1) + 'M+';
+  }
+}
+
+export { formatLargeNumber, formatStringWithTagAndUrl };

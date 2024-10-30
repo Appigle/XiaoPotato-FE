@@ -1,6 +1,8 @@
 import xPotatoApi from '@/Api/xPotatoApi';
+import defaultUserAvatar from '@/assets/MonaLisaAvatar.png';
 import EditProfileModal from '@/components/EditProfileModal';
 import { type_req_update_profile, type_res_user_profile } from '@src/@types/typeRequest';
+import ToastContainer from '@src/components/ToastContainer';
 import useGlobalStore from '@src/stores/useGlobalStore';
 import useLoginCheck from '@src/utils/hooks/login';
 import { useGoBack } from '@src/utils/hooks/nav';
@@ -20,10 +22,11 @@ const mockProfile: type_res_user_profile = {
   userRole: 'user',
   status: 1,
   token: 'mock-token',
-  followingsCount: 20,
-  followersCount: 10,
+  followCount: 20,
+  fansCount: 10,
   commentsCount: 30,
-  bio: 'Passionate about technology and life. Full-stack developer skilled in React and Node.js. Always exploring new technologies. Coffee enthusiast and amateur photographer in my free time.',
+  description:
+    'Passionate about technology and life. Full-stack developer skilled in React and Node.js. Always exploring new technologies. Coffee enthusiast and amateur photographer in my free time.',
 };
 
 const ProfilePage: React.FC = () => {
@@ -32,6 +35,7 @@ const ProfilePage: React.FC = () => {
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const userInfo = useGlobalStore((s) => s.userInfo);
+  const [userAvatar, setUserAvatar] = useState(userInfo?.userAvatar || '');
   const goBack = useGoBack();
   const navigate = useNavigate();
   const handleViewPosts = () => {
@@ -90,6 +94,7 @@ const ProfilePage: React.FC = () => {
 
   return (
     <main className="page-content">
+      <ToastContainer />
       <section className="relative block h-[500px]">
         <div
           className="absolute top-0 h-full w-full bg-cover bg-center"
@@ -148,7 +153,8 @@ const ProfilePage: React.FC = () => {
                   <div className="relative">
                     <img
                       alt="Profile"
-                      src={profile.userAvatar || 'default-avatar.png'}
+                      onError={() => setUserAvatar(defaultUserAvatar)}
+                      src={userAvatar}
                       className="absolute -m-16 -ml-20 h-auto max-w-[150px] rounded-full border-none align-middle shadow-xl lg:-ml-16"
                     />
                   </div>
@@ -175,19 +181,19 @@ const ProfilePage: React.FC = () => {
                   <div className="flex justify-center py-4 pt-8 lg:pt-4">
                     <div className="mr-4 p-3 text-center">
                       <span className="text-blueGray-600 block text-xl font-bold uppercase tracking-wide">
-                        {profile.followingsCount}
+                        {profile.followCount || 568}
                       </span>
                       <span className="text-blueGray-400 text-sm">Followings</span>
                     </div>
                     <div className="mr-4 p-3 text-center">
                       <span className="text-blueGray-600 block text-xl font-bold uppercase tracking-wide">
-                        {profile.followersCount}
+                        {profile.fansCount || 687}
                       </span>
                       <span className="text-blueGray-400 text-sm">Followers</span>
                     </div>
                     <div className="p-3 text-center lg:mr-4">
                       <span className="text-blueGray-600 block text-xl font-bold uppercase tracking-wide">
-                        {profile.commentsCount}
+                        {profile.commentsCount || 873}
                       </span>
                       <span className="text-blueGray-400 text-sm">Comments</span>
                     </div>
@@ -203,14 +209,17 @@ const ProfilePage: React.FC = () => {
                   {profile.userAccount}
                 </div>
                 <div className="text-blueGray-600 mb-2 mt-0 text-sm font-bold leading-normal">
-                  {profile.email} | {profile.phone}
+                  {profile.email || 'xiao-potato@gmail.com'} |{' '}
+                  {profile.phone || '+1 (589)-455-6555'}
                 </div>
               </div>
             </div>
             <div className="border-blueGray-200 mt-10 border-t py-10 text-center">
               <div className="flex flex-wrap justify-center">
                 <div className="w-full px-4 lg:w-9/12">
-                  <p className="text-blueGray-700 mb-4 text-lg leading-relaxed">{profile.bio}</p>
+                  <p className="text-blueGray-700 mb-4 text-lg leading-relaxed">
+                    {profile.description}
+                  </p>
                 </div>
               </div>
             </div>

@@ -9,7 +9,8 @@ export function checkErrorStatus(
   callback: (errorMessage: string) => void,
 ) {
   let errorMessage = message ?? '';
-  if (status) {
+  const errCodes = [400, 401, 403, 404, 500, 503];
+  if (errCodes.includes(status as number)) {
     const key = 'Err_' + status;
     errorMessage = i18n.t(key as any);
   }

@@ -5,6 +5,8 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const useLoginCheck = () => {
+  const setUserChecking = useGlobalStore((s) => s.setUserChecking);
+  setUserChecking(true);
   const setUserInfo = useGlobalStore((s) => s.setUserInfo);
   const navigate = useNavigate();
   useEffect(() => {
@@ -13,6 +15,7 @@ const useLoginCheck = () => {
       .then((res) => {
         if (res.data) {
           setUserInfo(res.data?.user);
+          setUserChecking(false);
           if (location.pathname === '/') navigate('/home');
         } else {
           throw new Error('login failed');

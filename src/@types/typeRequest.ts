@@ -36,14 +36,16 @@ export interface type_res_user_login {
   gender: string;
   userRole: string;
   status: number;
+
+  description: string;
+  followCount: number;
+  fansCount: number;
 }
 
 export interface user_profile extends type_res_user_login {
   token?: string;
-  followingsCount: number;
-  followersCount: number;
   commentsCount: number;
-  bio: string;
+  description: string;
 }
 export type type_res_user_profile = user_profile;
 
@@ -54,7 +56,7 @@ export interface type_req_update_profile {
   email?: string;
   phone?: string;
   gender?: string;
-  bio?: string;
+  description?: string;
 }
 export interface type_res_update_profile {
   success: boolean;

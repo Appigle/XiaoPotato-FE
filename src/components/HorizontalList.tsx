@@ -118,7 +118,7 @@ const HorizontalList: React.FC<HorizontalListProps> = ({
           <MenuHandler>
             <Button
               variant="text"
-              className={`flex items-center gap-2 text-base !font-normal !normal-case text-gray-400 outline-none hover:text-white`}
+              className={`flex items-center gap-2 text-base !font-normal !normal-case text-gray-400 outline-none hover:text-white hover:outline-none focus:outline-none`}
               style={textStyle}
             >
               More <ChevronDownIcon strokeWidth={2} className="h-4 w-4" />

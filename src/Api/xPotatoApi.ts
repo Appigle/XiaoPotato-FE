@@ -88,6 +88,19 @@ const updateUserProfile = (updateData: type_req_update_profile) => {
 };
 
 /**
+ * follow some user
+ * @param data id: post.creatorId
+ * @returns Promise<BaseRes<boolean>>
+ */
+const followUser = (data: { id: number }) => {
+  return useRequest.post<BaseRes<boolean>>({
+    baseURL,
+    url: X_POTATO_URL.FOLLOW_FOLLOW_USER,
+    data,
+  });
+};
+
+/**
  * common upload file
  * @param file image/video(todo)
  * @returns Promise<BaseRes<string>>
@@ -104,7 +117,7 @@ const uploadFile = (formData: FormData) => {
  * Like/dislike the post
  * @returns Promise<BaseRes<boolean>>
  */
-const postLike = (data: { id: number }) => {
+const postLike = (data: { id: number; liked?: boolean }) => {
   return useRequest.post<BaseRes<boolean>>({
     baseURL,
     url: X_POTATO_URL.POST_LIKE,
@@ -116,7 +129,7 @@ const postLike = (data: { id: number }) => {
  * collection/cancel collection the post
  * @returns Promise<BaseRes<boolean>>
  */
-const postSave = (data: { id: string }) => {
+const postSave = (data: { id: number }) => {
   return useRequest.post<BaseRes<boolean>>({
     baseURL,
     url: X_POTATO_URL.POST_SAVE,
@@ -205,4 +218,5 @@ export default {
   postUpdate,
   useRequest,
   getUserPosts,
+  followUser,
 };

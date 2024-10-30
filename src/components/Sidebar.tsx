@@ -17,16 +17,18 @@ import {
 } from '@material-tailwind/react';
 import { color } from '@material-tailwind/react/types/components/alert';
 import { typeTheme } from '@src/@types/typeTheme';
+import { X_ACCESS_TOKEN } from '@src/constants/LStorageKey';
 import useEventBusStore from '@src/stores/useEventBusStore';
 import useTheme from '@src/utils/hooks/useTheme';
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 // Sidebar component
 const Sidebar: React.FC = () => {
   const [isExpanded, setIsExpanded] = useState(true);
   const { currentTheme, setCurrentTheme, resetToSystemTheme, isDarkMode } = useTheme();
   const setIsOpenPostFormModal = useEventBusStore((s) => s.setIsOpenPostFormModal);
+  const navigate = useNavigate();
 
   const toggleSidebar = () => {
     setIsExpanded(!isExpanded);
@@ -50,6 +52,11 @@ const Sidebar: React.FC = () => {
   const openPostModal = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     e.preventDefault();
     setIsOpenPostFormModal(true);
+  };
+
+  const onLogout = () => {
+    localStorage.removeItem(X_ACCESS_TOKEN);
+    navigate('/');
   };
 
   return (
@@ -129,25 +136,25 @@ const Sidebar: React.FC = () => {
               </IconButton>
             </PopoverHandler>
           )}
-          <PopoverContent className="bg-potato-white text-potato-white dark:bg-gray-800 dark:text-white">
+          <PopoverContent className="bg-potato-white text-potato-white dark:bg-blue-gray-900 dark:text-gray-200">
             <ul className="space-y-2">
               <li>
-                <Button variant="text" fullWidth>
+                <Button variant="text" fullWidth className="text-blue-gray-900 dark:text-gray-200">
                   About XiaoPotato
                 </Button>
               </li>
               <li>
-                <Button variant="text" fullWidth>
+                <Button variant="text" fullWidth className="text-blue-gray-900 dark:text-gray-200">
                   Privacy
                 </Button>
               </li>
               <li>
-                <Button variant="text" fullWidth>
+                <Button variant="text" fullWidth className="text-blue-gray-900 dark:text-gray-200">
                   Help Service
                 </Button>
               </li>
               <li>
-                <Button variant="text" fullWidth>
+                <Button variant="text" fullWidth className="text-blue-gray-900 dark:text-gray-200">
                   Setting
                 </Button>
               </li>
@@ -178,7 +185,7 @@ const Sidebar: React.FC = () => {
                 </ButtonGroup>
               </li>
               <li>
-                <Button variant="text" color={iconColor as color} fullWidth>
+                <Button variant="text" color={iconColor as color} fullWidth onClick={onLogout}>
                   Logout
                 </Button>
               </li>

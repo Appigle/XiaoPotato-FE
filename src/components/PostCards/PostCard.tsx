@@ -1,6 +1,11 @@
 import defaultUserAvatar from '@/assets/MonaLisaAvatar.png';
 import defaultPostImg from '@/assets/Sunrise.png';
-import { EllipsisVerticalIcon, TrashIcon } from '@heroicons/react/24/outline';
+import {
+  CheckCircleIcon,
+  EllipsisVerticalIcon,
+  TrashIcon,
+  XCircleIcon,
+} from '@heroicons/react/24/outline';
 import {
   Avatar,
   Card,
@@ -23,15 +28,16 @@ type PostCardProps = {
   index: number;
   onDelete?: (post: IPostItem) => void;
   onLikeChange?: (isLike: boolean, post: IPostItem) => void;
-  onShowDetail?: (post: IPostItem) => void;
+  onShowDetail?: (post: IPostItem, index: number) => void;
 };
 const PostCard = (props: PostCardProps) => {
-  const { post: originalPost, onShowDetail, onDelete } = props;
+  const { post: originalPost, onShowDetail, onDelete, index } = props;
   const [post, setPost] = useState(originalPost);
   const userInfo = useGlobalStore((s) => s.userInfo);
   const [postImage, setPostImage] = useState(post.postImage || '');
   const [userAvatar, setUserAvatar] = useState(userInfo?.userAvatar || '');
   const [iconSize, setIconSize] = useState('h-8 w-8');
+  const [isConfirming, setIsConfirming] = useState(false);
 
   const onLike = (isLike: boolean) => {
     console.log('%c [ isLike ]-37', 'font-size:13px; background:pink; color:#bf2c9f;', isLike);
@@ -41,13 +47,10 @@ const PostCard = (props: PostCardProps) => {
         setPost({
           ...post,
           likeCount: isLikeSuc ? post.likeCount + 1 : post.likeCount - 1,
-          isLiked: isLikeSuc,
+          liked: isLikeSuc,
         });
       }
     });
-    // setPost({ ...post, likes: isLike ? post.likes + 1 : post.likes - 1, isLiked: !post.isLiked });
-    // setIsLiked(isLike);
-    // setIconSize('h-9 w-9');
   };
 
   useEffect(() => {
@@ -57,7 +60,7 @@ const PostCard = (props: PostCardProps) => {
   }, [iconSize]);
 
   const openDetail = () => {
-    onShowDetail?.(post);
+    onShowDetail?.(post, index);
   };
 
   const handleImageError = () => {
@@ -68,12 +71,22 @@ const PostCard = (props: PostCardProps) => {
   };
 
   const onDeletePost = () => {
+    setIsConfirming(true);
+  };
+  const onConfirmDelete = () => {
     Api.xPotatoApi.postDelete({ id: post.id }).then((res) => {
       if (res.code === HTTP_RES_CODE.SUCCESS) {
         onDelete?.(post);
       }
     });
   };
+  const onCancelDelete = () => {
+    setIsConfirming(false);
+  };
+
+  useEffect(() => {
+    setPost(originalPost);
+  }, [originalPost]);
 
   return (
     <Card
@@ -123,9 +136,8 @@ const PostCard = (props: PostCardProps) => {
               <span className="select-none">{post.likeCount}</span>
               <span className="hidden select-none text-sm xl:inline-block">likes</span>
             </Typography>
-            {post.isLiked}
             <HeartEffect
-              checked={post.isLiked}
+              checked={post.liked}
               height={60}
               width={60}
               onChange={(b: boolean) => onLike(b)}
@@ -136,10 +148,23 @@ const PostCard = (props: PostCardProps) => {
                   <EllipsisVerticalIcon className="z-10 h-5 w-5 cursor-pointer rounded-sm dark:hover:bg-blue-gray-300 dark:hover:text-blue-gray-50" />
                 </PopoverHandler>
                 <PopoverContent className="bg-potato-white text-potato-white dark:border-blue-gray-300 dark:bg-blue-gray-800 dark:text-white">
-                  <TrashIcon
-                    className="h-5 w-5 cursor-pointer hover:text-red-500"
-                    onClick={onDeletePost}
-                  />
+                  {!isConfirming ? (
+                    <TrashIcon
+                      className="h-5 w-5 cursor-pointer hover:text-red-500"
+                      onClick={onDeletePost}
+                    />
+                  ) : (
+                    <div className="flex items-center justify-center gap-2">
+                      <XCircleIcon
+                        className="w6 hover: h-6 cursor-pointer hover:rounded-lg hover:bg-blue-gray-100"
+                        onClick={onCancelDelete}
+                      />
+                      <CheckCircleIcon
+                        className="w6 h-6 cursor-pointer text-red-600 hover:rounded-lg hover:bg-blue-gray-100"
+                        onClick={onConfirmDelete}
+                      />
+                    </div>
+                  )}
                 </PopoverContent>
               </Popover>
             )}

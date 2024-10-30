@@ -71,29 +71,30 @@ const PostModal: React.FC<PostModalProps> = ({ open, onClose, postCb }) => {
     submitData.append('post_title', formData.title);
     submitData.append('post_content', formData.content);
     submitData.append('file', formData.files[0]);
-    // Api.xPotatoApi
-    //   .uploadFile(submitData)
-    //   .then((res) => {
-    //     console.log(
-    //       '%c [ fileUrl ]-125',
-    //       'font-size:13px; background:pink; color:#bf2c9f;',
-    //       res.data,
-    //     );
-    //     return Api.xPotatoApi.postCreate({
-    //       postTitle: formData.title,
-    //       postContent: formData.content,
-    //       postImage: res.data,
-    //     });
-    //   })
-    // https://fzqqq-test.oss-us-east-1.aliyuncs.com/74188bc7dd2042c5b634e64eba80a56f.png
     Api.xPotatoApi
-      .postCreate({
-        postGenre: formData.postGenre,
-        postTitle: formData.title,
-        postContent: formData.content,
-        postImage:
-          'https://fzqqq-test.oss-us-east-1.aliyuncs.com/74188bc7dd2042c5b634e64eba80a56f.png',
+      .uploadFile(submitData)
+      .then((res) => {
+        console.log(
+          '%c [ fileUrl ]-125',
+          'font-size:13px; background:pink; color:#bf2c9f;',
+          res.data,
+        );
+        return Api.xPotatoApi.postCreate({
+          postTitle: formData.title,
+          postContent: formData.content,
+          postImage: res.data,
+          postGenre: formData.postGenre,
+        });
       })
+      // https://fzqqq-test.oss-us-east-1.aliyuncs.com/74188bc7dd2042c5b634e64eba80a56f.png
+      // Api.xPotatoApi
+      //   .postCreate({
+      //     postGenre: formData.postGenre,
+      //     postTitle: formData.title,
+      //     postContent: formData.content,
+      //     postImage:
+      //       'https://fzqqq-test.oss-us-east-1.aliyuncs.com/74188bc7dd2042c5b634e64eba80a56f.png',
+      //   })
       .then((createRes) => {
         if (createRes.code === HTTP_RES_CODE.SUCCESS) {
           Toast.success('Post Successfully!');
@@ -111,7 +112,11 @@ const PostModal: React.FC<PostModalProps> = ({ open, onClose, postCb }) => {
     files: File[];
     onFilesAdded: (newFiles: File[]) => void;
     onFileRemove: (index: number) => void;
-  }> = ({ files, onFilesAdded, onFileRemove }) => {
+  }> = ({ files: _files, onFilesAdded, onFileRemove }) => {
+    const [files, setFiles] = useState<File[]>(_files);
+    useEffect(() => {
+      setFiles(_files);
+    }, [_files]);
     const onDrop = useCallback(
       (acceptedFiles: File[]) => {
         onFilesAdded(acceptedFiles);

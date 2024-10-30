@@ -7,6 +7,8 @@ export default {
   USER_LOGIN: '/user/login',
   USER_CURRENT: '/user/current',
   USER_PROFILE: '/user/profile',
+  USER_FANS: '/user/fans',
+  FOLLOW_FOLLOW_USER: '/follow/followByUserId',
   UPDATE_PROFILE: '/user/update',
   UPLOAD_FILE: '/common/upload',
   POST_CREATE: '/post/create',
@@ -16,6 +18,6 @@ export default {
   POST_DELETE: '/post/delete',
   POST_UPDATE: '/post/update',
   POST_LIKE: '/like/likeByPostId',
-  POST_SAVE: '/post/save',
+  POST_SAVE: '/save/saveByPostId',
   GET_USER_POSTS: '/post/selectByUserId',
 };
