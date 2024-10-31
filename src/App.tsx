@@ -6,6 +6,7 @@ import '@src/styles/starry.scss';
 import '@src/styles/tailwind.css';
 import { useEffect, useState } from 'react';
 import Confetti from 'react-confetti';
+import { useHotkeys } from 'react-hotkeys-hook';
 import { useTranslation } from 'react-i18next';
 import { Link, NavLink } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -13,20 +14,22 @@ import { typeNavMenuItem } from './@types/common';
 import './App.css';
 import CityWeather from './components/CityWeather';
 import CountTimer from './components/CountTimer';
+import KeyPressNotice from './components/KeyPressNotice';
 import ToastContainer from './components/ToastContainer';
-import NAV_MENU from './constants/navMenu';
+import Key from './constants/keyboard';
 import useLoginCheck from './utils/hooks/login';
 import useTheme from './utils/hooks/useTheme';
 import githubMark from '/github-mark.png';
 import xiaoPotato from '/xiaoPotato.png';
 
 function App() {
+  useLoginCheck();
   const { t } = useTranslation();
-  const [menu] = useState<typeNavMenuItem[]>(NAV_MENU);
+  const [menu] = useState<typeNavMenuItem[]>([]);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isSignUpOpen, setIsSignUpOpen] = useState(false);
   const [isRun, setIsRun] = useState(true);
-  useLoginCheck();
+  const [keyPressInfo, setKeyPressInfo] = useState({ count: 0, key: Key.ArrowUp });
 
   useEffect(() => {
     setTimeout(() => {
@@ -47,9 +50,33 @@ function App() {
     setIsSignUpOpen(true);
   };
 
+  useHotkeys(`${Key.ArrowUp}+${Key.ArrowUp}+${Key.ArrowUp}`, () => {
+    let valid = false;
+    if (keyPressInfo.key === Key.ArrowUp) {
+      const count = keyPressInfo.count + 1;
+      valid = count > 3 ? true : false;
+      setKeyPressInfo({ ...keyPressInfo, count: count > 3 ? 1 : count });
+    } else {
+      setKeyPressInfo({ key: Key.ArrowUp, count: 1 });
+    }
+    valid && setIsRun(false);
+  });
+  useHotkeys(`${Key.ArrowDown}+${Key.ArrowDown}+${Key.ArrowDown}`, () => {
+    let valid = false;
+    if (keyPressInfo.key === Key.ArrowDown) {
+      const count = keyPressInfo.count + 1;
+      valid = count > 3 ? true : false;
+      setKeyPressInfo({ ...keyPressInfo, count: count > 3 ? 1 : count });
+    } else {
+      setKeyPressInfo({ key: Key.ArrowDown, count: 1 });
+    }
+    valid && setIsRun(true);
+  });
+
   return (
     <div className="page-content">
       <ToastContainer />
+      <KeyPressNotice />
       <div className="star-wrapper overflow-hidden">
         <div className="star" id="star-1"></div>
         <div className="star" id="star-2"></div>
@@ -99,6 +126,11 @@ function App() {
               </Button>
             </div>
           </div>
+          <p className="mt-10">
+            <span className="ml-4 text-blue-gray-500 opacity-70">
+              Press <kbd>{!isRun ? '↓ ↓ ↓ to see' : '↑ ↑ ↑ to stop'}</kbd>
+            </span>
+          </p>
           <p className="absolute bottom-14 text-white">
             &#169; 2024, M,Y/Z,Q/L,C Welcome the Xiao Potato World!
             <a

@@ -6,10 +6,10 @@ import { useNavigate } from 'react-router-dom';
 
 const useLoginCheck = () => {
   const setUserChecking = useGlobalStore((s) => s.setUserChecking);
-  setUserChecking(true);
   const setUserInfo = useGlobalStore((s) => s.setUserInfo);
   const navigate = useNavigate();
   useEffect(() => {
+    setUserChecking(true);
     xPotatoApi
       .userCurrent()
       .then((res) => {
@@ -28,7 +28,7 @@ const useLoginCheck = () => {
         setUserInfo(null);
         if (location.pathname !== '/') navigate('/');
       });
-  }, [setUserInfo, navigate]);
+  }, [setUserInfo, navigate, setUserChecking]);
 };
 
 export default useLoginCheck;

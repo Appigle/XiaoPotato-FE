@@ -1,5 +1,5 @@
+import withMT from '@material-tailwind/react/utils/withMT';
 import daisyui from 'daisyui';
-const withMT = require('@material-tailwind/react/utils/withMT');
 
 /** @type {import('tailwindcss').Config} */
 export default withMT({

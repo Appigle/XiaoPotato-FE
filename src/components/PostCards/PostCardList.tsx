@@ -66,6 +66,11 @@ const PostPostList = forwardRef<typePostListRef, PropsType>((_, ref) => {
   }, [_currentPostGenre]);
 
   useEffect(() => {
+    setPostList([]);
+    setCurrentPage(1);
+  }, [currentSearchWord]);
+
+  useEffect(() => {
     getPostDataByPage(20, currentPage, currentSearchWord || '', currentPostGenre);
     return () => {
       const abort = useRequest.getAbortAxios();

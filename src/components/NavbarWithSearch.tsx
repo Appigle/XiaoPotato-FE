@@ -12,23 +12,40 @@ import {
   Typography,
 } from '@material-tailwind/react';
 import allGenreList from '@src/constants/genreList';
+import Key from '@src/constants/keyboard';
 import { X_ACCESS_TOKEN } from '@src/constants/LStorageKey';
 import useGlobalStore from '@src/stores/useGlobalStore';
 import React from 'react';
+import { useHotkeys } from 'react-hotkeys-hook';
 import { NavLink, useNavigate } from 'react-router-dom';
 import xiaoPotatoLogo from '/xiaoPotato.png';
 
-export function NavbarWithSearch() {
+export function NavbarWithSearch(props: { search?: boolean }) {
+  const { search = true } = props;
   React.useEffect(() => {
     window.addEventListener('resize', () => window.innerWidth >= 960 && setOpenNav(false));
   }, []);
   const currentGenreItem = useGlobalStore((s) => s.currentGenreItem);
   const setCurrentPostType = useGlobalStore((s) => s.setCurrentPostType);
+  const setCurrentSearchWord = useGlobalStore((s) => s.setCurrentSearchWord);
   const userDisplayName = useGlobalStore((s) => s.userDisplayName);
   const [openMenu, setOpenMenu] = React.useState(false);
   const [openNav, setOpenNav] = React.useState(false);
+  const [searchWord, setSearchWord] = React.useState('');
+  const [isFocused, setIsFocused] = React.useState(false);
+  const inputRef = React.useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
-
+  useHotkeys('alt+k', (e) => {
+    if (!isFocused) {
+      e.preventDefault();
+      if (inputRef.current) inputRef.current.focus();
+    }
+  });
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === Key.Enter) {
+      setCurrentSearchWord(searchWord);
+    }
+  };
   React.useEffect(() => {
     window.addEventListener('resize', () => window.innerWidth >= 960 && setOpenNav(false));
   }, []);
@@ -89,57 +106,71 @@ export function NavbarWithSearch() {
           </span>
         </Typography>
         <div className="hidden items-center lg:flex">
-          <div className="relative flex w-full items-center justify-end md:w-max">
-            <Menu open={openMenu} handler={setOpenMenu}>
-              <MenuHandler>
-                <Button
-                  ripple={false}
-                  variant="outlined"
-                  size="sm"
-                  className={`flex h-10 cursor-pointer flex-nowrap items-center gap-2 text-ellipsis rounded-r-none border border-r-0 border-blue-gray-200 bg-blue-gray-500/10 pl-3 capitalize text-blue-gray-900 dark:text-gray-100`}
-                >
-                  <span className="whitespace-nowrap">
-                    {currentGenreItem.emoji} {currentGenreItem.name}
-                  </span>
-                  <ChevronDownIcon
-                    strokeWidth={2.5}
-                    className={`h-3.5 w-3.5 transition-transform ${openMenu ? 'rotate-180' : ''}`}
-                  />
-                </Button>
-              </MenuHandler>
-              <MenuList className="hidden max-h-72 w-20 lg:block">
-                {allGenreList.map(({ name, emoji }) => (
-                  <MenuItem
-                    key={name}
-                    className="hover:outline-none"
-                    onClick={() => setCurrentPostType(name)}
+          {search && (
+            <div className="relative flex w-full items-center justify-end md:w-max">
+              <Menu open={openMenu} handler={setOpenMenu}>
+                <MenuHandler>
+                  <Button
+                    ripple={false}
+                    variant="outlined"
+                    size="sm"
+                    className={`flex h-10 cursor-pointer flex-nowrap items-center gap-2 text-ellipsis rounded-r-none border border-r-0 border-blue-gray-200 bg-blue-gray-500/10 pl-3 capitalize text-blue-gray-900 dark:text-gray-100`}
                   >
-                    <span
-                      title={name}
-                      className="flex max-w-fit items-center gap-2 overflow-hidden text-ellipsis whitespace-nowrap"
-                    >
-                      {emoji} {name}
+                    <span className="whitespace-nowrap">
+                      {currentGenreItem.emoji} {currentGenreItem.name}
                     </span>
-                  </MenuItem>
-                ))}
-              </MenuList>
-            </Menu>
-            <Input
-              type="search"
-              crossOrigin="anonymous"
-              placeholder="Search what your want..."
-              labelProps={{
-                className: 'before:content-none after:content-none',
-              }}
-              containerProps={{
-                className: 'min-w-0',
-              }}
-              className="min-w-[300px] rounded-l-none !border-t-blue-gray-200 focus:!border-t-gray-900 dark:text-gray-200 dark:focus:bg-blue-gray-400"
-            />
-            <Button size="md" className="m-2 rounded-lg">
-              Search
-            </Button>
-          </div>
+                    <ChevronDownIcon
+                      strokeWidth={2.5}
+                      className={`h-3.5 w-3.5 transition-transform ${openMenu ? 'rotate-180' : ''}`}
+                    />
+                  </Button>
+                </MenuHandler>
+                <MenuList className="hidden max-h-72 w-20 lg:block">
+                  {allGenreList.map(({ name, emoji }) => (
+                    <MenuItem
+                      key={name}
+                      className="hover:outline-none"
+                      onClick={() => setCurrentPostType(name)}
+                    >
+                      <span
+                        title={name}
+                        className="flex max-w-fit items-center gap-2 overflow-hidden text-ellipsis whitespace-nowrap"
+                      >
+                        {emoji} {name}
+                      </span>
+                    </MenuItem>
+                  ))}
+                </MenuList>
+              </Menu>
+              <Input
+                type="search"
+                inputRef={inputRef}
+                value={searchWord}
+                onChange={(e) => {
+                  setSearchWord(e.target.value);
+                }}
+                crossOrigin="anonymous"
+                placeholder="Search what your want..."
+                labelProps={{
+                  className: 'before:content-none after:content-none',
+                }}
+                containerProps={{
+                  className: 'min-w-0',
+                }}
+                onFocus={() => setIsFocused(true)}
+                onBlur={() => setIsFocused(false)}
+                onKeyDown={(e) => handleKeyDown(e)}
+                className="min-w-[300px] rounded-l-none !border-t-blue-gray-200 focus:!border-t-gray-900 dark:text-gray-200 dark:focus:bg-blue-gray-400"
+              />
+              <Button
+                size="md"
+                className="m-2 min-w-28 rounded-lg"
+                onClick={() => setCurrentSearchWord(searchWord)}
+              >
+                Search
+              </Button>
+            </div>
+          )}
           <div>
             <IconButton
               variant="text"
