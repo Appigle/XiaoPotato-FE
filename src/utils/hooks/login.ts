@@ -1,21 +1,21 @@
 import xPotatoApi from '@src/Api/xPotatoApi';
 import { X_ACCESS_TOKEN } from '@src/constants/LStorageKey';
 import useGlobalStore from '@src/stores/useGlobalStore';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const useLoginCheck = () => {
-  const setUserChecking = useGlobalStore((s) => s.setUserChecking);
   const setUserInfo = useGlobalStore((s) => s.setUserInfo);
   const navigate = useNavigate();
+  const [checking, setChecking] = useState(true);
   useEffect(() => {
-    setUserChecking(true);
+    setChecking(true);
     xPotatoApi
       .userCurrent()
       .then((res) => {
         if (res.data) {
           setUserInfo(res.data?.user);
-          setUserChecking(false);
+          setChecking(false);
           if (location.pathname === '/') navigate('/home');
         } else {
           throw new Error('login failed');
@@ -28,7 +28,8 @@ const useLoginCheck = () => {
         setUserInfo(null);
         if (location.pathname !== '/') navigate('/');
       });
-  }, [setUserInfo, navigate, setUserChecking]);
+  }, [setUserInfo, navigate]);
+  return [checking];
 };
 
 export default useLoginCheck;

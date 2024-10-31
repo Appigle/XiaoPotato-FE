@@ -11,9 +11,9 @@ import useTheme from '@src/utils/hooks/useTheme';
 import React, { useEffect, useRef, useState } from 'react';
 
 const Main: React.FC = () => {
+  const [checking] = useLoginCheck();
   const [scrollTop, setScrollTop] = useState(0);
   const postCardListRef = useRef<typePostListRef>(null);
-  const userChecking = useGlobalStore((s) => s.userChecking);
   const userInfo = useGlobalStore((s) => s.userInfo);
   const handleScroll = (e: React.UIEvent<HTMLElement, UIEvent>) => {
     setScrollTop((e.target as HTMLElement).scrollTop);
@@ -27,7 +27,7 @@ const Main: React.FC = () => {
       }}
     >
       <PostGenreList scrollTop={scrollTop} />
-      {userInfo && !userChecking ? (
+      {userInfo && !checking ? (
         <PostCardList ref={postCardListRef} />
       ) : (
         <Spinner color="amber" className="m-auto mt-64 h-12 w-12" />
@@ -38,7 +38,6 @@ const Main: React.FC = () => {
 
 // Main App component
 const App: React.FC = () => {
-  useLoginCheck();
   const { toggleTheme: initTheme } = useTheme();
 
   useEffect(() => {
