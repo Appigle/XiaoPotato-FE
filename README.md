@@ -43,7 +43,7 @@ Currently, two official plugins are available:
 - [React-Datepicker](https://reactdatepicker.com/)
 - [React-Dropzone](https://react-dropzone.js.org/)
 - [React-Aria](https://react-spectrum.adobe.com/react-aria/)
-- [React-Hotkeys-Hook](https://github.com/markusenglund/react-hotkeys-hook)
+- [React-Hotkeys-Hook](https://react-hotkeys-hook.vercel.app/docs/intro)
 - [React-Textarea-Autosize](https://github.com/Andarist/react-textarea-autosize)
 - [React-hooks-ts](https://usehooks-ts.com/react-hook/use-media-query)
 

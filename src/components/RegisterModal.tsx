@@ -70,7 +70,7 @@ export function RegisterModal({ open, setOpen, openLogin }: RegisterModalProps):
       open={open}
       handler={() => setOpen(false)}
       size="sm"
-      className="flex items-center justify-center bg-potato-white p-5"
+      className="flex items-center justify-center bg-gray-100 p-5"
     >
       <Card color="transparent" shadow={false}>
         <Typography variant="h4" color="black">

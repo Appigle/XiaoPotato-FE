@@ -7,7 +7,7 @@ import { IPostItem } from '@src/@types/typePostItem';
 import Api from '@src/Api';
 import useGlobalStore from '@src/stores/useGlobalStore';
 import HTTP_RES_CODE from '@src/utils/request/httpResCode';
-import { formatLargeNumber } from '@src/utils/stringUtils';
+import { formatLargeNumber, formatStringWithTagAndUrl } from '@src/utils/stringUtils';
 import { useEffect, useState } from 'react';
 import { GoCommentDiscussion } from 'react-icons/go';
 import HeartEffect from '../HeartEffect';
@@ -38,6 +38,8 @@ const PostDetailModal = ({ post: _post, open = false, onClose, index }: PostDeta
 
   useEffect(() => {
     setPostData(_post);
+    setPostImage(_post?.postImage || '');
+    setPostAvatar(_post?.userAvatar || '');
   }, [_post]);
 
   if (!post) {
@@ -125,7 +127,7 @@ const PostDetailModal = ({ post: _post, open = false, onClose, index }: PostDeta
               <Button
                 size="sm"
                 onClick={onFollow}
-                className="bg-blue-gray-900 text-potato-white dark:bg-potato-white dark:text-blue-gray-900"
+                className="bg-blue-gray-900 text-gray-100 dark:bg-gray-100 dark:text-blue-gray-900"
               >
                 {post.followed ? (
                   <span className="text-red-600">UnFollow</span>
@@ -137,7 +139,7 @@ const PostDetailModal = ({ post: _post, open = false, onClose, index }: PostDeta
           </div>
           <div className="flex flex-1 flex-col gap-4 py-4">
             <h3 className="text-xl">{post.postTitle}</h3>
-            <p className="text-sm">{post.postContent}</p>
+            <p className="text-sm">{formatStringWithTagAndUrl(post.postContent)}</p>
             <div className="">comments</div>
           </div>
           <div className="ml-4 mr-4 flex items-center justify-end gap-4">

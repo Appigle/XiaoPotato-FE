@@ -6,6 +6,7 @@ import {
   type_res_user_profile,
   user_profile,
 } from '@src/@types/typeRequest';
+import { NavbarWithSearch } from '@src/components/NavbarWithSearch';
 import ToastContainer from '@src/components/ToastContainer';
 import useGlobalStore from '@src/stores/useGlobalStore';
 import useLoginCheck from '@src/utils/hooks/login';
@@ -94,6 +95,7 @@ const ProfilePage: React.FC = () => {
   return (
     <main className="page-content">
       <ToastContainer />
+      <NavbarWithSearch search={false} />
       <section className="relative block h-[500px]">
         <div
           className="absolute top-0 h-full w-full bg-cover bg-center"

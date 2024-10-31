@@ -15,7 +15,9 @@ export default function useTheme() {
 
   const [currentTheme, setCurrentTheme] = useState<typeTheme>(() => getInitialTheme());
 
-  const isDarkMode = currentTheme === 'dark';
+  const isDarkMode = () => {
+    return currentTheme === 'dark';
+  };
 
   const storeTheme = (theme: typeTheme) => {
     localStorage.setItem('theme', theme);
@@ -40,6 +42,7 @@ export default function useTheme() {
   useEffect(() => {
     applyTheme(currentTheme);
     setStoreTheme(currentTheme);
+    storeTheme(currentTheme);
   }, [currentTheme, applyTheme, setStoreTheme]);
 
   return {

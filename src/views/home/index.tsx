@@ -7,7 +7,8 @@ import PostCardList from '@src/components/PostCards/PostCardList';
 import Sidebar from '@src/components/Sidebar';
 import useGlobalStore from '@src/stores/useGlobalStore';
 import useLoginCheck from '@src/utils/hooks/login';
-import React, { useRef, useState } from 'react';
+import useTheme from '@src/utils/hooks/useTheme';
+import React, { useEffect, useRef, useState } from 'react';
 
 const Main: React.FC = () => {
   const [scrollTop, setScrollTop] = useState(0);
@@ -38,10 +39,16 @@ const Main: React.FC = () => {
 // Main App component
 const App: React.FC = () => {
   useLoginCheck();
+  const { toggleTheme: initTheme } = useTheme();
+
+  useEffect(() => {
+    initTheme();
+  }, [initTheme]);
+
   return (
     <>
       <ToastContainer />
-      <div className="flex h-screen w-screen flex-col bg-potato-white dark:bg-blue-gray-900">
+      <div className="flex h-screen w-screen flex-col bg-gray-100 dark:bg-blue-gray-900">
         <NavbarWithSearch />
         <div className="flex h-[calc(100%-80px)] flex-1">
           <Sidebar />
