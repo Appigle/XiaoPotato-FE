@@ -147,7 +147,7 @@ const PostCard = (props: PostCardProps) => {
                 <PopoverHandler>
                   <EllipsisVerticalIcon className="z-10 h-5 w-5 cursor-pointer rounded-sm dark:hover:bg-blue-gray-300 dark:hover:text-blue-gray-50" />
                 </PopoverHandler>
-                <PopoverContent className="bg-potato-white text-potato-white dark:border-blue-gray-300 dark:bg-blue-gray-800 dark:text-white">
+                <PopoverContent className="bg-gray-100 text-gray-100 dark:border-blue-gray-300 dark:bg-blue-gray-800 dark:text-white">
                   {!isConfirming ? (
                     <TrashIcon
                       className="h-5 w-5 cursor-pointer hover:text-red-500"

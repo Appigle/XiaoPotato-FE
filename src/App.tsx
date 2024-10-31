@@ -41,7 +41,7 @@ function App() {
 
   useEffect(() => {
     initTheme();
-  }, []);
+  }, [initTheme]);
 
   const handleLoginClick = () => {
     setIsLoginOpen(!isLoginOpen);
@@ -128,7 +128,17 @@ function App() {
           </div>
           <p className="mt-10">
             <span className="ml-4 text-blue-gray-500 opacity-70">
-              Press <kbd>{!isRun ? '↓ ↓ ↓ to see' : '↑ ↑ ↑ to stop'}</kbd>
+              Press{' '}
+              {new Array(4).fill('❥(^_-)').map((_, index) => {
+                return (
+                  <kbd
+                    className={`rounded-lg bg-blue-gray-100 px-2 py-1.5 text-xs font-bold text-white dark:bg-blue-gray-900 ${index != 0 ? 'ml-1' : ''}`}
+                  >
+                    {!isRun ? '↓' : '↑'}
+                  </kbd>
+                );
+              })}
+              {isRun ? ' to pause' : ' to start'}
             </span>
           </p>
           <p className="absolute bottom-14 text-white">

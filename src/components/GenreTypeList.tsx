@@ -16,8 +16,8 @@ const PostGenreList: React.FC<{ scrollTop: number }> = ({ scrollTop }) => {
   const [textStyle, setTextStyle] = useState({});
 
   const style = {
-    background: `rgba(255, 255, 255, ${opacity})`,
-    color: `rgba(0, 0, 0, ${opacity})`,
+    background: `rgba(38, 50, 56, ${opacity})`,
+    color: `rgba(0, 0, 0, ${1 - opacity})`,
   };
 
   const { currentPostGenre = 'All', setCurrentPostType, isDarkMode } = useGlobalStore();
@@ -26,7 +26,7 @@ const PostGenreList: React.FC<{ scrollTop: number }> = ({ scrollTop }) => {
     setOpacity(calcOpacity());
     // 0~0.5 -> bg-> transparent~0.5 text -> black 0~0.5
     // 0.5~1 -> bg-> 0.5~1 text -> black 0.5~1
-    let color = !isDarkMode ? `rgba(0, 0, 0, ${opacity})` : `rgba(0, 0, 0, ${opacity})`;
+    let color = !isDarkMode ? `rgba(255, 255, 255, ${opacity})` : `rgba(255, 255, 255, ${opacity})`;
     if (opacity <= 0.5) {
       color = isDarkMode ? `rgba(255, 255, 255, ${1 - opacity})` : `rgba(0,0,0, ${1 - opacity})`;
     }

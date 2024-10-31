@@ -127,7 +127,7 @@ const PostDetailModal = ({ post: _post, open = false, onClose, index }: PostDeta
               <Button
                 size="sm"
                 onClick={onFollow}
-                className="bg-blue-gray-900 text-potato-white dark:bg-potato-white dark:text-blue-gray-900"
+                className="bg-blue-gray-900 text-gray-100 dark:bg-gray-100 dark:text-blue-gray-900"
               >
                 {post.followed ? (
                   <span className="text-red-600">UnFollow</span>

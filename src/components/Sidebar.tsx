@@ -19,6 +19,7 @@ import { color } from '@material-tailwind/react/types/components/alert';
 import { typeTheme } from '@src/@types/typeTheme';
 import { X_ACCESS_TOKEN } from '@src/constants/LStorageKey';
 import useEventBusStore from '@src/stores/useEventBusStore';
+import useGlobalStore from '@src/stores/useGlobalStore';
 import useTheme from '@src/utils/hooks/useTheme';
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -26,7 +27,8 @@ import { Link, useNavigate } from 'react-router-dom';
 // Sidebar component
 const Sidebar: React.FC = () => {
   const [isExpanded, setIsExpanded] = useState(true);
-  const { currentTheme, setCurrentTheme, resetToSystemTheme, isDarkMode } = useTheme();
+  const { currentTheme, setCurrentTheme, resetToSystemTheme } = useTheme();
+  const isDarkMode = useGlobalStore((s) => s.isDarkMode);
   const setIsOpenPostFormModal = useEventBusStore((s) => s.setIsOpenPostFormModal);
   const navigate = useNavigate();
 
@@ -61,7 +63,7 @@ const Sidebar: React.FC = () => {
 
   return (
     <div
-      className={`bg-potato-white text-gray-900 shadow-md transition-all duration-300 dark:bg-blue-gray-900 dark:text-white ${isExpanded ? 'w-56' : 'w-16'} flex flex-col justify-between`}
+      className={`bg-gray-100 text-gray-900 shadow-md transition-all duration-300 dark:bg-blue-gray-900 dark:text-white ${isExpanded ? 'w-56' : 'w-16'} flex flex-col justify-between`}
     >
       <nav className="p-4">
         <ul>
@@ -136,7 +138,7 @@ const Sidebar: React.FC = () => {
               </IconButton>
             </PopoverHandler>
           )}
-          <PopoverContent className="bg-potato-white text-potato-white dark:bg-blue-gray-900 dark:text-gray-200">
+          <PopoverContent className="bg-gray-300 text-gray-100 shadow-lg dark:bg-blue-gray-900 dark:text-gray-200">
             <ul className="space-y-2">
               <li>
                 <Button variant="text" fullWidth className="text-blue-gray-900 dark:text-gray-200">
@@ -159,12 +161,15 @@ const Sidebar: React.FC = () => {
                 </Button>
               </li>
               <li className="flex items-center justify-between">
-                <span className="text-blue-gray-900 dark:text-potato-white">{currentTheme}</span>
+                <span className="text-blue-gray-900 dark:text-gray-100">
+                  {currentTheme === 'dark' ? '🌛' : '☀️'}
+                </span>
                 <ButtonGroup variant="gradient" size="sm">
                   <Button
                     onClick={() => onChangeTheme('light')}
                     color={iconColor as color}
                     title="Switch to light theme"
+                    className={`text-lg ${currentTheme === 'dark' ? 'bg-gray-400' : 'bg-blue-gray-900'}`}
                   >
                     ☀️
                   </Button>
@@ -172,6 +177,7 @@ const Sidebar: React.FC = () => {
                     onClick={() => onChangeTheme('dark')}
                     color={iconColor as color}
                     title="Switch to dark theme"
+                    className={`text-lg ${currentTheme === 'light' ? 'bg-gray-400' : 'bg-blue-gray-900'}`}
                   >
                     🌛
                   </Button>
@@ -179,8 +185,9 @@ const Sidebar: React.FC = () => {
                     onClick={() => onChangeTheme('system')}
                     color={iconColor as color}
                     title="Switch to system theme"
+                    className="text-lg"
                   >
-                    ⚙
+                    ⚙️
                   </Button>
                 </ButtonGroup>
               </li>
