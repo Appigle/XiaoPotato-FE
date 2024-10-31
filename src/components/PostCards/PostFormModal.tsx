@@ -16,7 +16,7 @@ import allGenreList from '@src/constants/genreList';
 import useGlobalStore from '@src/stores/useGlobalStore';
 import HTTP_RES_CODE from '@src/utils/request/httpResCode';
 import Toast from '@src/utils/toastUtils';
-import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import React, { ChangeEvent, FormEvent, useState } from 'react';
 import FileUpload from '../FileUpload';
 
 interface PostModalProps {
@@ -40,14 +40,12 @@ const defaultFormData: FormData = {
 };
 
 const PostModal: React.FC<PostModalProps> = ({ open, onClose, postCb }) => {
-  const [formData, setFormData] = useState<FormData>(defaultFormData);
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const currentPostGenre = useGlobalStore((s) => s.currentPostGenre);
-  const [postGenre, setGenre] = useState<typePostGenre>(currentPostGenre);
-
-  useEffect(() => {
-    setGenre(currentPostGenre);
-  }, [currentPostGenre]);
+  const [formData, setFormData] = useState<FormData>({
+    ...defaultFormData,
+    postGenre: currentPostGenre,
+  });
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   const handleContentChange = (e: ChangeEvent<HTMLTextAreaElement>): void => {
     setFormData((prev) => ({
@@ -135,6 +133,13 @@ const PostModal: React.FC<PostModalProps> = ({ open, onClose, postCb }) => {
     onClose?.();
   };
 
+  const handleGenre = (genre: typePostGenre) => {
+    setFormData((prev) => ({
+      ...prev,
+      postGenre: genre,
+    }));
+  };
+
   return (
     <Dialog
       open={open}
@@ -185,8 +190,8 @@ const PostModal: React.FC<PostModalProps> = ({ open, onClose, postCb }) => {
                 <Select
                   label="Select Genre"
                   size="md"
-                  value={postGenre}
-                  onChange={(val) => setGenre((val || 'All') as typePostGenre)}
+                  value={formData.postGenre}
+                  onChange={(val) => handleGenre(val as typePostGenre)}
                 >
                   {allGenreList.map(({ emoji, name, desc }) => {
                     return (
