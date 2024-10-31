@@ -3,15 +3,46 @@ import { Typography } from '@material-tailwind/react';
 import { useCallback, useEffect, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 
-const FileUpload: React.FC<{
+interface FileUploadProps {
   files: File[];
   onFilesAdded: (newFiles: File[]) => void;
   onFileRemove: (index: number) => void;
-}> = ({ files: _files, onFilesAdded, onFileRemove }) => {
+  // 新增的样式属性
+  className?: string;
+  containerClassName?: string;
+  dropzoneClassName?: string;
+  previewClassName?: string;
+  // 自定义高度
+  height?: string;
+  // 自定义宽度
+  width?: string;
+  // 标题文本
+  title?: string;
+  // 拖拽提示文本
+  dragText?: string;
+  dropText?: string;
+}
+
+const FileUpload: React.FC<FileUploadProps> = ({
+  files: _files,
+  onFilesAdded,
+  onFileRemove,
+  className = 'w-3/5',
+  containerClassName = '',
+  dropzoneClassName = '',
+  previewClassName = '',
+  height = 'h-[370px]',
+  width = 'w-full',
+  title = 'Arts Upload',
+  dragText = 'Drag & drop files or click to select',
+  dropText = 'Drop files here',
+}) => {
   const [files, setFiles] = useState<File[]>(_files);
+
   useEffect(() => {
     setFiles(_files);
   }, [_files]);
+
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
       onFilesAdded(acceptedFiles);
@@ -28,33 +59,37 @@ const FileUpload: React.FC<{
     maxSize: 20 * 1024 * 1024,
   });
 
+  const baseDropzoneClasses = `flex cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed transition-colors`;
+  const activeDropzoneClasses = isDragActive
+    ? 'border-blue-500 bg-blue-50 dark:border-blue-400 dark:bg-blue-900/50'
+    : 'border-blue-gray-200 hover:bg-gray-50 dark:border-blue-gray-700 dark:hover:bg-blue-gray-800';
+
   return (
-    <div className="w-3/5 space-y-4">
-      <Typography
-        variant="small"
-        className="mb-2 font-medium text-blue-gray-900 dark:text-gray-100"
-      >
-        Arts Upload
-      </Typography>
+    <div className={`space-y-4 ${className} ${containerClassName}`}>
+      {title && (
+        <Typography
+          variant="small"
+          className="mb-2 font-medium text-blue-gray-900 dark:text-gray-100"
+        >
+          {title}
+        </Typography>
+      )}
+
       {files.length === 0 && (
         <div
           {...getRootProps()}
-          className={`flex h-[370px] w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed transition-colors ${
-            isDragActive
-              ? 'border-blue-500 bg-blue-50 dark:border-blue-400 dark:bg-blue-900/50'
-              : 'border-blue-gray-200 hover:bg-gray-50 dark:border-blue-gray-700 dark:hover:bg-blue-gray-800'
-          }`}
+          className={`${baseDropzoneClasses} ${activeDropzoneClasses} ${height} ${width} ${dropzoneClassName}`}
         >
           <input {...getInputProps()} />
           <ArrowUpTrayIcon className="h-6 w-6 text-blue-gray-500 dark:text-gray-400" />
           <Typography variant="small" className="mt-2 text-blue-gray-600 dark:text-gray-300">
-            {isDragActive ? 'Drop files here' : 'Drag & drop files or click to select'}
+            {isDragActive ? dropText : dragText}
           </Typography>
         </div>
       )}
 
       {files.length > 0 && (
-        <div className="">
+        <div className={previewClassName}>
           {files.map((file, index) => (
             <div
               key={index}
@@ -84,4 +119,5 @@ const FileUpload: React.FC<{
     </div>
   );
 };
+
 export default FileUpload;

@@ -23,12 +23,12 @@ const UserPostsPage: React.FC = () => {
     try {
       setLoading(true);
       const queryParams: type_req_post_query = {
-        currentPage: page, // 从0开始的页码
-        pageSize: 10, // 每页显示数量
-        // 可选的查询参数
-        postTitle: '', // 如果需要按标题筛选
-        postContent: '', // 如果需要按内容筛选
-        postGenre: '', // 如果需要按类型筛选
+        currentPage: page,
+        pageSize: 10,
+
+        postTitle: '',
+        postContent: '',
+        postGenre: '',
       };
       const response = await xPotatoApi.getUserPosts(Number(userId), queryParams);
 

@@ -8,7 +8,6 @@ import {
   type_req_user_login,
   type_req_user_register,
   type_res_get_post,
-  type_res_update_profile,
   type_res_user_login,
   type_res_user_posts,
   type_res_user_profile,
@@ -80,7 +79,7 @@ const getUserProfile = () => {
  * @returns Promise<BaseRes<type_res_update_profile>>
  */
 const updateUserProfile = (updateData: type_req_update_profile) => {
-  return useRequest.post<BaseRes<type_res_update_profile>>({
+  return useRequest.post<BaseRes<boolean>>({
     baseURL,
     url: X_POTATO_URL.UPDATE_PROFILE,
     data: updateData,

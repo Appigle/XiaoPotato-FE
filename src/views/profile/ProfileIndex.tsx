@@ -1,7 +1,11 @@
 import xPotatoApi from '@/Api/xPotatoApi';
 import defaultUserAvatar from '@/assets/MonaLisaAvatar.png';
 import EditProfileModal from '@/components/EditProfileModal';
-import { type_req_update_profile, type_res_user_profile } from '@src/@types/typeRequest';
+import {
+  type_req_update_profile,
+  type_res_user_profile,
+  user_profile,
+} from '@src/@types/typeRequest';
 import ToastContainer from '@src/components/ToastContainer';
 import useGlobalStore from '@src/stores/useGlobalStore';
 import useLoginCheck from '@src/utils/hooks/login';
@@ -10,61 +14,33 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './ProfileIndex.css';
 
-const mockProfile: type_res_user_profile = {
-  id: 1,
-  firstName: 'John',
-  lastName: 'Doe',
-  userAccount: 'johndoe',
-  userAvatar: 'https://i.pravatar.cc/300',
-  email: 'john.doe@example.com',
-  phone: '+1234567890',
-  gender: 'male',
-  userRole: 'user',
-  status: 1,
-  token: 'mock-token',
-  followCount: 20,
-  fansCount: 10,
-  commentsCount: 30,
-  description:
-    'Passionate about technology and life. Full-stack developer skilled in React and Node.js. Always exploring new technologies. Coffee enthusiast and amateur photographer in my free time.',
-};
-
 const ProfilePage: React.FC = () => {
   useLoginCheck();
   const [profile, setProfile] = useState<type_res_user_profile | null | undefined>(null);
   const [isOpenModal, setIsOpenModal] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  //global state
   const userInfo = useGlobalStore((s) => s.userInfo);
-  const [userAvatar, setUserAvatar] = useState(userInfo?.userAvatar || '');
+
+  const setUserInfo = useGlobalStore((s) => s.setUserInfo);
+  const setIsLoading = useGlobalStore((s) => s.setIsLoading);
+  const isLoading = useGlobalStore((s) => s.isLoading);
+
+  // 从 profile 或 defaultUserAvatar 获取头像
+  const [userAvatar, setUserAvatar] = useState(() => {
+    return userInfo?.userAvatar || defaultUserAvatar;
+  });
+
   const goBack = useGoBack();
   const navigate = useNavigate();
   const handleViewPosts = () => {
     navigate(`/profile/${profile?.id}/posts`);
   };
   useEffect(() => {
-    // fetchProfile();
-    setProfile(userInfo);
-  }, [userInfo]);
-
-  const fetchProfile = async () => {
-    setIsLoading(true);
-    try {
-      //暂时先查看模拟数据，后续再调用以上接口
-      await new Promise((resolve) => setTimeout(resolve, 1000)); //模拟请求延迟
-      setProfile(mockProfile);
-      // Ziqi API
-      // const response = await xPotatoApi.getUserProfile();
-      // if (response.data.code === 0) {
-      //   setProfile(response.data.data);
-      // } else {
-      //   console.error('Failed to fetch profile:', response.data.message);
-      // }
-    } catch (error) {
-      console.error('Error fetching profile:', error);
-    } finally {
-      setIsLoading(false);
+    if (userInfo) {
+      setProfile(userInfo);
+      setUserAvatar(userInfo.userAvatar || defaultUserAvatar);
     }
-  };
+  }, [userInfo]);
 
   const onEditProfile = () => {
     setIsOpenModal(true);
@@ -72,16 +48,39 @@ const ProfilePage: React.FC = () => {
 
   const handleUpdateProfile = async (updatedProfile: type_req_update_profile) => {
     try {
+      setIsLoading(true);
       const response = await xPotatoApi.updateUserProfile(updatedProfile);
-      if (response.data.code === 0) {
-        fetchProfile(); // 重新获取更新后的profile
+      if (response.code === 200 && response.data === true) {
+        const updatedUserInfo: user_profile = {
+          ...userInfo!,
+          ...updatedProfile,
+        };
+        // 更新全局状态
+        setUserInfo(updatedUserInfo);
+
+        // 更新本地状态
+        setProfile(updatedUserInfo);
+
+        // 关闭模态框
         setIsOpenModal(false);
+        setUserInfo(updatedUserInfo);
+
+        // 添加成功提示
+        alert('Profile updated successfully!');
       } else {
-        console.error('Failed to update profile:', response.data.message);
+        console.error('Failed to update profile:', response.message);
+        alert(response.message || 'Failed to update profile');
       }
     } catch (error) {
       console.error('Error updating profile:', error);
+      alert('Error updating profile');
+    } finally {
+      setIsLoading(false);
     }
+  };
+
+  const handleImageError = () => {
+    setUserAvatar(defaultUserAvatar);
   };
 
   if (isLoading || !userInfo) {
@@ -153,7 +152,7 @@ const ProfilePage: React.FC = () => {
                   <div className="relative">
                     <img
                       alt="Profile"
-                      onError={() => setUserAvatar(defaultUserAvatar)}
+                      onError={handleImageError}
                       src={userAvatar}
                       className="absolute -m-16 -ml-20 h-auto max-w-[150px] rounded-full border-none align-middle shadow-xl lg:-ml-16"
                     />

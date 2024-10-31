@@ -50,17 +50,12 @@ export interface user_profile extends type_res_user_login {
 export type type_res_user_profile = user_profile;
 
 export interface type_req_update_profile {
-  firstName: string;
-  lastName: string;
+  id: number;
   userAvatar?: string | null;
   email?: string;
   phone?: string;
   gender?: string;
   description?: string;
-}
-export interface type_res_update_profile {
-  success: boolean;
-  message: string;
 }
 
 export interface type_req_get_post_by_page
