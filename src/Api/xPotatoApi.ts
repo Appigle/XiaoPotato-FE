@@ -8,6 +8,7 @@ import {
   type_req_user_login,
   type_req_user_register,
   type_res_get_post,
+  type_res_user_fans,
   type_res_user_login,
   type_res_user_posts,
   type_res_user_profile,
@@ -201,7 +202,26 @@ const getUserPosts = (userId: number, queryParams: type_req_post_query) => {
     abortRepetitiveRequest: true,
   });
 };
-
+const getUserFans = (queryParams: type_req_post_query) => {
+  return useRequest.get<BaseRes<type_res_user_fans>>({
+    baseURL,
+    url: `/user/fans`,
+    params: {
+      ...queryParams,
+    },
+    abortRepetitiveRequest: true,
+  });
+};
+const getUserFollowings = (queryParams: type_req_post_query) => {
+  return useRequest.get<BaseRes<type_res_user_fans>>({
+    baseURL,
+    url: `/user/follows`,
+    params: {
+      ...queryParams,
+    },
+    abortRepetitiveRequest: true,
+  });
+};
 export default {
   registerAccount,
   userLogin,
@@ -218,4 +238,6 @@ export default {
   useRequest,
   getUserPosts,
   followUser,
+  getUserFans,
+  getUserFollowings,
 };

@@ -14,14 +14,14 @@ import { useGoBack } from '@src/utils/hooks/nav';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './ProfileIndex.css';
-
+import UserFansModal from '@src/components/UserFansModal';
+import UserFollowingsModal from '@src/components/UserFollowingsModal';
 const ProfilePage: React.FC = () => {
   useLoginCheck();
   const [profile, setProfile] = useState<type_res_user_profile | null | undefined>(null);
   const [isOpenModal, setIsOpenModal] = useState(false);
   //global state
   const userInfo = useGlobalStore((s) => s.userInfo);
-
   const setUserInfo = useGlobalStore((s) => s.setUserInfo);
   const setIsLoading = useGlobalStore((s) => s.setIsLoading);
   const isLoading = useGlobalStore((s) => s.isLoading);
@@ -31,10 +31,17 @@ const ProfilePage: React.FC = () => {
     return userInfo?.userAvatar || defaultUserAvatar;
   });
 
+  //fans
+  const [isOpenFansModal, setIsOpenFansModal] = useState(false);
+  //follows
+  const [isOpenFollowingsModal, setIsOpenFollowingsModal] = useState(false);
   const goBack = useGoBack();
   const navigate = useNavigate();
   const handleViewPosts = () => {
     navigate(`/profile/${profile?.id}/posts`);
+  };
+  const handleOpenFollowingsModal = () => {
+    setIsOpenFollowingsModal(true);
   };
   useEffect(() => {
     if (userInfo) {
@@ -82,6 +89,10 @@ const ProfilePage: React.FC = () => {
 
   const handleImageError = () => {
     setUserAvatar(defaultUserAvatar);
+  };
+
+  const handleOpenFansModal = () => {
+    setIsOpenFansModal(true);
   };
 
   if (isLoading || !userInfo) {
@@ -182,13 +193,18 @@ const ProfilePage: React.FC = () => {
                   <div className="flex justify-center py-4 pt-8 lg:pt-4">
                     <div className="mr-4 p-3 text-center">
                       <span className="text-blueGray-600 block text-xl font-bold uppercase tracking-wide">
-                        {profile.followCount || 568}
+                        <button onClick={handleOpenFollowingsModal}>
+                          {profile.followCount || 568}
+                        </button>
                       </span>
+
                       <span className="text-blueGray-400 text-sm">Followings</span>
                     </div>
                     <div className="mr-4 p-3 text-center">
                       <span className="text-blueGray-600 block text-xl font-bold uppercase tracking-wide">
-                        {profile.fansCount || 687}
+                        <button onClick={handleOpenFansModal}>
+                          <span>{profile.fansCount || 687}</span>
+                        </button>
                       </span>
                       <span className="text-blueGray-400 text-sm">Followers</span>
                     </div>
@@ -232,6 +248,12 @@ const ProfilePage: React.FC = () => {
         setIsOpen={setIsOpenModal}
         profile={profile}
         onUpdateProfile={handleUpdateProfile}
+      />
+      <UserFansModal isOpen={isOpenFansModal} setIsOpen={setIsOpenFansModal} user={profile} />
+      <UserFollowingsModal
+        isOpen={isOpenFollowingsModal}
+        setIsOpen={setIsOpenFollowingsModal}
+        user={profile}
       />
     </main>
   );

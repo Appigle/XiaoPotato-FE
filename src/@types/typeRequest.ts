@@ -36,10 +36,10 @@ export interface type_res_user_login {
   gender: string;
   userRole: string;
   status: number;
-
   description: string;
   followCount: number;
   fansCount: number;
+  followed: boolean;
 }
 
 export interface user_profile extends type_res_user_login {
@@ -84,7 +84,7 @@ export interface type_req_post_query {
 
 export interface PageResult<T> {
   records: T[];
-  totalElements: number;
+  total: number;
   totalPages: number;
   size: number;
   number: number;
@@ -97,3 +97,4 @@ export interface Post extends IPostItem {
 }
 
 export type type_res_user_posts = PageResult<Post>;
+export type type_res_user_fans = PageResult<type_res_user_login>;
