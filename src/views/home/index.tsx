@@ -5,6 +5,7 @@ import PostGenreList from '@src/components/GenreTypeList';
 import { NavbarWithSearch } from '@src/components/NavbarWithSearch';
 import PostCardList from '@src/components/PostCards/PostCardList';
 import Sidebar from '@src/components/Sidebar';
+import SocketProvider from '@src/components/SocketIO/SocketProvider';
 import useGlobalStore from '@src/stores/useGlobalStore';
 import useLoginCheck from '@src/utils/hooks/login';
 import useTheme from '@src/utils/hooks/useTheme';
@@ -19,6 +20,7 @@ const Main: React.FC = () => {
     setScrollTop((e.target as HTMLElement).scrollTop);
     postCardListRef.current?.handleScroll(e);
   };
+
   return (
     <main
       className="flex-1 overflow-y-auto"
@@ -45,7 +47,7 @@ const App: React.FC = () => {
   }, [initTheme]);
 
   return (
-    <>
+    <SocketProvider>
       <ToastContainer />
       <div className="flex h-screen w-screen flex-col bg-gray-100 dark:bg-blue-gray-900">
         <NavbarWithSearch />
@@ -54,7 +56,7 @@ const App: React.FC = () => {
           <Main />
         </div>
       </div>
-    </>
+    </SocketProvider>
   );
 };
 

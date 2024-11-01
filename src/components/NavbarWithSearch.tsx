@@ -18,6 +18,7 @@ import useGlobalStore from '@src/stores/useGlobalStore';
 import React from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { NavLink, useNavigate } from 'react-router-dom';
+import { useSocketContext } from './SocketIO';
 import xiaoPotatoLogo from '/xiaoPotato.png';
 
 export function NavbarWithSearch(props: { search?: boolean }) {
@@ -35,6 +36,8 @@ export function NavbarWithSearch(props: { search?: boolean }) {
   const [isFocused, setIsFocused] = React.useState(false);
   const inputRef = React.useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
+  const { socketSent, isAlive } = useSocketContext();
+
   useHotkeys('alt+k', (e) => {
     if (!isFocused) {
       e.preventDefault();
@@ -66,10 +69,20 @@ export function NavbarWithSearch(props: { search?: boolean }) {
         <NavLink
           to="/profile"
           key="profile"
-          className="flex flex-col items-center justify-center text-blue-gray-900 dark:text-gray-100"
+          title="user-profile"
+          className="relative flex flex-col items-center justify-center text-blue-gray-900 dark:text-gray-100"
         >
           <UserCircleIcon className="size-6" />
           {userDisplayName}
+          <div></div>
+          <div className="absolute right-[20%] top-1 flex items-center justify-center">
+            <div
+              className={`${isAlive ? 'bg-green-300' : 'bg-red-300'} absolute left-[0%] top-[50%] h-2 w-2 animate-ping rounded-full opacity-55`}
+            ></div>
+            <div
+              className={`${isAlive ? 'bg-green-300' : 'bg-red-300'} absolute left-[0%] top-[50%] h-2 w-2 rounded-full`}
+            ></div>
+          </div>
         </NavLink>
       </Typography>
       <Menu>
@@ -101,7 +114,10 @@ export function NavbarWithSearch(props: { search?: boolean }) {
           className="ml-2 mr-4 flex cursor-pointer items-center justify-center gap-2 py-1.5"
         >
           <img src={xiaoPotatoLogo} alt="x-potato-logo" className="h-[50px] w-[50px]" />
-          <span className="via-slate-200 inline-block bg-gradient-to-r from-pink-600 to-purple-400 bg-clip-text align-middle font-serif text-lg font-bold text-transparent">
+          <span
+            onClick={() => socketSent('message', 'hello server!')}
+            className="via-slate-200 inline-block bg-gradient-to-r from-pink-600 to-purple-400 bg-clip-text align-middle font-serif text-lg font-bold text-transparent"
+          >
             Share your gorgeous Art!
           </span>
         </Typography>
