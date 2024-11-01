@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
 import { Avatar, Button, Card, Dialog, Typography } from '@material-tailwind/react';
 import { type_res_user_login } from '@src/@types/typeRequest';
 import Api from '@src/Api';
 import defaultUserAvatar from '@/assets/MonaLisaAvatar.png';
+import { useEffect, useState } from 'react';
 
 interface UserFollowingsModalProps {
   isOpen: boolean;
