@@ -1,18 +1,15 @@
 import { IPostItem } from '@src/@types/typePostItem';
 import {
   BaseRes,
+  BaseResPageData,
+  Post,
   type_req_get_post_by_page,
   type_req_post_create,
-  type_req_post_query,
   type_req_update_profile,
   type_req_user_login,
   type_req_user_register,
   type_res_get_post,
-  type_res_user_fans,
   type_res_user_login,
-  type_res_user_posts,
-  type_res_user_profile,
-  type_res_user_register,
   user_profile,
 } from '@src/@types/typeRequest';
 import X_POTATO_URL from '@src/constants/xPotatoUrl';
@@ -24,10 +21,10 @@ const baseURL = X_POTATO_URL.BASE_URL;
  * register xiao-potato account
  * @param userAccount string
  * @param userPassword string
- * @returns Promise<BaseRes<type_res_user_register>>
+ * @returns Promise<BaseRes<number>>
  */
 const registerAccount = (registerData: type_req_user_register) => {
-  return useRequest.post<BaseRes<type_res_user_register>>({
+  return useRequest.post<BaseRes<number>>({
     baseURL,
     url: X_POTATO_URL.REGISTER_ACCOUNT,
     abortRepetitiveRequest: true,
@@ -64,10 +61,10 @@ const userCurrent = () => {
 
 /**
  * get user profile
- * @returns Promise<BaseRes<type_res_user_profile>>
+ * @returns Promise<BaseRes<user_profile>>
  */
 const getUserProfile = () => {
-  return useRequest.get<BaseRes<type_res_user_profile>>({
+  return useRequest.get<BaseRes<user_profile>>({
     baseURL,
     url: X_POTATO_URL.GET_USER,
     abortRepetitiveRequest: true,
@@ -168,7 +165,7 @@ const postDelete = (data: { id: number }) => {
 const postUpdate = (data: Partial<IPostItem>) => {
   return useRequest.post<BaseRes<boolean>>({
     baseURL,
-    url: X_POTATO_URL.POST_DELETE,
+    url: X_POTATO_URL.POST_UPDATE,
     data,
   });
 };
@@ -188,11 +185,11 @@ const getPostByPage = (data: type_req_get_post_by_page) => {
 /**
  * get user posts with pagination
  * @param userId number
- * @param queryParams type_req_post_query
- * @returns Promise<BaseRes<type_res_user_posts>>
+ * @param queryParams type_req_get_post_by_page
+ * @returns Promise<BaseRes<BaseResPageData<Post>>>
  */
-const getUserPosts = (userId: number, queryParams: type_req_post_query) => {
-  return useRequest.get<BaseRes<type_res_user_posts>>({
+const getUserPosts = (userId: number, queryParams: type_req_get_post_by_page) => {
+  return useRequest.get<BaseRes<BaseResPageData<Post>>>({
     baseURL,
     url: `/post/selectByUserId`,
     params: {
@@ -202,8 +199,8 @@ const getUserPosts = (userId: number, queryParams: type_req_post_query) => {
     abortRepetitiveRequest: true,
   });
 };
-const getUserFans = (queryParams: type_req_post_query) => {
-  return useRequest.get<BaseRes<type_res_user_fans>>({
+const getUserFans = (queryParams: type_req_get_post_by_page) => {
+  return useRequest.get<BaseRes<BaseResPageData<type_res_user_login>>>({
     baseURL,
     url: `/user/fans`,
     params: {
@@ -212,8 +209,8 @@ const getUserFans = (queryParams: type_req_post_query) => {
     abortRepetitiveRequest: true,
   });
 };
-const getUserFollowings = (queryParams: type_req_post_query) => {
-  return useRequest.get<BaseRes<type_res_user_fans>>({
+const getUserFollowings = (queryParams: type_req_get_post_by_page) => {
+  return useRequest.get<BaseRes<BaseResPageData<type_res_user_login>>>({
     baseURL,
     url: `/user/follows`,
     params: {

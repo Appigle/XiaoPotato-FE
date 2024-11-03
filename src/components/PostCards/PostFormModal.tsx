@@ -10,88 +10,185 @@ import {
   Textarea,
   Typography,
 } from '@material-tailwind/react';
-import { typePostGenre } from '@src/@types/typePostItem';
+import { IPostItem, typePostGenre } from '@src/@types/typePostItem';
 import Api from '@src/Api';
 import allGenreList from '@src/constants/genreList';
 import useGlobalStore from '@src/stores/useGlobalStore';
 import HTTP_RES_CODE from '@src/utils/request/httpResCode';
 import Toast from '@src/utils/toastUtils';
-import React, { ChangeEvent, FormEvent, useState } from 'react';
+import React, { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import FileUpload from '../FileUpload';
-
+type FilesType = (File | string)[];
 interface PostModalProps {
+  index?: number;
   open: boolean;
+  mode?: 'edit' | 'create';
+  post?: IPostItem;
   onClose?: () => void;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   postCb?: (b: boolean, err?: any) => void;
 }
 
 interface FormData {
+  id?: number;
   postGenre: typePostGenre;
-  title: string;
-  content: string;
-  files: File[];
+  postTitle: string;
+  postContent: string;
+  files: FilesType;
+}
+interface FormDataValidateResult {
+  isPostGenreOk: boolean;
+  isTitleOk: boolean;
+  isContentOk: boolean;
+  isFilesOk: boolean;
 }
 const defaultFormData: FormData = {
   postGenre: 'All',
-  title: '',
-  content: '',
+  postTitle: '',
+  postContent: '',
   files: [],
 };
 
-const PostModal: React.FC<PostModalProps> = ({ open, onClose, postCb }) => {
+const defaultFormDataValidateResult: FormDataValidateResult = {
+  isPostGenreOk: true,
+  isTitleOk: true,
+  isContentOk: true,
+  isFilesOk: true,
+};
+
+const PostModal: React.FC<PostModalProps> = ({ open, onClose, postCb, post, mode }) => {
   const currentPostGenre = useGlobalStore((s) => s.currentPostGenre);
+  const [fileChanged, setFileChanged] = useState(false);
+  const [validateRes, setValidateRes] = useState<FormDataValidateResult>(
+    defaultFormDataValidateResult,
+  );
+  const editModeFormData = useCallback(() => {
+    const temp = {
+      postGenre: post?.postGenre || 'All',
+      postTitle: post?.postTitle || '',
+      postContent: post?.postContent || '',
+      files: post?.postImage ? [post?.postImage] : [],
+    };
+    return mode === 'create'
+      ? {
+          postTitle: '',
+          postContent: '',
+          files: [],
+          postGenre: currentPostGenre,
+        }
+      : {
+          ...temp,
+          id: post?.id,
+        };
+  }, [currentPostGenre, post, mode]);
   const [formData, setFormData] = useState<FormData>({
     ...defaultFormData,
-    postGenre: currentPostGenre,
+    ...editModeFormData(),
   });
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+
+  useEffect(() => {
+    setFileChanged(false);
+    setFormData({
+      ...defaultFormData,
+      ...editModeFormData(),
+    });
+  }, [open, editModeFormData]);
 
   const handleContentChange = (e: ChangeEvent<HTMLTextAreaElement>): void => {
     setFormData((prev) => ({
       ...prev,
-      content: e.target.value,
+      postContent: e.target.value,
     }));
   };
 
   const handleTitleChange = (e: ChangeEvent<HTMLInputElement>): void => {
     setFormData((prev) => ({
       ...prev,
-      title: e.target.value,
+      postTitle: e.target.value,
     }));
   };
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
+  useEffect(() => {
+    const { postGenre, postTitle, postContent, files } = formData;
+    setValidateRes({
+      isPostGenreOk: !!postGenre,
+      isTitleOk: !!postTitle,
+      isContentOk: !!postContent,
+      isFilesOk: files && files.length > 0,
+    });
+  }, [formData]);
+
+  const onFormDataCheckBeforeSubmit = useCallback((): boolean => {
+    const errs: string[] = [];
+    if (!validateRes.isTitleOk) {
+      errs.push('Please enter a title.');
+    }
+    if (!validateRes.isPostGenreOk) {
+      errs.push('Please select a genre.');
+    }
+    if (!validateRes.isContentOk) {
+      errs.push('Please enter a content.');
+    }
+    if (!validateRes.isFilesOk) {
+      errs.push('Please upload an image.');
+    }
+    errs.forEach((err) => {
+      Toast.error(err);
+    });
+    return errs.length === 0;
+  }, [validateRes]);
+
+  const handleSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     setIsSubmitting(true);
-    const submitData = new FormData();
-    submitData.append('post_title', formData.title);
-    submitData.append('post_content', formData.content);
-    submitData.append('file', formData.files[0]);
-    Api.xPotatoApi
-      .uploadFile(submitData)
-      .then((res) => {
-        console.log(
-          '%c [ fileUrl ]-125',
-          'font-size:13px; background:pink; color:#bf2c9f;',
-          res.data,
-        );
+    const valid = onFormDataCheckBeforeSubmit();
+    if (!valid) {
+      setIsSubmitting(false);
+      return;
+    }
+    let promise = null;
+    if (mode === 'create') {
+      const submitData = new FormData();
+      submitData.append('post_title', formData.postTitle);
+      submitData.append('post_content', formData.postContent);
+      submitData.append('file', formData.files[0] as unknown as File);
+      promise = Api.xPotatoApi.uploadFile(submitData).then((res) => {
         return Api.xPotatoApi.postCreate({
-          postTitle: formData.title,
-          postContent: formData.content,
+          postTitle: formData.postTitle,
+          postContent: formData.postContent,
           postImage: res.data,
           postGenre: formData.postGenre,
         });
-      })
-      // https://fzqqq-test.oss-us-east-1.aliyuncs.com/74188bc7dd2042c5b634e64eba80a56f.png
-      // Api.xPotatoApi
-      //   .postCreate({
-      //     postGenre: formData.postGenre,
-      //     postTitle: formData.title,
-      //     postContent: formData.content,
-      //     postImage:
-      //       'https://fzqqq-test.oss-us-east-1.aliyuncs.com/74188bc7dd2042c5b634e64eba80a56f.png',
-      //   })
+      });
+    } else {
+      const submitData = new FormData();
+      submitData.append('post_title', formData.postTitle);
+      submitData.append('post_content', formData.postContent);
+      if (fileChanged) submitData.append('file', formData.files[0] as unknown as File);
+      const promiseFile = fileChanged
+        ? Api.xPotatoApi.uploadFile(submitData)
+        : Promise.resolve({ data: post?.postImage });
+      promise = promiseFile.then((res) => {
+        return Api.xPotatoApi.postUpdate({
+          postTitle: formData.postTitle,
+          id: post?.id,
+          postContent: formData.postContent,
+          postImage: res.data,
+          postGenre: formData.postGenre,
+        });
+      });
+    }
+    // https://fzqqq-test.oss-us-east-1.aliyuncs.com/74188bc7dd2042c5b634e64eba80a56f.png
+    // Api.xPotatoApi
+    //   .postCreate({
+    //     postGenre: formData.postGenre,
+    //     postTitle: formData.postTitle,
+    //     postContent: formData.postContent,
+    //     postImage:
+    //       'https://fzqqq-test.oss-us-east-1.aliyuncs.com/74188bc7dd2042c5b634e64eba80a56f.png',
+    //   })
+    promise
       .then((createRes) => {
         if (createRes.code === HTTP_RES_CODE.SUCCESS) {
           Toast.success('Post Successfully!');
@@ -106,22 +203,14 @@ const PostModal: React.FC<PostModalProps> = ({ open, onClose, postCb }) => {
   };
 
   const onFilesAdded = (files: File[]) => {
-    console.log(
-      '%c [ onFilesAdded ]-218',
-      'font-size:13px; background:pink; color:#bf2c9f;',
-      files,
-    );
+    setFileChanged(true);
     setFormData((prev) => ({
       ...prev,
       files: [...prev.files, ...files],
     }));
   };
   const onFileRemove = (rIndex: number) => {
-    console.log(
-      '%c [ onFileRemove ]-222',
-      'font-size:13px; background:pink; color:#bf2c9f;',
-      rIndex,
-    );
+    setFileChanged(true);
     setFormData((prev) => ({
       ...prev,
       files: prev.files.filter((_, index) => index !== rIndex),
@@ -147,7 +236,14 @@ const PostModal: React.FC<PostModalProps> = ({ open, onClose, postCb }) => {
       size="lg"
       className="bg-gray-100 dark:bg-blue-gray-900"
     >
-      <form onSubmit={handleSubmit}>
+      <form
+        className="flex flex-col gap-4"
+        onSubmit={(e) => {
+          e.stopPropagation();
+          e.preventDefault();
+          return;
+        }}
+      >
         <DialogHeader>
           <Typography variant="h5" className="text-blue-gray-900 dark:text-gray-100">
             Create New Post
@@ -169,7 +265,8 @@ const PostModal: React.FC<PostModalProps> = ({ open, onClose, postCb }) => {
                 Title
               </Typography>
               <Input
-                value={formData.title}
+                value={formData.postTitle}
+                error={!validateRes.isTitleOk}
                 crossOrigin={'anonymous'}
                 onChange={handleTitleChange}
                 placeholder="Enter title"
@@ -190,6 +287,7 @@ const PostModal: React.FC<PostModalProps> = ({ open, onClose, postCb }) => {
                 <Select
                   label="Select Genre"
                   size="md"
+                  error={!validateRes.isPostGenreOk}
                   value={formData.postGenre}
                   onChange={(val) => handleGenre(val as typePostGenre)}
                 >
@@ -213,44 +311,16 @@ const PostModal: React.FC<PostModalProps> = ({ open, onClose, postCb }) => {
                 Content
               </Typography>
               <Textarea
-                value={formData.content}
+                value={formData.postContent}
                 onChange={handleContentChange}
                 placeholder="Write your content here..."
-                className="min-h-[200px] resize-y auto-cols-auto whitespace-pre-line !border-blue-gray-200 bg-white text-blue-gray-900 focus:!border-gray-900 dark:!border-blue-gray-700 dark:bg-blue-gray-800 dark:text-gray-100 dark:focus:!border-blue-400"
-                labelProps={{
-                  className: 'before:content-none after:content-none',
-                }}
+                className={`min-h-[200px] resize-y auto-cols-auto whitespace-pre-line !border-blue-gray-200 bg-white text-blue-gray-900 focus:!border-gray-900 dark:!border-blue-gray-700 dark:bg-blue-gray-800 dark:text-gray-100 dark:focus:!border-blue-400`}
                 containerProps={{
                   className: 'min-h-[100px] max-h-[800px]',
                 }}
               />
             </div>
           </div>
-          {/* {formData.files.length > 0 && (
-            <div className="space-y-2">
-              {formData.files.map((file, index) => (
-                <div
-                  key={index}
-                  className="flex items-center justify-between rounded bg-blue-gray-50 p-2 dark:bg-blue-gray-800"
-                >
-                  <Typography
-                    variant="small"
-                    className="truncate text-blue-gray-900 dark:text-gray-100"
-                  >
-                    {file.name}
-                  </Typography>
-                  <IconButton
-                    variant="text"
-                    color="blue-gray"
-                    onClick={() => removeFile(index)}
-                    className="hover:bg-blue-gray-100 dark:hover:bg-blue-gray-700"
-                  >
-                    <XMarkIcon className="h-4 w-4" />
-                  </IconButton>
-                </div>
-              ))}
-            </div>
-          )} */}
         </DialogBody>
 
         <DialogFooter className="space-x-2">
@@ -264,8 +334,10 @@ const PostModal: React.FC<PostModalProps> = ({ open, onClose, postCb }) => {
             Cancel
           </Button>
           <Button
-            type="submit"
             disabled={isSubmitting}
+            onClick={(e) => {
+              handleSubmit(e);
+            }}
             className="bg-blue-500 text-white dark:bg-blue-600"
           >
             {isSubmitting ? 'Posting...' : 'Post'}

@@ -1,24 +1,20 @@
 import xPotatoApi from '@/Api/xPotatoApi';
 import defaultUserAvatar from '@/assets/MonaLisaAvatar.png';
 import EditProfileModal from '@/components/EditProfileModal';
-import {
-  type_req_update_profile,
-  type_res_user_profile,
-  user_profile,
-} from '@src/@types/typeRequest';
+import { type_req_update_profile, user_profile } from '@src/@types/typeRequest';
 import { NavbarWithSearch } from '@src/components/NavbarWithSearch';
 import ToastContainer from '@src/components/ToastContainer';
+import UserFansModal from '@src/components/UserFansModal';
+import UserFollowingsModal from '@src/components/UserFollowingsModal';
 import useGlobalStore from '@src/stores/useGlobalStore';
 import useLoginCheck from '@src/utils/hooks/login';
 import { useGoBack } from '@src/utils/hooks/nav';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './ProfileIndex.css';
-import UserFansModal from '@src/components/UserFansModal';
-import UserFollowingsModal from '@src/components/UserFollowingsModal';
 const ProfilePage: React.FC = () => {
   useLoginCheck();
-  const [profile, setProfile] = useState<type_res_user_profile | null | undefined>(null);
+  const [profile, setProfile] = useState<user_profile | null | undefined>(null);
   const [isOpenModal, setIsOpenModal] = useState(false);
   //global state
   const userInfo = useGlobalStore((s) => s.userInfo);

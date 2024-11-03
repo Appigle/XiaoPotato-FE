@@ -132,7 +132,8 @@ function App() {
               {new Array(4).fill('❥(^_-)').map((_, index) => {
                 return (
                   <kbd
-                    className={`rounded-lg bg-blue-gray-100 px-2 py-1.5 text-xs font-bold text-white dark:bg-blue-gray-900 ${index != 0 ? 'ml-1' : ''}`}
+                    key={index}
+                    className={`rounded-lg bg-blue-gray-100 px-2 py-1.5 text-xs font-bold text-purple-400 dark:bg-blue-gray-900 dark:text-purple-600 ${index != 0 ? 'ml-1' : ''}`}
                   >
                     {!isRun ? '↓' : '↑'}
                   </kbd>

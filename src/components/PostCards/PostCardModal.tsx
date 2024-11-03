@@ -105,7 +105,11 @@ const PostDetailModal = ({ post: _post, open = false, onClose, index }: PostDeta
           X
         </div>
         <div className="w-3/5">
-          <Carousel className="rounded-ls rounded-r-none">
+          <Carousel
+            className="rounded-ls rounded-r-none"
+            prevArrow={() => null}
+            nextArrow={() => null}
+          >
             <img
               src={postImage}
               onError={handleImageError}
@@ -138,8 +142,10 @@ const PostDetailModal = ({ post: _post, open = false, onClose, index }: PostDeta
             )}
           </div>
           <div className="flex flex-1 flex-col gap-4 py-4">
-            <h3 className="text-xl">{post.postTitle}</h3>
-            <p className="text-sm">{formatStringWithTagAndUrl(post.postContent)}</p>
+            <h3 className="text-xl text-blue-gray-900 dark:text-gray-100">{post.postTitle}</h3>
+            <p className="text-sm text-blue-gray-900 dark:text-gray-100">
+              {formatStringWithTagAndUrl(post.postContent)}
+            </p>
             <div className="">comments</div>
           </div>
           <div className="ml-4 mr-4 flex items-center justify-end gap-4">

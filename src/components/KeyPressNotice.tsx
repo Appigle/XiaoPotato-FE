@@ -15,7 +15,7 @@ const KeyPressNotice = (props: {
     left = '0',
     containerStyle,
     kbdCls,
-    showTime = 1000,
+    showTime = 500,
     customKeyEmojiMap,
     enable = true,
   } = props;
@@ -108,6 +108,8 @@ const KeyPressNotice = (props: {
     ...customKeyEmojiMap,
   });
   const [keys, setKeys] = useState<KeyboardEvent[]>([]);
+  const [isPwdInputFocused, setIsPwdInputFocused] = useState(false);
+
   const [isDown, setIsDown] = useState(false);
   const timerRef = useRef(0);
   const clear = useCallback(() => {
@@ -144,9 +146,63 @@ const KeyPressNotice = (props: {
     dcClear();
   }, [dcClear, keys]);
 
+  useEffect(() => {
+    const handleFocus = () => {
+      setIsPwdInputFocused(true);
+    };
+
+    const handleBlur = () => {
+      setIsPwdInputFocused(false);
+    };
+    const observer = new MutationObserver((mutationsList) => {
+      for (const mutation of mutationsList) {
+        if (mutation.type === 'childList') {
+          if (mutation.addedNodes.length > 0) {
+            mutation.addedNodes.forEach((node) => {
+              (node as HTMLElement).querySelectorAll('input[type="password"]').forEach((input) => {
+                input.addEventListener('focus', handleFocus);
+                input.addEventListener('blur', handleBlur);
+              });
+            });
+          }
+          if (mutation.removedNodes.length > 0) {
+            mutation.removedNodes.forEach((node) => {
+              (node as HTMLElement).querySelectorAll('input[type="password"]').forEach((input) => {
+                input.removeEventListener('focus', handleFocus);
+                input.removeEventListener('blur', handleBlur);
+              });
+            });
+          }
+        }
+      }
+    });
+
+    observer.observe(document.documentElement, {
+      childList: true,
+      subtree: true,
+    });
+
+    const inputs: HTMLInputElement[] = [];
+    document.querySelectorAll('input[type="password"]').forEach((input) => {
+      inputs.push(input as HTMLInputElement);
+    });
+
+    inputs.forEach((input) => {
+      input.addEventListener('focus', handleFocus);
+      input.addEventListener('blur', handleBlur);
+    });
+
+    return () => {
+      inputs?.forEach((input) => {
+        input.removeEventListener('focus', handleFocus);
+        input.removeEventListener('blur', handleBlur);
+      });
+    };
+  }, []);
+
   return (
     <>
-      {enable && keys.length > 0 && (
+      {enable && !isPwdInputFocused && keys.length > 0 && (
         <div
           className={`absolute z-20 flex h-16 w-full items-center justify-center gap-4 overflow-auto bg-transparent`}
           style={{ top, left, ...containerStyle }}

@@ -1,4 +1,5 @@
 import { IPostItem } from './typePostItem';
+import { IUserItem } from './typeUserItem';
 
 export interface BaseRes<T> {
   code: number;
@@ -8,46 +9,32 @@ export interface BaseRes<T> {
   description: string;
 }
 
-export interface type_req_user_register {
-  firstName: string;
-  lastName: string;
-  userAccount: string;
-  userPassword: string;
-  checkPassword: string;
-  email: string;
-  phone: string;
-  gender: string;
+export interface BaseResPageData<T> {
+  records: T[];
+  total: number;
+  size: number;
+  current: number;
+  pages: number;
 }
-export type type_res_user_register = number | null;
+
+export interface type_req_user_register
+  extends Pick<IUserItem, 'firstName' | 'lastName' | 'userAccount' | 'gender' | 'phone' | 'email'> {
+  checkPassword: string;
+  userPassword: string;
+}
 
 export interface type_req_user_login {
   userAccount: string;
   userPassword: string;
 }
 
-export interface type_res_user_login {
-  id: number;
-  firstName: string;
-  lastName: string;
-  userAccount: string;
-  userAvatar: string | null;
-  email: string;
-  phone: string;
-  gender: string;
-  userRole: string;
-  status: number;
-  description: string;
-  followCount: number;
-  fansCount: number;
-  followed: boolean;
-}
+export interface type_res_user_login extends IUserItem {}
 
-export interface user_profile extends type_res_user_login {
+export interface user_profile extends IUserItem {
   token?: string;
   commentsCount: number;
   description: string;
 }
-export type type_res_user_profile = user_profile;
 
 export interface type_req_update_profile {
   id: number;
@@ -59,42 +46,19 @@ export interface type_req_update_profile {
 }
 
 export interface type_req_get_post_by_page
-  extends Pick<IPostItem, 'postTitle' | 'postContent' | 'postGenre'> {
+  extends Partial<Pick<IPostItem, 'postTitle' | 'postContent' | 'postGenre'>> {
   currentPage: number;
   pageSize: number;
 }
-export interface type_res_get_post {
-  records: IPostItem[];
-  total: number;
-  size: number;
-  current: number;
-  pages: number;
-}
+export interface type_res_get_post extends BaseResPageData<IPostItem> {}
 
 export interface type_req_post_create
   extends Pick<IPostItem, 'postTitle' | 'postContent' | 'postGenre' | 'postImage'> {}
 
-export interface type_req_post_query {
-  currentPage: number;
-  pageSize: number;
-  postTitle?: string;
-  postContent?: string;
-  postGenre?: string;
-}
-
-export interface PageResult<T> {
-  records: T[];
-  total: number;
-  totalPages: number;
-  size: number;
-  number: number;
-}
 export interface Post extends IPostItem {
   user?: {
+    // ? no references in code??
     userAccount: string;
     userAvatar: string | null;
   };
 }
-
-export type type_res_user_posts = PageResult<Post>;
-export type type_res_user_fans = PageResult<type_res_user_login>;

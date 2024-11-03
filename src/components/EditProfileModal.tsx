@@ -1,4 +1,4 @@
-import { type_req_update_profile, type_res_user_profile } from '@src/@types/typeRequest';
+import { type_req_update_profile, user_profile } from '@src/@types/typeRequest';
 import React, { useEffect, useState } from 'react';
 
 import Api from '@src/Api';
@@ -7,7 +7,7 @@ import FileUpload from './FileUpload';
 interface EditProfileModalProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
-  profile: type_res_user_profile;
+  profile: user_profile;
   onUpdateProfile: (updatedProfile: type_req_update_profile) => void;
 }
 

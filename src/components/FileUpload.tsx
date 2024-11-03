@@ -1,10 +1,11 @@
 import { ArrowUpTrayIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { Typography } from '@material-tailwind/react';
+import Utils from '@src/utils/utils';
 import { useCallback, useEffect, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
-
+type FilesType = (File | string)[];
 interface FileUploadProps {
-  files: File[];
+  files: FilesType;
   onFilesAdded: (newFiles: File[]) => void;
   onFileRemove: (index: number) => void;
   // 新增的样式属性
@@ -37,7 +38,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
   dragText = 'Drag & drop files or click to select',
   dropText = 'Drop files here',
 }) => {
-  const [files, setFiles] = useState<File[]>(_files);
+  const [files, setFiles] = useState<FilesType>(_files);
 
   useEffect(() => {
     setFiles(_files);
@@ -96,8 +97,16 @@ const FileUpload: React.FC<FileUploadProps> = ({
               className="group relative aspect-square rounded-lg bg-blue-gray-50 p-2 dark:bg-blue-gray-800"
             >
               <img
-                src={URL.createObjectURL(file)}
-                alt={file.name}
+                src={
+                  Utils.isObjType(file, 'String')
+                    ? (file as unknown as string)
+                    : URL.createObjectURL(file as unknown as File)
+                }
+                alt={
+                  Utils.isObjType(file, 'String')
+                    ? (file as unknown as string)
+                    : (file as unknown as File).name
+                }
                 className="h-full w-full rounded object-contain"
               />
               <button
@@ -110,7 +119,9 @@ const FileUpload: React.FC<FileUploadProps> = ({
                 variant="small"
                 className="absolute bottom-0 left-0 right-0 truncate bg-white/80 p-1 text-center text-xs dark:bg-black/80"
               >
-                {file.name}
+                {Utils.isObjType(file, 'String')
+                  ? (file as unknown as string)
+                  : (file as unknown as File).name}
               </Typography>
             </div>
           ))}

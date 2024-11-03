@@ -3,6 +3,7 @@ import defaultPostImg from '@/assets/Sunrise.png';
 import {
   CheckCircleIcon,
   EllipsisVerticalIcon,
+  PencilSquareIcon,
   TrashIcon,
   XCircleIcon,
 } from '@heroicons/react/24/outline';
@@ -29,9 +30,10 @@ type PostCardProps = {
   onDelete?: (post: IPostItem) => void;
   onLikeChange?: (isLike: boolean, post: IPostItem) => void;
   onShowDetail?: (post: IPostItem, index: number) => void;
+  onPostEdit?: (post: IPostItem, index: number) => void;
 };
 const PostCard = (props: PostCardProps) => {
-  const { post: originalPost, onShowDetail, onDelete, index } = props;
+  const { post: originalPost, onShowDetail, onDelete, onPostEdit, index } = props;
   const [post, setPost] = useState(originalPost);
   const userInfo = useGlobalStore((s) => s.userInfo);
   const [postImage, setPostImage] = useState(post.postImage || '');
@@ -62,6 +64,9 @@ const PostCard = (props: PostCardProps) => {
   const openDetail = () => {
     onShowDetail?.(post, index);
   };
+  const openPostEdit = () => {
+    onPostEdit?.(post, index);
+  };
 
   const handleImageError = () => {
     setPostImage(defaultPostImg);
@@ -73,6 +78,7 @@ const PostCard = (props: PostCardProps) => {
   const onDeletePost = () => {
     setIsConfirming(true);
   };
+
   const onConfirmDelete = () => {
     Api.xPotatoApi.postDelete({ id: post.id }).then((res) => {
       if (res.code === HTTP_RES_CODE.SUCCESS) {
@@ -120,11 +126,11 @@ const PostCard = (props: PostCardProps) => {
             <Avatar
               onError={handleAvatarError}
               src={userAvatar}
-              alt={userInfo?.lastName}
+              alt={userInfo?.firstName}
               size="sm"
             />
-            <span className="ml-2 text-sm" title={userInfo?.lastName}>
-              {userInfo?.lastName}
+            <span className="ml-2 text-sm" title={userInfo?.firstName}>
+              {userInfo?.firstName}
             </span>
           </Typography>
           <div className="flex flex-1 items-center justify-end">
@@ -147,14 +153,20 @@ const PostCard = (props: PostCardProps) => {
                 <PopoverHandler>
                   <EllipsisVerticalIcon className="z-10 h-5 w-5 cursor-pointer rounded-sm dark:hover:bg-blue-gray-300 dark:hover:text-blue-gray-50" />
                 </PopoverHandler>
-                <PopoverContent className="bg-gray-100 text-gray-100 dark:border-blue-gray-300 dark:bg-blue-gray-800 dark:text-white">
+                <PopoverContent className="flex items-center justify-center gap-2 bg-blue-gray-900 text-gray-100 dark:border-blue-gray-300 dark:bg-blue-gray-800 dark:text-white">
                   {!isConfirming ? (
-                    <TrashIcon
-                      className="h-5 w-5 cursor-pointer hover:text-red-500"
-                      onClick={onDeletePost}
-                    />
+                    <>
+                      <TrashIcon
+                        className="h-5 w-5 cursor-pointer hover:text-red-500"
+                        onClick={onDeletePost}
+                      />
+                      <PencilSquareIcon
+                        className="h-5 w-5 cursor-pointer hover:text-blue-500"
+                        onClick={openPostEdit}
+                      />
+                    </>
                   ) : (
-                    <div className="flex items-center justify-center gap-2">
+                    <>
                       <XCircleIcon
                         className="w6 hover: h-6 cursor-pointer hover:rounded-lg hover:bg-blue-gray-100"
                         onClick={onCancelDelete}
@@ -163,7 +175,7 @@ const PostCard = (props: PostCardProps) => {
                         className="w6 h-6 cursor-pointer text-red-600 hover:rounded-lg hover:bg-blue-gray-100"
                         onClick={onConfirmDelete}
                       />
-                    </div>
+                    </>
                   )}
                 </PopoverContent>
               </Popover>

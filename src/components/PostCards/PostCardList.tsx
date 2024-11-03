@@ -25,6 +25,9 @@ const PostPostList = forwardRef<typePostListRef, PropsType>((_, ref) => {
   const [currentPostGenre, setCurrentPostGenre] = useState(_currentPostGenre);
   const [isLoadEnd, setIsLoadEnd] = useState(false);
   const [total, setTotal] = useState(0);
+  const [currentPostEditOrCreateMode, setCurrentPostEditOrCreateMode] = useState<'create' | 'edit'>(
+    'create',
+  );
   const currentSearchWord = useGlobalStore((s) => s.currentSearchWord);
   const getPostDataByPage = useCallback(
     (size: number, page: number, searchWord: string, postGenre: typePostGenre) => {
@@ -122,13 +125,13 @@ const PostPostList = forwardRef<typePostListRef, PropsType>((_, ref) => {
   }));
 
   const [isOpen, setIsOpen] = useState(false);
-  const [currentCardData, setCurrentCardData] = useState<IPostItem | undefined>(undefined);
+  const [currentPostData, setCurrentPostData] = useState<IPostItem | undefined>(undefined);
   const openDetail = () => {
     setIsOpen(true);
   };
 
   const onCloseModal = (post: IPostItem, index: number) => {
-    setCurrentCardData(undefined);
+    setCurrentPostData(undefined);
     setCurrentPostIndex(-1);
     postList.splice(index, 1, post);
     setPostList(postList);
@@ -136,10 +139,19 @@ const PostPostList = forwardRef<typePostListRef, PropsType>((_, ref) => {
   };
 
   const onShowDetail = (postData: IPostItem, index: number) => {
-    setCurrentCardData(postData);
+    setCurrentPostEditOrCreateMode('create');
+    setCurrentPostData(postData);
     setCurrentPostIndex(index);
     openDetail();
   };
+
+  const onPostEdit = (postData: IPostItem, index: number) => {
+    setCurrentPostEditOrCreateMode('edit');
+    setCurrentPostData(postData);
+    setCurrentPostIndex(index);
+    setIsOpenPostFormModal(true);
+  };
+
   const setIsOpenPostFormModal = useEventBusStore((s) => s.setIsOpenPostFormModal);
   const isOpenPostFormModal = useEventBusStore((s) => s.isOpenPostFormModal);
   const onDeletePost = () => {
@@ -149,17 +161,27 @@ const PostPostList = forwardRef<typePostListRef, PropsType>((_, ref) => {
     !!suc && onRefreshPostList();
   };
 
+  const onCloseEditPost = () => {
+    setCurrentPostEditOrCreateMode('create');
+    setIsOpenPostFormModal(false);
+    setCurrentPostData(undefined);
+    setCurrentPostIndex(-1);
+  };
+
   return (
     <>
       <PostDetailModal
         index={currentPostIndex}
         onClose={onCloseModal}
         open={isOpen}
-        post={currentCardData}
+        post={currentPostData}
       />
       <PostFormModal
+        index={currentPostIndex}
         open={isOpenPostFormModal}
-        onClose={() => setIsOpenPostFormModal(false)}
+        post={currentPostData}
+        mode={currentPostEditOrCreateMode}
+        onClose={onCloseEditPost}
         postCb={(suc) => {
           onSubmitPost(suc);
         }}
@@ -172,6 +194,7 @@ const PostPostList = forwardRef<typePostListRef, PropsType>((_, ref) => {
               post={post}
               index={index}
               onShowDetail={onShowDetail}
+              onPostEdit={onPostEdit}
               onDelete={onDeletePost}
             />
           ))}

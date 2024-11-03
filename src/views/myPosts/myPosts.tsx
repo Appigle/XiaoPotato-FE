@@ -1,13 +1,13 @@
 import xPotatoApi from '@/Api/xPotatoApi';
-import { Post, type_req_post_query } from '@src/@types/typeRequest';
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { format } from 'date-fns';
-import { useGoBack } from '@src/utils/hooks/nav';
-import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
 import { Button, Dialog, DialogBody, DialogFooter, DialogHeader } from '@material-tailwind/react';
+import { Post, type_req_get_post_by_page } from '@src/@types/typeRequest';
 import ConfirmModal from '@src/components/ConfirmModal';
 import PostDetailModal from '@src/components/PostCards/PostCardModal';
+import { useGoBack } from '@src/utils/hooks/nav';
+import { format } from 'date-fns';
+import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 const UserPostsPage: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -36,12 +36,12 @@ const UserPostsPage: React.FC = () => {
   const fetchUserPosts = async (page = 1) => {
     try {
       setLoading(true);
-      const queryParams: type_req_post_query = {
+      const queryParams: type_req_get_post_by_page = {
         currentPage: page,
         pageSize: 10,
         postTitle: '',
         postContent: '',
-        postGenre: '',
+        postGenre: 'All',
       };
       const response = await xPotatoApi.getUserPosts(Number(userId), queryParams);
 

@@ -113,7 +113,12 @@ export function NavbarWithSearch(props: { search?: boolean }) {
           variant="h6"
           className="ml-2 mr-4 flex cursor-pointer items-center justify-center gap-2 py-1.5"
         >
-          <img src={xiaoPotatoLogo} alt="x-potato-logo" className="h-[50px] w-[50px]" />
+          <img
+            src={xiaoPotatoLogo}
+            alt="x-potato-logo"
+            className="h-[50px] w-[50px]"
+            onClick={() => navigate('/home')}
+          />
           <span
             onClick={() => socketSent('message', 'hello server!')}
             className="via-slate-200 inline-block bg-gradient-to-r from-pink-600 to-purple-400 bg-clip-text align-middle font-serif text-lg font-bold text-transparent"
