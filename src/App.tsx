@@ -133,7 +133,7 @@ function App() {
                 return (
                   <kbd
                     key={index}
-                    className={`rounded-lg bg-blue-gray-100 px-2 py-1.5 text-xs font-bold text-purple-400 dark:bg-blue-gray-900 dark:text-purple-600 ${index != 0 ? 'ml-1' : ''}`}
+                    className={`rounded-lg bg-blue-gray-100 px-2 py-1.5 text-xs font-bold text-red-600 dark:bg-blue-gray-900 dark:text-purple-600 ${index != 0 ? 'ml-1' : ''}`}
                   >
                     {!isRun ? '↓' : '↑'}
                   </kbd>

@@ -16,7 +16,7 @@ const useLoginCheck = () => {
         if (res.data) {
           setUserInfo(res.data?.user);
           setChecking(false);
-          if (location.pathname === '/') navigate('/home');
+          if (location.pathname === '/') navigate('/xp/home');
         } else {
           throw new Error('login failed');
         }

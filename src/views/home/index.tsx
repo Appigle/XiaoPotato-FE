@@ -1,11 +1,8 @@
-import ToastContainer from '@components/ToastContainer';
 import { Spinner } from '@material-tailwind/react';
 import { typePostListRef } from '@src/@types/typePostItem';
 import PostGenreList from '@src/components/GenreTypeList';
-import { NavbarWithSearch } from '@src/components/NavbarWithSearch';
 import PostCardList from '@src/components/PostCards/PostCardList';
 import Sidebar from '@src/components/Sidebar';
-import SocketProvider from '@src/components/SocketIO/SocketProvider';
 import useGlobalStore from '@src/stores/useGlobalStore';
 import useLoginCheck from '@src/utils/hooks/login';
 import useTheme from '@src/utils/hooks/useTheme';
@@ -39,7 +36,7 @@ const Main: React.FC = () => {
 };
 
 // Main App component
-const App: React.FC = () => {
+const Home: React.FC = () => {
   const { toggleTheme: initTheme } = useTheme();
 
   useEffect(() => {
@@ -47,17 +44,11 @@ const App: React.FC = () => {
   }, [initTheme]);
 
   return (
-    <SocketProvider>
-      <ToastContainer />
-      <div className="flex h-screen w-screen flex-col bg-gray-100 dark:bg-blue-gray-900">
-        <NavbarWithSearch />
-        <div className="flex h-[calc(100%-80px)] flex-1">
-          <Sidebar />
-          <Main />
-        </div>
-      </div>
-    </SocketProvider>
+    <>
+      <Sidebar />
+      <Main />
+    </>
   );
 };
 
-export default App;
+export default Home;

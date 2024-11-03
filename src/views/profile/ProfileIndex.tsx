@@ -2,7 +2,6 @@ import xPotatoApi from '@/Api/xPotatoApi';
 import defaultUserAvatar from '@/assets/MonaLisaAvatar.png';
 import EditProfileModal from '@/components/EditProfileModal';
 import { type_req_update_profile, user_profile } from '@src/@types/typeRequest';
-import { NavbarWithSearch } from '@src/components/NavbarWithSearch';
 import ToastContainer from '@src/components/ToastContainer';
 import UserFansModal from '@src/components/UserFansModal';
 import UserFollowingsModal from '@src/components/UserFollowingsModal';
@@ -14,10 +13,12 @@ import { useNavigate } from 'react-router-dom';
 import './ProfileIndex.css';
 const ProfilePage: React.FC = () => {
   useLoginCheck();
+
   const [profile, setProfile] = useState<user_profile | null | undefined>(null);
   const [isOpenModal, setIsOpenModal] = useState(false);
   //global state
   const userInfo = useGlobalStore((s) => s.userInfo);
+  const setHeaderConfig = useGlobalStore((s) => s.setHeaderConfig);
   const setUserInfo = useGlobalStore((s) => s.setUserInfo);
   const setIsLoading = useGlobalStore((s) => s.setIsLoading);
   const isLoading = useGlobalStore((s) => s.isLoading);
@@ -27,6 +28,11 @@ const ProfilePage: React.FC = () => {
     return userInfo?.userAvatar || defaultUserAvatar;
   });
 
+  useEffect(() => {
+    setHeaderConfig({
+      hasSearch: false,
+    });
+  }, [setHeaderConfig]);
   //fans
   const [isOpenFansModal, setIsOpenFansModal] = useState(false);
   //follows
@@ -34,7 +40,7 @@ const ProfilePage: React.FC = () => {
   const goBack = useGoBack();
   const navigate = useNavigate();
   const handleViewPosts = () => {
-    navigate(`/profile/${profile?.id}/posts`);
+    navigate(`/xp/profile/${profile?.id}/posts`);
   };
   const handleOpenFollowingsModal = () => {
     setIsOpenFollowingsModal(true);
@@ -102,7 +108,6 @@ const ProfilePage: React.FC = () => {
   return (
     <main className="page-content">
       <ToastContainer />
-      <NavbarWithSearch search={false} />
       <section className="relative block h-[500px]">
         <div
           className="absolute top-0 h-full w-full bg-cover bg-center"

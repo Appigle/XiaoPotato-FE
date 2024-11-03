@@ -29,6 +29,7 @@ export function NavbarWithSearch(props: { search?: boolean }) {
   const currentGenreItem = useGlobalStore((s) => s.currentGenreItem);
   const setCurrentPostType = useGlobalStore((s) => s.setCurrentPostType);
   const setCurrentSearchWord = useGlobalStore((s) => s.setCurrentSearchWord);
+  const { headerConfig } = useGlobalStore();
   const userDisplayName = useGlobalStore((s) => s.userDisplayName);
   const [openMenu, setOpenMenu] = React.useState(false);
   const [openNav, setOpenNav] = React.useState(false);
@@ -67,7 +68,7 @@ export function NavbarWithSearch(props: { search?: boolean }) {
         className="ml-4 flex items-center gap-x-1 p-1 font-medium"
       >
         <NavLink
-          to="/profile"
+          to="/xp/profile"
           key="profile"
           title="user-profile"
           className="relative flex flex-col items-center justify-center text-blue-gray-900 dark:text-gray-100"
@@ -117,7 +118,7 @@ export function NavbarWithSearch(props: { search?: boolean }) {
             src={xiaoPotatoLogo}
             alt="x-potato-logo"
             className="h-[50px] w-[50px]"
-            onClick={() => navigate('/home')}
+            onClick={() => navigate('/xp/home')}
           />
           <span
             onClick={() => socketSent('message', 'hello server!')}
@@ -127,7 +128,7 @@ export function NavbarWithSearch(props: { search?: boolean }) {
           </span>
         </Typography>
         <div className="hidden items-center lg:flex">
-          {search && (
+          {search && headerConfig?.hasSearch && (
             <div className="relative flex w-full items-center justify-end md:w-max">
               <Menu open={openMenu} handler={setOpenMenu}>
                 <MenuHandler>
