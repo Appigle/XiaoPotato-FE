@@ -1,19 +1,21 @@
 import { Avatar, Button, Card, Dialog, Typography } from '@material-tailwind/react';
 import { type_res_user_login } from '@src/@types/typeRequest';
-import Api from '@src/Api';
 import defaultUserAvatar from '@/assets/MonaLisaAvatar.png';
 import { useEffect, useState } from 'react';
-
+import xPotatoApi from '@src/Api/xPotatoApi';
+import useGlobalStore from '@src/stores/useGlobalStore';
+xPotatoApi;
 interface UserFollowingsModalProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
   user: type_res_user_login;
 }
-function UserFollowingsModal({ isOpen, setIsOpen }: UserFollowingsModalProps) {
+function UserFollowingsModal({ isOpen, setIsOpen, user }: UserFollowingsModalProps) {
   const [followingsList, setFollowingsList] = useState<type_res_user_login[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [loadingStates, setLoadingStates] = useState<{ [key: number]: boolean }>({});
-
+  const setUserInfo = useGlobalStore((state) => state.setUserInfo);
+  const userInfo = useGlobalStore((state) => state.userInfo);
   const handleClose = () => {
     setIsOpen(false);
     // 清理状态
@@ -22,13 +24,13 @@ function UserFollowingsModal({ isOpen, setIsOpen }: UserFollowingsModalProps) {
     setLoadingStates({});
   };
 
-  const followHandler = async (userId: number, index: number) => {
-    if (loadingStates[userId]) return;
+  const followHandler = async (fanId: number, index: number) => {
+    if (loadingStates[fanId]) return;
 
     try {
-      setLoadingStates((prev) => ({ ...prev, [userId]: true }));
+      setLoadingStates((prev) => ({ ...prev, [fanId]: true }));
 
-      const res = await Api.xPotatoApi.followUser({ id: userId });
+      const res = await xPotatoApi.followUser({ id: fanId });
 
       if (res.code === 200) {
         setFollowingsList((prevList) => {
@@ -39,17 +41,27 @@ function UserFollowingsModal({ isOpen, setIsOpen }: UserFollowingsModalProps) {
           };
           return newList;
         });
+        if (userInfo) {
+          const newFollowCount = res.data
+            ? (userInfo.followCount || 0) + 1
+            : (userInfo.followCount || 0) - 1;
+
+          setUserInfo({ ...userInfo, followCount: newFollowCount });
+        } else {
+          throw new Error(res.message || 'follow action failed');
+        }
       }
     } catch (error) {
       console.error('Follow action failed:', error);
     } finally {
-      setLoadingStates((prev) => ({ ...prev, [userId]: false }));
+      setLoadingStates((prev) => ({ ...prev, [fanId]: false }));
     }
   };
 
   const loadFollowings = async () => {
     try {
-      const response = await Api.xPotatoApi.getUserFollowings({
+      const response = await xPotatoApi.getUserFollowings({
+        userId: user.id,
         currentPage,
         pageSize: 10,
       });
@@ -63,7 +75,7 @@ function UserFollowingsModal({ isOpen, setIsOpen }: UserFollowingsModalProps) {
     if (isOpen) {
       loadFollowings();
     }
-  }, [currentPage, isOpen]);
+  }, [currentPage, isOpen, user.id]);
 
   return (
     <Dialog

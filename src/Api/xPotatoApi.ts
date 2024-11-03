@@ -3,6 +3,7 @@ import {
   BaseRes,
   BaseResPageData,
   Post,
+  type_req_get_fans_by_page,
   type_req_get_post_by_page,
   type_req_post_create,
   type_req_update_profile,
@@ -188,7 +189,7 @@ const getPostByPage = (data: type_req_get_post_by_page) => {
  * @param queryParams type_req_get_post_by_page
  * @returns Promise<BaseRes<BaseResPageData<Post>>>
  */
-const getUserPosts = (userId: number, queryParams: type_req_get_post_by_page) => {
+const getUserPosts = (userId: number, queryParams: type_req_get_fans_by_page) => {
   return useRequest.get<BaseRes<BaseResPageData<Post>>>({
     baseURL,
     url: `/post/selectByUserId`,
@@ -199,23 +200,19 @@ const getUserPosts = (userId: number, queryParams: type_req_get_post_by_page) =>
     abortRepetitiveRequest: true,
   });
 };
-const getUserFans = (queryParams: type_req_get_post_by_page) => {
+const getUserFans = (params: { userId: number; currentPage: number; pageSize: number }) => {
   return useRequest.get<BaseRes<BaseResPageData<type_res_user_login>>>({
     baseURL,
     url: `/user/fans`,
-    params: {
-      ...queryParams,
-    },
+    params,
     abortRepetitiveRequest: true,
   });
 };
-const getUserFollowings = (queryParams: type_req_get_post_by_page) => {
+const getUserFollowings = (params: { userId: number; currentPage: number; pageSize: number }) => {
   return useRequest.get<BaseRes<BaseResPageData<type_res_user_login>>>({
     baseURL,
     url: `/user/follows`,
-    params: {
-      ...queryParams,
-    },
+    params,
     abortRepetitiveRequest: true,
   });
 };

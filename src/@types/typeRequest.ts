@@ -62,3 +62,7 @@ export interface Post extends IPostItem {
     userAvatar: string | null;
   };
 }
+export interface type_req_get_fans_by_page {
+  currentPage: number;
+  pageSize: number;
+}
