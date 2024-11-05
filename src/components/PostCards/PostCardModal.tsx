@@ -3,14 +3,16 @@ import defaultPostImg from '@/assets/Sunrise.png';
 import { StarIcon } from '@heroicons/react/24/outline';
 import { StarIcon as StarSolidIcon } from '@heroicons/react/24/solid';
 import { Avatar, Button, Carousel, Dialog, DialogBody } from '@material-tailwind/react';
-import { IPostItem } from '@src/@types/typePostItem';
+import { IPostItem, typePostCardCommentRef } from '@src/@types/typePostItem';
 import Api from '@src/Api';
 import useGlobalStore from '@src/stores/useGlobalStore';
 import HTTP_RES_CODE from '@src/utils/request/httpResCode';
 import { formatLargeNumber, formatStringWithTagAndUrl } from '@src/utils/stringUtils';
-import { useEffect, useState } from 'react';
+import dayjs from 'dayjs';
+import { useEffect, useRef, useState } from 'react';
 import { GoCommentDiscussion } from 'react-icons/go';
 import HeartEffect from '../HeartEffect';
+import PostCardComment from './PostCardComment';
 interface PostDetailModalProps {
   open?: boolean;
   index: number;
@@ -24,6 +26,7 @@ const PostDetailModal = ({ post: _post, open = false, onClose, index }: PostDeta
   const [postAvatar, setPostAvatar] = useState(post?.userAvatar || '');
   const userInfo = useGlobalStore((s) => s.userInfo);
   // const post = useGlobalStore((s) => s.post);
+  const postCardCommentRef = useRef<typePostCardCommentRef>(null);
   const handleOpen = (e: boolean) => {
     setPostData(undefined);
     setIsOpen(!!e);
@@ -89,6 +92,9 @@ const PostDetailModal = ({ post: _post, open = false, onClose, index }: PostDeta
       }
     });
   };
+  const handleComment = () => {
+    postCardCommentRef.current?.goToComment();
+  };
 
   return (
     <Dialog
@@ -110,23 +116,32 @@ const PostDetailModal = ({ post: _post, open = false, onClose, index }: PostDeta
             prevArrow={() => null}
             nextArrow={() => null}
           >
-            <img
-              src={postImage}
-              onError={handleImageError}
-              // src="https://images.unsplash.com/photo-1497436072909-60f360e1d4b1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2560&q=80"
-              alt={post.postTitle}
-              className="h-fit max-h-[80vh] w-full object-contain"
-            />
+            <div className="flex h-full w-fit items-center">
+              <img
+                src={postImage}
+                onError={handleImageError}
+                alt={post.postTitle}
+                className="h-fit max-h-[80vh] w-full object-contain"
+              />
+            </div>
           </Carousel>
         </div>
         <div className="mt-4 flex w-2/5 flex-col">
           <div className="flex items-center justify-between gap-2">
-            <Avatar
-              src={postAvatar}
-              onError={handleAvatarError}
-              alt={post.userFirstName}
-              size="sm"
-            />
+            <div className="flex items-center gap-2">
+              <Avatar
+                src={postAvatar}
+                onError={handleAvatarError}
+                alt={post.userFirstName}
+                size="sm"
+              />
+              <span
+                className="text-md text-blue-gray-900 dark:text-gray-100"
+                title={userInfo?.firstName}
+              >
+                {userInfo?.firstName}
+              </span>
+            </div>
             {post.creatorId !== userInfo?.id && (
               <Button
                 size="sm"
@@ -141,19 +156,25 @@ const PostDetailModal = ({ post: _post, open = false, onClose, index }: PostDeta
               </Button>
             )}
           </div>
-          <div className="flex flex-1 flex-col gap-4 py-4">
+          <div className="scrollbar-hide mt-4 flex max-h-[70vh] flex-1 flex-col gap-4 overflow-auto py-4">
             <h3 className="text-xl text-blue-gray-900 dark:text-gray-100">{post.postTitle}</h3>
             <p className="text-sm text-blue-gray-900 dark:text-gray-100">
               {formatStringWithTagAndUrl(post.postContent)}
             </p>
-            <div className="">comments</div>
+            <p className="flex items-center justify-end px-2 text-[12px] text-blue-gray-800 dark:text-gray-400">
+              Create at: {dayjs(post.createTime).format('MM/DD/YYYY')}
+            </p>
+            <div className="h-[1px] w-full border-b-[1px] border-dashed border-b-gray-400"></div>
+            <PostCardComment postId={post.id} ref={postCardCommentRef} />
           </div>
           <div className="ml-4 mr-4 flex items-center justify-end gap-4">
-            <div>comments input</div>
             <div className="flex items-center gap-2">
               {formatLargeNumber(post.saveCount)}
               {post.saved ? (
-                <StarSolidIcon className="z-10 mb-4 mt-4 size-6 cursor-pointer" onClick={onSave} />
+                <StarSolidIcon
+                  className="z-10 mb-4 mt-4 size-6 cursor-pointer text-red-700"
+                  onClick={onSave}
+                />
               ) : (
                 <StarIcon className="z-10 mb-4 mt-4 size-6 cursor-pointer" onClick={onSave} />
               )}
@@ -167,7 +188,10 @@ const PostDetailModal = ({ post: _post, open = false, onClose, index }: PostDeta
                 onChange={(b: boolean) => onLike(b)}
               />
             </div>
-            <GoCommentDiscussion className="z-10 mb-4 mt-4 size-6 cursor-pointer" />
+            <GoCommentDiscussion
+              className="z-10 mb-4 mt-4 size-6 cursor-pointer"
+              onClick={handleComment}
+            />
           </div>
         </div>
       </DialogBody>

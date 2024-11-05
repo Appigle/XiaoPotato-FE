@@ -2,8 +2,12 @@ import { IPostItem } from '@src/@types/typePostItem';
 import {
   BaseRes,
   BaseResPageData,
+  ICommentItem,
   Post,
+  type_req_create_post_comment,
   type_req_get_fans_by_page,
+  type_req_get_post_1st_comment,
+  type_req_get_post_2nd_comment,
   type_req_get_post_by_page,
   type_req_post_create,
   type_req_update_profile,
@@ -216,6 +220,72 @@ const getUserFollowings = (params: { userId: number; currentPage: number; pageSi
     abortRepetitiveRequest: true,
   });
 };
+
+/**
+ * get post 1st level comment
+ * @param params type_req_get_post_1st_comment
+ * @returns Promise<BaseRes<BaseResPageData<ICommentItem>>>
+ */
+const getPost1stComment = (params: type_req_get_post_1st_comment) => {
+  return useRequest.get<BaseRes<BaseResPageData<ICommentItem>>>({
+    baseURL,
+    url: `/comment/first-level`,
+    params,
+  });
+};
+
+/**
+ * get post 2nd response comment
+ * @param params type_req_get_post_2nd_comment
+ * @returns Promise<BaseRes<BaseResPageData<ICommentItem>>>
+ */
+const getPost2ndComment = (params: type_req_get_post_2nd_comment) => {
+  return useRequest.get<BaseRes<BaseResPageData<ICommentItem>>>({
+    baseURL,
+    url: `/comment/second-level`,
+    params,
+  });
+};
+
+/**
+ * delete user's post comment
+ * @param params { commentId: number }
+ * @returns Promise<BaseRes<boolean:isDeleted>>
+ */
+const deletePostComment = (data: { id: number }) => {
+  return useRequest.post<BaseRes<boolean>>({
+    baseURL,
+    url: `/comment/deleteByCommentId`,
+    data,
+  });
+};
+
+/**
+ * create post 1st level comment
+ * @param params type_req_create_post_comment
+ * @returns Promise<BaseRes<number:commentId>>
+ */
+const createPost1stComment = (data: type_req_create_post_comment) => {
+  return useRequest.post<BaseRes<number>>({
+    baseURL,
+    url: `/comment/createFirstComment`,
+    data,
+  });
+};
+
+/**
+ * create post 2nd response comment
+ * @param params type_req_create_post_comment
+ * @returns Promise<BaseRes<number:commentId>>
+ */
+const createPost2ndComment = (data: type_req_create_post_comment) => {
+  return useRequest.post<BaseRes<number>>({
+    baseURL,
+    url: `/comment/createSecondComment`,
+    data,
+  });
+};
+
 export default {
   registerAccount,
   userLogin,
@@ -234,4 +304,9 @@ export default {
   followUser,
   getUserFans,
   getUserFollowings,
+  getPost1stComment,
+  getPost2ndComment,
+  createPost1stComment,
+  createPost2ndComment,
+  deletePostComment,
 };

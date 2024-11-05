@@ -62,7 +62,37 @@ export interface Post extends IPostItem {
     userAvatar: string | null;
   };
 }
-export interface type_req_get_fans_by_page {
+export type type_req_base_page = {
   currentPage: number;
   pageSize: number;
+};
+export interface type_req_get_fans_by_page extends type_req_base_page {}
+
+export interface ICommentItem {
+  commentId: number;
+  content: string;
+  createTime: string;
+  commentUserId: number;
+  commentorFirstName: string;
+  commentorLastName: string;
+  commentorAccount: string;
+  commentorAvatar: string;
+  replyToUserId: number;
+  replyToFirstName: string;
+  replyToLastName: string;
+  replyToAccount: string;
+  replyToAvatar: string;
+  secondLevelCount: number;
+}
+
+export interface type_req_get_post_1st_comment extends type_req_base_page {
+  postId: number;
+}
+export interface type_req_get_post_2nd_comment extends type_req_base_page {
+  commentId: number;
+}
+export interface type_req_create_post_comment {
+  commentId?: number;
+  content: string;
+  postId: number;
 }

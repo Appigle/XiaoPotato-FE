@@ -49,4 +49,8 @@ type typePostListRef = {
   handleScroll: (e: React.UIEvent<HTMLElement, UIEvent>) => void;
 };
 
-export type { IPostItem, typePostListRef };
+interface typePostCardCommentRef {
+  goToComment: () => void;
+}
+
+export type { IPostItem, typePostCardCommentRef, typePostListRef };
