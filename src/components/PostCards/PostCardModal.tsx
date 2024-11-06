@@ -116,7 +116,7 @@ const PostDetailModal = ({ post: _post, open = false, onClose, index }: PostDeta
             prevArrow={() => null}
             nextArrow={() => null}
           >
-            <div className="flex h-full w-fit items-center">
+            <div className="flex h-full w-full items-center justify-center">
               <img
                 src={postImage}
                 onError={handleImageError}

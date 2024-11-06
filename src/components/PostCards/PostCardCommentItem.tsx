@@ -178,7 +178,7 @@ const PostCardCommentItem = ({
                   }}
                   onChange={(e) => setNewComment(e.target.value)}
                   placeholder="Write a reply..."
-                  className="mt-4 w-full resize-none rounded-lg border p-2 text-blue-gray-900 dark:border-gray-700 dark:bg-blue-gray-800 dark:text-gray-100"
+                  className="mt-4 w-full resize-none rounded-lg border bg-blue-gray-200 p-2 text-blue-gray-900 dark:border-gray-700 dark:bg-blue-gray-800 dark:text-gray-100"
                 />
                 <div className="mt-2 flex items-center justify-end gap-2 text-sm">
                   {!loading && !!newComment.trim() && <span className="">'⇧' + '↵' Submit</span>}

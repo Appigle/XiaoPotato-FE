@@ -6,7 +6,7 @@ import HTTP_RES_CODE from '@src/utils/request/httpResCode';
 import Toast from '@src/utils/toastUtils';
 import dayjs from 'dayjs';
 import { Edit, Loader2, Send, X } from 'lucide-react';
-import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
+import { forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import PostCardCommentItem from './PostCardCommentItem';
 
 const PostCardComment = forwardRef<typePostCardCommentRef, { postId: number }>(
@@ -22,23 +22,26 @@ const PostCardComment = forwardRef<typePostCardCommentRef, { postId: number }>(
     const textareaRef = useRef<HTMLTextAreaElement>(null);
     const userInfo = useGlobalStore((s) => s.userInfo);
 
-    const fetchFirstLevelComments = async (page: number) => {
-      setLoading(true);
-      Api.xPotatoApi
-        .getPost1stComment({ currentPage: page, postId, pageSize: 2 })
-        .then((res) => {
-          if (res.code === HTTP_RES_CODE.SUCCESS) {
-            setFirstLevelComments((prev) =>
-              page === 1 ? res.data.records : [...prev, ...res.data.records],
-            );
-            setTotalPages(res.data.pages);
-            setCommentTotalCount(res.data.total);
-          }
-        })
-        .finally(() => {
-          setLoading(false);
-        });
-    };
+    const fetchFirstLevelComments = useCallback(
+      async (page: number) => {
+        setLoading(true);
+        Api.xPotatoApi
+          .getPost1stComment({ currentPage: page, postId, pageSize: 5 })
+          .then((res) => {
+            if (res.code === HTTP_RES_CODE.SUCCESS) {
+              setFirstLevelComments((prev) =>
+                page === 1 ? res.data.records : [...prev, ...res.data.records],
+              );
+              setTotalPages(res.data.pages);
+              setCommentTotalCount(res.data.total);
+            }
+          })
+          .finally(() => {
+            setLoading(false);
+          });
+      },
+      [postId],
+    );
 
     const createComment = async () => {
       if (!newComment.trim()) return;
@@ -53,6 +56,7 @@ const PostCardComment = forwardRef<typePostCardCommentRef, { postId: number }>(
         .then((res) => {
           if (res.code === HTTP_RES_CODE.SUCCESS) {
             setNewComment('');
+            setIsReplyComment(false);
             Toast.success('Create comment successfully!');
             const newComment2: ICommentItem = {
               ...payload,
@@ -88,21 +92,29 @@ const PostCardComment = forwardRef<typePostCardCommentRef, { postId: number }>(
 
     useEffect(() => {
       fetchFirstLevelComments(1);
-    }, []);
+    }, [fetchFirstLevelComments]);
 
     useImperativeHandle(
       ref,
       () => ({
         goToComment: () => {
-          textareaRef.current?.focus();
-          textareaRef.current?.scrollIntoView({ behavior: 'smooth' });
+          if (isReplyComment) {
+            textareaRef.current?.focus();
+            textareaRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          } else {
+            setIsReplyComment(true);
+            setTimeout(() => {
+              textareaRef.current?.focus();
+              textareaRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 100);
+          }
         },
       }),
-      [],
+      [isReplyComment],
     );
 
     return (
-      <div className={`bg-gray-100 p-2 dark:bg-blue-gray-900`}>
+      <div className={`bg-blue-gray-100 p-2 dark:bg-blue-gray-900`}>
         <div className="mb-6 flex flex-col gap-3">
           <div className="flex-1">
             {isReplyComment && (
@@ -111,7 +123,7 @@ const PostCardComment = forwardRef<typePostCardCommentRef, { postId: number }>(
                 value={newComment}
                 onChange={(e) => setNewComment(e.target.value)}
                 placeholder="Write a comment..."
-                className="w-full resize-none rounded-lg border p-2 text-blue-gray-900 dark:border-gray-700 dark:bg-blue-gray-800 dark:text-gray-100"
+                className="w-full resize-none rounded-lg border bg-blue-gray-200 p-2 text-blue-gray-900 dark:border-gray-700 dark:bg-blue-gray-800 dark:text-gray-100"
                 style={{ maxHeight: '400px' }}
               />
             )}
@@ -136,7 +148,7 @@ const PostCardComment = forwardRef<typePostCardCommentRef, { postId: number }>(
                   <button
                     onClick={() => createComment()}
                     disabled={loading || !newComment.trim()}
-                    className="flex items-center gap-2 rounded bg-blue-600 px-2 py-2 text-white hover:bg-blue-700 disabled:bg-blue-400"
+                    className="flex items-center gap-2 rounded bg-blue-600 px-2 py-2 text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-blue-400 disabled:bg-blue-gray-300"
                   >
                     {loading ? (
                       <Loader2 className="h-4 w-4 animate-spin" />
