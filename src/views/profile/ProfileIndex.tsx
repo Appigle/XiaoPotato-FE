@@ -2,7 +2,6 @@ import xPotatoApi from '@/Api/xPotatoApi';
 import defaultUserAvatar from '@/assets/MonaLisaAvatar.png';
 import EditProfileModal from '@/components/EditProfileModal';
 import { type_req_update_profile, user_profile } from '@src/@types/typeRequest';
-import ToastContainer from '@src/components/ToastContainer';
 import UserFansModal from '@src/components/UserFansModal';
 import UserFollowingsModal from '@src/components/UserFollowingsModal';
 import useGlobalStore from '@src/stores/useGlobalStore';
@@ -32,6 +31,11 @@ const ProfilePage: React.FC = () => {
     setHeaderConfig({
       hasSearch: false,
     });
+    return () => {
+      setHeaderConfig({
+        hasSearch: true,
+      });
+    };
   }, [setHeaderConfig]);
   //fans
   const [isOpenFansModal, setIsOpenFansModal] = useState(false);
@@ -107,7 +111,6 @@ const ProfilePage: React.FC = () => {
 
   return (
     <main className="page-content">
-      <ToastContainer />
       <section className="relative block h-[500px]">
         <div
           className="absolute top-0 h-full w-full bg-cover bg-center"

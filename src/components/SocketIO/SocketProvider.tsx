@@ -30,6 +30,8 @@ const SocketProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   }, [isAlive]);
 
   const reConnectSocket = useCallback(() => {
+    if (!userInfo) return;
+    if (socket && socket.current && socket.current.connected) return;
     const domain = import.meta.env.VITE_SOCKET_URL;
     socket.current = socketIOClient(domain, {
       query: { token: `Bearer ${window.localStorage.getItem(X_ACCESS_TOKEN)}` },
@@ -37,6 +39,7 @@ const SocketProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       transports: ['websocket'],
     });
     if (!socket.current) return;
+
     socket.current.on('connect', () => {
       console.log(
         '%c [ SocketIO:Connected and authenticated ]-32',
@@ -102,7 +105,7 @@ const SocketProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
         checkHeartBeat();
       },
     );
-  }, []);
+  }, [checkHeartBeat, userInfo]);
 
   useEffect(() => {
     clearSocket();
