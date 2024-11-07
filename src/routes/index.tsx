@@ -6,6 +6,7 @@ import { createBrowserRouter } from 'react-router-dom';
 import App from '../App.tsx';
 import ProfilePage from '@/views/profile/ProfileIndex.tsx';
 import UserPostsPage from '@src/views/myPosts/myPosts.tsx';
+import HeroSection from '@src/views/About.tsx';
 
 const routers: RouteObject[] = [
   {
@@ -37,6 +38,11 @@ const routers: RouteObject[] = [
   {
     path: '/profile/:userId/posts',
     element: <UserPostsPage />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: '/about',
+    element: <HeroSection />,
     errorElement: <ErrorPage />,
   },
 ];

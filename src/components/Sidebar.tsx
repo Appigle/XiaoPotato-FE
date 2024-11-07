@@ -142,7 +142,7 @@ const Sidebar: React.FC = () => {
             <ul className="space-y-2">
               <li>
                 <Button variant="text" fullWidth className="text-blue-gray-900 dark:text-gray-200">
-                  About XiaoPotato
+                  <Link to="/about"> About XiaoPotato</Link>
                 </Button>
               </li>
               <li>

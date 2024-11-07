@@ -84,70 +84,69 @@ function UserFollowingsModal({ isOpen, setIsOpen, user }: UserFollowingsModalPro
       size="sm"
       className="flex items-center justify-center bg-gray-100 p-5"
     >
-      <Card color="transparent" shadow={false} className="w-full max-w-lg">
-        <div className="mb-4 flex items-center justify-between">
-          <Typography variant="h5" color="blue-gray">
-            Following
-          </Typography>
-          <button
-            onClick={handleClose}
-            className="rounded-full p-2 transition-colors hover:bg-gray-100"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-          </button>
-        </div>
-        <div className="flex flex-wrap items-center gap-4">
-          <ul className="w-full">
-            {followingsList.map((following, index) => (
-              <li
-                key={following.id}
-                className="flex items-center justify-between gap-4 border-b border-gray-200 py-2"
+      <Card color="transparent" shadow={false}>
+        <Typography variant="h5" color="blue-gray" className="mb-4">
+          Following
+        </Typography>
+        <div className="flex flex-col gap-6">
+          {followingsList.length === 0 ? (
+            <Typography color="gray" className="text-center">
+              No Following yet
+            </Typography>
+          ) : (
+            followingsList.map((fan, index) => (
+              <div
+                key={fan.id}
+                className="flex items-center justify-between border-b border-gray-200 pb-4"
               >
                 <div className="flex items-center gap-3">
                   <Avatar
-                    src={following.userAvatar || defaultUserAvatar}
-                    alt={`${following.firstName} ${following.lastName}`}
-                    onError={(e) => {
+                    src={fan.userAvatar || defaultUserAvatar}
+                    alt={`${fan.firstName} ${fan.lastName}`}
+                    onError={(e: React.SyntheticEvent<HTMLImageElement>) => {
                       e.currentTarget.src = defaultUserAvatar;
                     }}
-                    className="h-10 w-10"
+                    className="mr-3 size-10"
                   />
-                  <div className="flex flex-col">
+                  <div className="mr-8 flex flex-col">
                     <Typography color="blue-gray" className="font-medium">
-                      {following.firstName} {following.lastName}
+                      {fan.firstName} {fan.lastName}
                     </Typography>
                     <Typography color="gray" className="text-sm">
-                      {following.userAccount}
+                      {fan.userAccount}
                     </Typography>
                   </div>
                 </div>
                 <Button
                   size="sm"
-                  color="red"
-                  onClick={() => followHandler(following.id, index)}
-                  disabled={loadingStates[following.id]}
+                  color={fan.followed ? 'red' : 'light-blue'}
+                  onClick={() => followHandler(fan.id, index)}
+                  disabled={loadingStates[fan.id]}
                   className="min-w-[90px]"
                 >
-                  {loadingStates[following.id] ? 'Loading...' : 'Unfollow'}
+                  {loadingStates[fan.id] ? 'Loading...' : fan.followed ? 'Unfollow' : 'Follow'}
                 </Button>
-              </li>
-            ))}
-          </ul>
+              </div>
+            ))
+          )}
         </div>
       </Card>
+      <button
+        onClick={handleClose}
+        className="absolute right-4 top-4 text-gray-500 hover:text-gray-700"
+        aria-label="Close dialog"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1.5}
+          stroke="currentColor"
+          className="size-6"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
     </Dialog>
   );
 }

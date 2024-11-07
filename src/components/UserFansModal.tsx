@@ -99,9 +99,9 @@ function UserFansModal({ isOpen, setIsOpen, user }: UserFansModalProps) {
                     onError={(e: React.SyntheticEvent<HTMLImageElement>) => {
                       e.currentTarget.src = defaultUserAvatar;
                     }}
-                    className="size-10"
+                    className="mr-3 size-10"
                   />
-                  <div className="flex flex-col">
+                  <div className="mr-8 flex flex-col">
                     <Typography color="blue-gray" className="font-medium">
                       {fan.firstName} {fan.lastName}
                     </Typography>
