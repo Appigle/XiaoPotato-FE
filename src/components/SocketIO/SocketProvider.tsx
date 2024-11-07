@@ -92,6 +92,30 @@ const SocketProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       setIsAlive(true);
       checkHeartBeat();
     });
+
+    socket.current.on(
+      'pull',
+      (msg: {
+        followerId: number;
+        firstName: string;
+        lastName: string;
+        account: string;
+        notificationType: string;
+      }) => {
+        const name = `${msg.firstName}.${msg.lastName?.[0]?.toUpperCase()}`;
+        let content = '';
+        switch (msg.notificationType) {
+          case 'follow':
+            content = 'followed you!';
+            break;
+          default:
+            break;
+        }
+        Toast.info(`${name} ${content}`);
+        setIsAlive(true);
+        checkHeartBeat();
+      },
+    );
     socket.current.on(
       'randomResponse',
       (response: { randomNumber: number; receivedMessage: string; timestamp: number }) => {
@@ -133,7 +157,7 @@ const SocketProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       if (socket.current) {
         sentHB2ServerRef.current = window.setInterval(() => {
           socketSent('heartbeat', { userId: userInfo?.id, timestamp: Date.now() });
-        }, 5000);
+        }, 1000 * 55);
       }
     }
     return () => {

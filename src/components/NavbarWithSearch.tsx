@@ -121,7 +121,7 @@ export function NavbarWithSearch(props: { search?: boolean }) {
             onClick={() => navigate('/xp/home')}
           />
           <span
-            onClick={() => socketSent('message', 'hello server!')}
+            onClick={() => socketSent('pull', 'hello server!')}
             className="via-slate-200 inline-block bg-gradient-to-r from-pink-600 to-purple-400 bg-clip-text align-middle font-serif text-lg font-bold text-transparent"
           >
             Share your gorgeous Art!

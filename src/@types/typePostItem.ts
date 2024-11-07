@@ -43,6 +43,8 @@ interface IPostItem {
   creatorLastName: string;
   creatorAccount: string;
   creatorAvatar: string;
+  imageWidth: number;
+  imageHeight: number;
 }
 
 type typePostListRef = {
