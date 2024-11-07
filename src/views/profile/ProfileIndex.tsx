@@ -1,6 +1,6 @@
 import xPotatoApi from '@/Api/xPotatoApi';
 import defaultUserAvatar from '@/assets/MonaLisaAvatar.png';
-import EditProfileModal from '@/components/EditProfileModal';
+import EditProfileModal from '@src/components/EditProfileModal';
 import { type_req_update_profile, user_profile } from '@src/@types/typeRequest';
 import { NavbarWithSearch } from '@src/components/NavbarWithSearch';
 import ToastContainer from '@src/components/ToastContainer';

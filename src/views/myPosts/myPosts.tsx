@@ -1,9 +1,10 @@
 import xPotatoApi from '@/Api/xPotatoApi';
-import { Button, Dialog, DialogBody, DialogFooter, DialogHeader } from '@material-tailwind/react';
 import { Post, type_req_get_post_by_page } from '@src/@types/typeRequest';
 import ConfirmModal from '@src/components/ConfirmModal';
 import PostDetailModal from '@src/components/PostCards/PostCardModal';
+import PostModal from '@src/components/PostCards/PostFormModal';
 import { useGoBack } from '@src/utils/hooks/nav';
+import Toast from '@src/utils/toastUtils';
 import { format } from 'date-fns';
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
@@ -19,10 +20,6 @@ const UserPostsPage: React.FC = () => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
-  const [editTitle, setEditTitle] = useState('');
-  // const [editContent, setEditContent] = useState('');
-  // const [editGenre, setEditGenre] = useState('');
-  // const [editImage, setEditImage] = useState<File | null>(null);
   const { userId } = useParams<{ userId: string }>();
 
   const goBack = useGoBack();
@@ -107,28 +104,23 @@ const UserPostsPage: React.FC = () => {
       setPosts((prevPosts) => prevPosts.map((p) => (p.id === post.id ? { ...p, ...post } : p)));
     }
   };
-  const handleEdit = async () => {
-    if (!selectedPost) return;
-    try {
-      const response = await xPotatoApi.postUpdate({
-        id: selectedPost.id,
-        // postTitle: postTitle,
-        // postContent: postContent,
-        // postGenre: postGenre,
-      });
-      if (response.code === 200) {
-        await fetchUserPosts(currentPage);
-        setShowEditModal(false);
-      }
-    } catch (error) {
-      console.error('Error updating post:', error);
+  const handleEditPostCallback = (success: boolean) => {
+    if (success) {
+      fetchUserPosts(currentPage);
+      setShowEditModal(false);
+      Toast.success('Post updated successfully');
+    } else {
+      Toast.error('Failed to update post');
     }
   };
 
   const openEditModal = (post: Post) => {
     setSelectedPost(post);
-    setEditTitle(post.postTitle);
     setShowEditModal(true);
+  };
+  const closeEditModal = () => {
+    setShowEditModal(false);
+    setSelectedPost(null);
   };
 
   const openDeleteModal = (post: Post) => {
@@ -354,26 +346,13 @@ const UserPostsPage: React.FC = () => {
         onConfirm={handleDelete}
         onCancel={() => setShowDeleteModal(false)}
       />
-      <Dialog open={showEditModal} handler={() => setShowEditModal(!showEditModal)}>
-        <DialogHeader>Edit Post</DialogHeader>
-        <DialogBody>
-          <input
-            type="text"
-            value={editTitle}
-            onChange={(e) => setEditTitle(e.target.value)}
-            placeholder="Post title"
-            className="w-full rounded-lg border border-gray-300 p-2"
-          />
-        </DialogBody>
-        <DialogFooter className="flex justify-end space-x-2">
-          <Button variant="outlined" color="gray" onClick={() => setShowEditModal(false)}>
-            Cancel
-          </Button>
-          <Button color="blue" onClick={handleEdit}>
-            Save changes
-          </Button>
-        </DialogFooter>
-      </Dialog>
+      <PostModal
+        open={showEditModal}
+        mode="edit"
+        post={selectedPost || undefined}
+        onClose={closeEditModal}
+        postCb={handleEditPostCallback}
+      />
       <PostDetailModal
         index={selectedPost?.id || 0}
         onClose={handleDetailModalClose}
