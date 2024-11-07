@@ -53,7 +53,10 @@ export interface type_req_get_post_by_page
 export interface type_res_get_post extends BaseResPageData<IPostItem> {}
 
 export interface type_req_post_create
-  extends Pick<IPostItem, 'postTitle' | 'postContent' | 'postGenre' | 'postImage'> {}
+  extends Pick<
+    IPostItem,
+    'postTitle' | 'postContent' | 'postGenre' | 'postImage' | 'imageWidth' | 'imageHeight'
+  > {}
 
 export interface Post extends IPostItem {
   user?: {

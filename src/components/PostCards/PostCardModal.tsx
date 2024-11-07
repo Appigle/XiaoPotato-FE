@@ -132,26 +132,26 @@ const PostDetailModal = ({ post: _post, open = false, onClose, index }: PostDeta
               <Avatar
                 src={postAvatar}
                 onError={handleAvatarError}
-                alt={post.userFirstName}
+                alt={post.creatorFirstName}
                 size="sm"
               />
               <span
                 className="text-md text-blue-gray-900 dark:text-gray-100"
-                title={userInfo?.firstName}
+                title={post.creatorFirstName}
               >
-                {userInfo?.firstName}
+                {post.creatorFirstName}.{post.creatorLastName?.[0]?.toUpperCase()}
               </span>
             </div>
             {post.creatorId !== userInfo?.id && (
               <Button
                 size="sm"
                 onClick={onFollow}
-                className="bg-blue-gray-900 text-gray-100 dark:bg-gray-100 dark:text-blue-gray-900"
+                className="bg-blue-gray-500 text-gray-100 outline-none focus:outline-none dark:bg-gray-100 dark:text-blue-gray-900"
               >
                 {post.followed ? (
-                  <span className="text-red-600">UnFollow</span>
+                  <span className="text-red-400">UnFollow</span>
                 ) : (
-                  <span className="text-blue-gray-900">Follow</span>
+                  <span>Follow</span>
                 )}
               </Button>
             )}
@@ -188,10 +188,13 @@ const PostDetailModal = ({ post: _post, open = false, onClose, index }: PostDeta
                 onChange={(b: boolean) => onLike(b)}
               />
             </div>
-            <GoCommentDiscussion
-              className="z-10 mb-4 mt-4 size-6 cursor-pointer"
-              onClick={handleComment}
-            />
+            <div className="flex items-center gap-2">
+              {formatLargeNumber(post.commentCount)}
+              <GoCommentDiscussion
+                className="z-10 mb-4 mt-4 size-6 cursor-pointer"
+                onClick={handleComment}
+              />
+            </div>
           </div>
         </div>
       </DialogBody>

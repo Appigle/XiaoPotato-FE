@@ -169,6 +169,8 @@ const PostModal: React.FC<PostModalProps> = ({ open, onClose, postCb, post, mode
           postContent: formData.postContent,
           postImage: res.data,
           postGenre: formData.postGenre,
+          imageWidth: formData.imageWidth,
+          imageHeight: formData.imageHeight,
         });
       });
     } else {

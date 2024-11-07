@@ -15,7 +15,7 @@ import allGenreList from '@src/constants/genreList';
 import Key from '@src/constants/keyboard';
 import { X_ACCESS_TOKEN } from '@src/constants/LStorageKey';
 import useGlobalStore from '@src/stores/useGlobalStore';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useSocketContext } from './SocketIO';
@@ -38,6 +38,20 @@ export function NavbarWithSearch(props: { search?: boolean }) {
   const inputRef = React.useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
   const { socketSent, isAlive } = useSocketContext();
+
+  const handleSearch = () => {
+    setCurrentSearchWord(searchWord);
+  };
+
+  useEffect(() => {
+    if (!headerConfig.hasSearch) {
+      setSearchWord('');
+    }
+    return () => {
+      setSearchWord('');
+      setCurrentSearchWord('');
+    };
+  }, [setCurrentSearchWord, headerConfig]);
 
   useHotkeys('alt+k', (e) => {
     if (!isFocused) {
@@ -184,11 +198,7 @@ export function NavbarWithSearch(props: { search?: boolean }) {
                 onKeyDown={(e) => handleKeyDown(e)}
                 className="min-w-[300px] rounded-l-none !border-t-blue-gray-200 focus:!border-t-gray-900 dark:text-gray-200 dark:focus:bg-blue-gray-400"
               />
-              <Button
-                size="md"
-                className="m-2 min-w-28 rounded-lg"
-                onClick={() => setCurrentSearchWord(searchWord)}
-              >
+              <Button size="md" className="m-2 min-w-28 rounded-lg" onClick={() => handleSearch()}>
                 Search
               </Button>
             </div>
