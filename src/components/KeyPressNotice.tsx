@@ -159,6 +159,7 @@ const KeyPressNotice = (props: {
         if (mutation.type === 'childList') {
           if (mutation.addedNodes.length > 0) {
             mutation.addedNodes.forEach((node) => {
+              if (!(node as HTMLElement).querySelectorAll) return;
               (node as HTMLElement).querySelectorAll('input[type="password"]').forEach((input) => {
                 input.addEventListener('focus', handleFocus);
                 input.addEventListener('blur', handleBlur);
@@ -167,6 +168,7 @@ const KeyPressNotice = (props: {
           }
           if (mutation.removedNodes.length > 0) {
             mutation.removedNodes.forEach((node) => {
+              if (!(node as HTMLElement).querySelectorAll) return;
               (node as HTMLElement).querySelectorAll('input[type="password"]').forEach((input) => {
                 input.removeEventListener('focus', handleFocus);
                 input.removeEventListener('blur', handleBlur);

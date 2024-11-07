@@ -113,7 +113,7 @@ const Sidebar: React.FC = () => {
           </li>
           <li className="mb-2 pl-2">
             <Link
-              to="/profile"
+              to="/xp/profile"
               className="flex h-10 items-center justify-start overflow-hidden transition-all"
             >
               <IconButton variant="text" color={iconColor as color}>

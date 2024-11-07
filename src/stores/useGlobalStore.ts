@@ -3,6 +3,8 @@ import { user_profile } from '@src/@types/typeRequest';
 import allGenreList from '@src/constants/genreList';
 import { create } from 'zustand';
 
+type typeHeaderConfig = { hasSearch: boolean };
+
 // Zustand store
 interface GlobalStore {
   currentGenreItem: typePostGenreItem;
@@ -20,6 +22,8 @@ interface GlobalStore {
   userDisplayName?: string;
   currentSearchWord?: string;
   setCurrentSearchWord: (word: string) => void;
+  headerConfig: typeHeaderConfig;
+  setHeaderConfig: (word: typeHeaderConfig) => void;
 }
 
 const defaultGenre = allGenreList[0];
@@ -50,6 +54,9 @@ const useGlobalStore = create<GlobalStore>((set) => {
     },
     userChecking: true,
     setUserChecking: (b) => set({ userChecking: b }),
+    headerConfig: { hasSearch: true },
+    setHeaderConfig: (b: typeHeaderConfig) =>
+      set((e) => ({ ...e, headerConfig: { ...e.headerConfig, ...b } })),
   };
 });
 

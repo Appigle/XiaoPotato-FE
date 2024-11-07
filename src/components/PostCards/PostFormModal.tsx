@@ -18,7 +18,13 @@ import HTTP_RES_CODE from '@src/utils/request/httpResCode';
 import Toast from '@src/utils/toastUtils';
 import React, { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import FileUpload from '../FileUpload';
+
 type FilesType = (File | string)[];
+
+type ImageDimensions = {
+  width: number;
+  height: number;
+};
 interface PostModalProps {
   index?: number;
   open: boolean;
@@ -35,6 +41,8 @@ interface FormData {
   postTitle: string;
   postContent: string;
   files: FilesType;
+  imageWidth: number;
+  imageHeight: number;
 }
 interface FormDataValidateResult {
   isPostGenreOk: boolean;
@@ -47,6 +55,8 @@ const defaultFormData: FormData = {
   postTitle: '',
   postContent: '',
   files: [],
+  imageWidth: 0,
+  imageHeight: 0,
 };
 
 const defaultFormDataValidateResult: FormDataValidateResult = {
@@ -176,6 +186,8 @@ const PostModal: React.FC<PostModalProps> = ({ open, onClose, postCb, post, mode
           postContent: formData.postContent,
           postImage: res.data,
           postGenre: formData.postGenre,
+          imageWidth: formData.imageWidth,
+          imageHeight: formData.imageHeight,
         });
       });
     }
@@ -202,8 +214,37 @@ const PostModal: React.FC<PostModalProps> = ({ open, onClose, postCb, post, mode
       });
   };
 
+  const getImageDimensions = (file: File): Promise<ImageDimensions> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const img = new Image();
+        img.onload = () => {
+          resolve({ width: img.width, height: img.height });
+        };
+        img.onerror = reject;
+        img.src = (event.target?.result as string) || '';
+      };
+      reader.readAsDataURL(file);
+    });
+  };
+
   const onFilesAdded = (files: File[]) => {
     setFileChanged(true);
+
+    getImageDimensions(files[0])
+      .then((dimensions) => {
+        console.log(`Image width: ${dimensions.width}`);
+        console.log(`Image height: ${dimensions.height}`);
+        setFormData((prev) => ({
+          ...prev,
+          imageHeight: dimensions.height,
+          imageWidth: dimensions.width,
+        }));
+      })
+      .catch((error) => {
+        console.error('Error reading image dimensions:', error);
+      });
     setFormData((prev) => ({
       ...prev,
       files: [...prev.files, ...files],

@@ -12,7 +12,7 @@ const NAV_MENU = [
   // },
   {
     name: 'Home',
-    path: '/home',
+    path: '/xp/home',
     icon: 'home',
   },
 ];

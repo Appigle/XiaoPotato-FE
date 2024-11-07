@@ -5,7 +5,7 @@ const useGoBack = () => {
   const navigate = useNavigate();
   return useCallback(
     (path?: string | undefined) => {
-      navigate((path || history.length > 1 ? -1 : '/home') as To);
+      navigate((path || history.length > 1 ? -1 : '/xp/home') as To);
     },
     [navigate],
   );

@@ -26,7 +26,7 @@ export function LoginModal({ open, setOpen, openSignUp }: LoginModalProps): JSX.
       console.log('Login successful', response.data);
       // 处理登录成功后的逻辑，例如保存token、更新用户状态等
       setOpen(false);
-      navigate('/home');
+      navigate('/xp/home');
     } catch (error) {
       console.error('Login failed', axios.isAxiosError(error) ? error.response?.data : error);
 
