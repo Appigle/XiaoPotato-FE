@@ -29,6 +29,7 @@ const PostPostList = forwardRef<typePostListRef, PropsType>((_, ref) => {
     'create',
   );
   const currentSearchWord = useGlobalStore((s) => s.currentSearchWord);
+  const setCurrentSearchWord = useGlobalStore((s) => s.setCurrentSearchWord);
   const getPostDataByPage = useCallback(
     (size: number, page: number, searchWord: string, postGenre: typePostGenre) => {
       const post: type_req_get_post_by_page = {
@@ -55,6 +56,11 @@ const PostPostList = forwardRef<typePostListRef, PropsType>((_, ref) => {
     },
     [setIsLoading],
   );
+
+  useEffect(() => {
+    setCurrentSearchWord('');
+    setCurrentPostGenre('All');
+  }, [setCurrentSearchWord]);
 
   useEffect(() => {
     const currentLength = postList.length;

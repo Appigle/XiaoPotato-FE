@@ -37,7 +37,7 @@ const PostCard = (props: PostCardProps) => {
   const [post, setPost] = useState(originalPost);
   const userInfo = useGlobalStore((s) => s.userInfo);
   const [postImage, setPostImage] = useState(post.postImage || '');
-  const [userAvatar, setUserAvatar] = useState(userInfo?.userAvatar || '');
+  const [userAvatar, setUserAvatar] = useState(post.userAvatar || '');
   const [iconSize, setIconSize] = useState('h-8 w-8');
   const [isConfirming, setIsConfirming] = useState(false);
 
@@ -126,11 +126,11 @@ const PostCard = (props: PostCardProps) => {
             <Avatar
               onError={handleAvatarError}
               src={userAvatar}
-              alt={userInfo?.firstName}
+              alt={post.creatorFirstName}
               size="sm"
             />
-            <span className="ml-2 text-sm" title={userInfo?.firstName}>
-              {userInfo?.firstName}
+            <span className="ml-2 text-sm" title={post.creatorFirstName}>
+              {post.creatorFirstName}.{post.creatorLastName?.[0]?.toUpperCase()}
             </span>
           </Typography>
           <div className="flex flex-1 items-center justify-end">

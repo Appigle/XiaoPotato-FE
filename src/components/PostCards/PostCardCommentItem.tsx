@@ -237,7 +237,7 @@ const PostCardCommentItem = ({
           !replyingTo &&
           level <= 2 && (
             <div
-              className="ml-4 flex cursor-pointer items-center justify-center space-y-2 rounded-lg px-2 py-1 text-[12px] text-gray-100 opacity-50"
+              className="ml-4 flex cursor-pointer items-center justify-center space-y-2 rounded-lg px-2 py-1 text-[12px] text-blue-gray-900 opacity-50 dark:text-gray-100"
               onClick={() => {
                 handleLoadMoreComments(currentCommentsPage + 1);
               }}

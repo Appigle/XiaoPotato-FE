@@ -47,6 +47,7 @@ const SocketProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       );
       setIsAlive(true);
       checkHeartBeat();
+      socket.current.emit('heartbeat', { userId: userInfo?.id, timestamp: Date.now() });
     });
 
     socket.current.on('error', (msg: string) => {
@@ -82,16 +83,29 @@ const SocketProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       checkHeartBeat();
     });
 
-    socket.current.on('notification', (notification: string) => {
-      console.info(
-        '%c [ SocketIO: notification ]-32',
-        'font-size:13px; background:pink; color:#bf2c9f;',
-        notification,
-      );
-      Toast.success(notification);
-      setIsAlive(true);
-      checkHeartBeat();
-    });
+    socket.current.on(
+      'notification',
+      (msg: {
+        followerId: number;
+        firstName: string;
+        lastName: string;
+        account: string;
+        notificationType: string;
+      }) => {
+        const name = `${msg.firstName}.${msg.lastName?.[0]?.toUpperCase()}`;
+        let content = '';
+        switch (msg.notificationType) {
+          case 'follow':
+            content = 'followed you!';
+            break;
+          default:
+            break;
+        }
+        Toast.info(`${name} ${content}`);
+        setIsAlive(true);
+        checkHeartBeat();
+      },
+    );
 
     socket.current.on(
       'pull',
@@ -157,7 +171,7 @@ const SocketProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       if (socket.current) {
         sentHB2ServerRef.current = window.setInterval(() => {
           socketSent('heartbeat', { userId: userInfo?.id, timestamp: Date.now() });
-        }, 1000 * 55);
+        }, 1000 * 5);
       }
     }
     return () => {

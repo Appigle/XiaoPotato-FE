@@ -1,6 +1,7 @@
 import react from '@vitejs/plugin-react';
 import path from 'path';
 import { AliasOptions, defineConfig } from 'vite';
+import ClosePlugin from './vite-plugin-close.ts';
 
 const directories = [
   './src',
@@ -22,7 +23,7 @@ const alias: AliasOptions = directories.reduce<Record<string, string>>(
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), ClosePlugin()],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),

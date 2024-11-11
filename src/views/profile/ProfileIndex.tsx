@@ -1,7 +1,7 @@
 import xPotatoApi from '@/Api/xPotatoApi';
 import defaultUserAvatar from '@/assets/MonaLisaAvatar.png';
-import EditProfileModal from '@src/components/EditProfileModal';
 import { type_req_update_profile, user_profile } from '@src/@types/typeRequest';
+import EditProfileModal from '@src/components/EditProfileModal';
 import UserFansModal from '@src/components/UserFansModal';
 import UserFollowingsModal from '@src/components/UserFollowingsModal';
 import useGlobalStore from '@src/stores/useGlobalStore';
@@ -198,7 +198,7 @@ const ProfilePage: React.FC = () => {
                     <div className="mr-4 p-3 text-center">
                       <span className="text-blueGray-600 block text-xl font-bold uppercase tracking-wide">
                         <button onClick={handleOpenFollowingsModal}>
-                          {profile.followCount || 568}
+                          {profile.followCount || 0}
                         </button>
                       </span>
 
@@ -207,14 +207,14 @@ const ProfilePage: React.FC = () => {
                     <div className="mr-4 p-3 text-center">
                       <span className="text-blueGray-600 block text-xl font-bold uppercase tracking-wide">
                         <button onClick={handleOpenFansModal}>
-                          <span>{profile.fansCount || 687}</span>
+                          <span>{profile.fansCount || 0}</span>
                         </button>
                       </span>
                       <span className="text-blueGray-400 text-sm">Followers</span>
                     </div>
                     <div className="p-3 text-center lg:mr-4">
                       <span className="text-blueGray-600 block text-xl font-bold uppercase tracking-wide">
-                        {profile.commentsCount || 873}
+                        {profile.commentsCount || 0}
                       </span>
                       <span className="text-blueGray-400 text-sm">Comments</span>
                     </div>
