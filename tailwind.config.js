@@ -1,5 +1,4 @@
 import withMT from '@material-tailwind/react/utils/withMT';
-import daisyui from 'daisyui';
 
 /** @type {import('tailwindcss').Config} */
 export default withMT({
@@ -18,5 +17,4 @@ export default withMT({
       },
     },
   },
-  plugins: [daisyui],
 });
