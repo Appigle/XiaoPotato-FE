@@ -2,7 +2,7 @@ import { IUserItem } from '@src/@types/typeUserItem';
 import { Resend } from 'resend';
 import Toast from './toastUtils';
 
-const RESEND_API_KEY = import.meta.env.VITE_RESEND_API_KEY;
+const RESEND_API_KEY = import.meta.env.VITE_RESEND_API_KEY || 're_';
 const resend = new Resend(RESEND_API_KEY);
 interface FormState {
   email: string;
