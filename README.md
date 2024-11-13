@@ -46,6 +46,7 @@ Currently, two official plugins are available:
 - [React-Hotkeys-Hook](https://react-hotkeys-hook.vercel.app/docs/intro)
 - [React-Textarea-Autosize](https://github.com/Andarist/react-textarea-autosize)
 - [React-hooks-ts](https://usehooks-ts.com/react-hook/use-media-query)
+- [React-email](https://react.email/docs/integrations/resend)
 
 ## Expanding the ESLint configuration
 

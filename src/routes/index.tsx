@@ -1,13 +1,14 @@
+import Email from '@/views/email';
 import ErrorPage from '@/views/ErrorPage.tsx';
 import Home from '@/views/home/index.tsx';
 import ProfilePage from '@/views/profile/ProfileIndex.tsx';
 import Starry from '@/views/starry';
+import HeroSection from '@src/views/About.tsx';
 import PostList from '@src/views/index.tsx';
 import UserPostsPage from '@src/views/myPosts/myPosts.tsx';
 import type { RouteObject } from 'react-router-dom';
 import { createBrowserRouter } from 'react-router-dom';
 import App from '../App.tsx';
-import HeroSection from '@src/views/About.tsx';
 
 const routers: RouteObject[] = [
   {
@@ -42,6 +43,10 @@ const routers: RouteObject[] = [
       {
         path: 'profile/:userId/posts',
         element: <UserPostsPage />,
+      },
+      {
+        path: 'email',
+        element: <Email />,
       },
     ],
   },
