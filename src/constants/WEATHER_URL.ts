@@ -1,4 +1,4 @@
 export default {
-  BASE_URL: 'http://api.weatherapi.com',
+  BASE_URL: `${window.location.protocol}//api.weatherapi.com`,
   GET_WEATHER: '/v1/current.json',
 };
