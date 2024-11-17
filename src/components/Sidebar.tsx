@@ -23,11 +23,13 @@ import useGlobalStore from '@src/stores/useGlobalStore';
 import useTheme from '@src/utils/hooks/useTheme';
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import NotificationModal from './NotificationModal';
 
 // Sidebar component
 const Sidebar: React.FC = () => {
   const [isExpanded, setIsExpanded] = useState(true);
   const { currentTheme, setCurrentTheme, resetToSystemTheme } = useTheme();
+  const [isNotificationModalOpen, setIsNotificationModalOpen] = useState(false);
   const isDarkMode = useGlobalStore((s) => s.isDarkMode);
   const setIsOpenPostFormModal = useEventBusStore((s) => s.setIsOpenPostFormModal);
   const navigate = useNavigate();
@@ -98,7 +100,11 @@ const Sidebar: React.FC = () => {
           </li>
           <li className="mb-2 pl-2">
             <Link
-              to="/notifications"
+              to="#"
+              onClick={(e) => {
+                e.preventDefault();
+                setIsNotificationModalOpen(true);
+              }}
               className="flex h-10 items-center justify-start transition-all"
             >
               <IconButton variant="text" color={iconColor as color}>
@@ -212,6 +218,10 @@ const Sidebar: React.FC = () => {
           )}
         </IconButton>
       </div>
+      <NotificationModal
+        isOpen={isNotificationModalOpen}
+        onClose={() => setIsNotificationModalOpen(false)}
+      />
     </div>
   );
 };

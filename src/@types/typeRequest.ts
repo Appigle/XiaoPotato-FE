@@ -99,3 +99,14 @@ export interface type_req_create_post_comment {
   content: string;
   postId: number;
 }
+export interface NotificationItem {
+  sourceId: number;
+  firstName: string;
+  lastName: string;
+  account: string;
+  avatar: string;
+  content: string;
+  timestamp: string;
+  notificationType: string;
+}
+export interface type_res_get_notifications extends BaseResPageData<NotificationItem> {}

@@ -4,6 +4,7 @@ import {
   BaseResPageData,
   ICommentItem,
   Post,
+  type_req_base_page,
   type_req_create_post_comment,
   type_req_get_fans_by_page,
   type_req_get_post_1st_comment,
@@ -13,6 +14,7 @@ import {
   type_req_update_profile,
   type_req_user_login,
   type_req_user_register,
+  type_res_get_notifications,
   type_res_get_post,
   type_res_user_login,
   user_profile,
@@ -286,6 +288,20 @@ const createPost2ndComment = (data: type_req_create_post_comment) => {
   });
 };
 
+/**
+ * get notifications
+ * @oaram params type_req_base_page
+ * @returns type_res_get_notifications
+ */
+
+const getNotifications = (params: type_req_base_page) => {
+  return useRequest.get<BaseRes<type_res_get_notifications>>({
+    baseURL,
+    url: `/user/selectNotificationByPage`,
+    params,
+  });
+};
+
 export default {
   registerAccount,
   userLogin,
@@ -309,4 +325,5 @@ export default {
   createPost1stComment,
   createPost2ndComment,
   deletePostComment,
+  getNotifications,
 };
