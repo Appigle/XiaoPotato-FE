@@ -10,6 +10,7 @@ import { useGoBack } from '@src/utils/hooks/nav';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './ProfileIndex.css';
+import Toast from '@src/utils/toastUtils';
 const ProfilePage: React.FC = () => {
   useLoginCheck();
 
@@ -80,10 +81,10 @@ const ProfilePage: React.FC = () => {
         setUserInfo(updatedUserInfo);
 
         // 添加成功提示
-        alert('Profile updated successfully!');
+        Toast.success('Profile updated successfully!');
       } else {
         console.error('Failed to update profile:', response.message);
-        alert(response.message || 'Failed to update profile');
+        Toast.error(response.message || 'Failed to update profile');
       }
     } catch (error) {
       console.error('Error updating profile:', error);
@@ -174,12 +175,14 @@ const ProfilePage: React.FC = () => {
                 {/* Avatar */}
                 <div className="w-full px-4 lg:order-2 lg:w-3/12">
                   <div className="absolute -top-16 left-1/2 -translate-x-1/2">
-                    <img
-                      alt="Profile"
-                      src={userAvatar}
-                      onError={handleImageError}
-                      className="h-32 w-32 rounded-full shadow-xl sm:h-40 sm:w-40"
-                    />
+                    <div className="h-24 w-24 sm:h-28 sm:w-28">
+                      <img
+                        alt="Profile"
+                        src={userAvatar}
+                        onError={handleImageError}
+                        className="h-full w-full rounded-full object-cover shadow-xl"
+                      />
+                    </div>
                   </div>
                 </div>
 
