@@ -91,6 +91,7 @@ const SocketProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
         lastName: string;
         account: string;
         notificationType: string;
+        content: string;
       }) => {
         const name = `${msg.firstName}.${msg.lastName?.[0]?.toUpperCase()}`;
         let content = '';
@@ -98,10 +99,22 @@ const SocketProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
           case 'follow':
             content = 'followed you!';
             break;
+          case 'like':
+            content = 'liked your post!';
+            break;
+          case 'save':
+            content = 'saved your post!';
+            break;
+          case 'comment':
+            content = 'commented your post!';
+            break;
+          case 'recommendation':
+            content = `${msg.content}`;
+            break;
           default:
             break;
         }
-        Toast.info(`${name} ${content}`);
+        Toast.info(msg.firstName ? `${name} ${content}` : content);
         setIsAlive(true);
         checkHeartBeat();
       },
@@ -171,7 +184,7 @@ const SocketProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       if (socket.current) {
         sentHB2ServerRef.current = window.setInterval(() => {
           socketSent('heartbeat', { userId: userInfo?.id, timestamp: Date.now() });
-        }, 1000 * 5);
+        }, 1000 * 55);
       }
     }
     return () => {
