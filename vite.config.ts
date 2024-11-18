@@ -30,6 +30,6 @@ export default defineConfig({
       ...alias,
     },
   },
-  base: './',
+  base: '/',
   envDir: './.env',
 });

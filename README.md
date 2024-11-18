@@ -10,6 +10,14 @@ cd XiaoPotato-FE
 pnpm install & pnpm run dev
 ```
 
+## Cloudflare Wrangler
+
+```bash
+pnpm install -g wrangler
+wrangler login
+wrangler pages dev dist
+```
+
 ## React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
