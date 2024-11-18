@@ -1,5 +1,6 @@
 import { X_ACCESS_TOKEN } from '@src/constants/LStorageKey';
 import axios, { AxiosError } from 'axios';
+import logUtils from '../logUtils';
 import Toast from '../toastUtils';
 import AxiosInstance from './axios';
 import { retry } from './axiosRetry';
@@ -18,12 +19,7 @@ const _RequestInterceptors: RequestInterceptors = {
     return err;
   },
   responseInterceptor(config) {
-    console.log(
-      '%c [ responseInterceptor ]-22',
-      'font-size:13px; background:pink; color:#bf2c9f;',
-      config.config.url,
-      config,
-    );
+    logUtils.info(config.config.url, config);
     config.data?.data?.token && localStorage.setItem(X_ACCESS_TOKEN, config.data.data.token || '');
     if (config.config.params?.noResCheck) return config;
     if ((config.data?.code as number) > 0 && config.data?.code !== HTTP_RES_CODE.SUCCESS) {
@@ -42,12 +38,7 @@ const _RequestInterceptors: RequestInterceptors = {
   },
   responseInterceptorsCatch(axiosInstance, err: AxiosError) {
     if (axios.isCancel(err)) {
-      console.log(
-        '%c [ "Cancel request" ]-28',
-        'font-size:13px; background:pink; color:#bf2c9f;',
-        'Cancel request',
-        err?.config?.url,
-      );
+      logUtils.warn(err?.config?.url);
       return Promise.reject(err);
     }
     return retry(axiosInstance, err as AxiosError, (err2) => {
