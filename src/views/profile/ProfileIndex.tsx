@@ -26,6 +26,9 @@ const ProfilePage: React.FC = () => {
   // TODO: check current user and parameter user
   const [currentUserId, setCurrentUserId] = useState(userId || userInfo?.id);
   const [isCurrentUser, setIsCurrentUser] = useState(userId === userInfo?.id);
+  // 从 profile 或 defaultUserAvatar 获取头像
+  const [userAvatar, setUserAvatar] = useState(defaultUserAvatar);
+
   console.log(
     '%c [ isCurrentUser ]-29',
     'font-size:13px; background:pink; color:#bf2c9f;',
@@ -34,14 +37,43 @@ const ProfilePage: React.FC = () => {
     setCurrentUserId,
   );
 
-  useEffect(() => {
-    setIsCurrentUser(userId === userInfo?.id);
-  }, [userId, userInfo?.id]);
+  const fetchProfileData = async () => {
+    if (!userId || !userInfo) return;
+    try {
+      setIsLoading(true);
+      let response;
+      //if viewing own profile
 
-  // 从 profile 或 defaultUserAvatar 获取头像
-  const [userAvatar, setUserAvatar] = useState(() => {
-    return userInfo?.userAvatar || defaultUserAvatar;
-  });
+      if (userId === userInfo?.id.toString()) {
+        response = await xPotatoApi.userCurrent();
+        if (response.code === 200) {
+          setUserInfo(response.data);
+          setProfile(response.data);
+          setUserAvatar(response.data.userAvatar || defaultUserAvatar);
+          setIsCurrentUser(true);
+        }
+      } else {
+        //if viewing another user's profile
+        response = await xPotatoApi.getUserProfile(userId);
+        if (response.code === 200) {
+          setProfile(response.data);
+          setUserAvatar(response.data.userAvatar || defaultUserAvatar);
+          setIsCurrentUser(false);
+        }
+      }
+      if (response.code !== 200) {
+        Toast.error(response.message || 'Failed to load profile');
+      }
+    } catch (error) {
+      console.error('Error fetching profile data:', error);
+      Toast.error('Failed to load profile');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  useEffect(() => {
+    fetchProfileData();
+  }, [userId]);
 
   useEffect(() => {
     setHeaderConfig({
@@ -60,17 +92,11 @@ const ProfilePage: React.FC = () => {
   const goBack = useGoBack();
   const navigate = useNavigate();
   const handleViewPosts = () => {
-    navigate(`/xp/profile/${profile?.id}/posts`);
+    navigate(`/xp/profile/${profile?.id}/posts${isCurrentUser ? '' : '?readonly=true'}`);
   };
   const handleOpenFollowingsModal = () => {
     setIsOpenFollowingsModal(true);
   };
-  useEffect(() => {
-    if (userInfo) {
-      setProfile(userInfo);
-      setUserAvatar(userInfo.userAvatar || defaultUserAvatar);
-    }
-  }, [userInfo]);
 
   const onEditProfile = () => {
     setIsOpenModal(true);
@@ -93,7 +119,6 @@ const ProfilePage: React.FC = () => {
 
         // 关闭模态框
         setIsOpenModal(false);
-        setUserInfo(updatedUserInfo);
 
         // 添加成功提示
         Toast.success('Profile updated successfully!');
@@ -103,7 +128,7 @@ const ProfilePage: React.FC = () => {
       }
     } catch (error) {
       console.error('Error updating profile:', error);
-      alert('Error updating profile');
+      Toast.error('Error updating profile');
     } finally {
       setIsLoading(false);
     }
@@ -210,12 +235,14 @@ const ProfilePage: React.FC = () => {
                     >
                       View Posts
                     </button>
-                    <button
-                      className="w-40 rounded bg-pink-500 px-4 py-2 text-sm font-bold uppercase text-white shadow-md transition-all hover:bg-pink-600 hover:shadow-lg focus:outline-none active:bg-pink-700 sm:w-auto"
-                      onClick={onEditProfile}
-                    >
-                      Edit Profile
-                    </button>
+                    {isCurrentUser && (
+                      <button
+                        className="w-40 rounded bg-pink-500 px-4 py-2 text-sm font-bold uppercase text-white shadow-md transition-all hover:bg-pink-600 hover:shadow-lg focus:outline-none active:bg-pink-700 sm:w-auto"
+                        onClick={onEditProfile}
+                      >
+                        Edit Profile
+                      </button>
+                    )}
                   </div>
                 </div>
 
@@ -283,12 +310,14 @@ const ProfilePage: React.FC = () => {
       </section>
 
       {/* Modals */}
-      <EditProfileModal
-        isOpen={isOpenModal}
-        setIsOpen={setIsOpenModal}
-        profile={profile}
-        onUpdateProfile={handleUpdateProfile}
-      />
+      {isCurrentUser && (
+        <EditProfileModal
+          isOpen={isOpenModal}
+          setIsOpen={setIsOpenModal}
+          profile={profile}
+          onUpdateProfile={handleUpdateProfile}
+        />
+      )}
       <UserFansModal isOpen={isOpenFansModal} setIsOpen={setIsOpenFansModal} user={profile} />
       <UserFollowingsModal
         isOpen={isOpenFollowingsModal}

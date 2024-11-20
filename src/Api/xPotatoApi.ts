@@ -70,10 +70,10 @@ const userCurrent = () => {
  * get user profile
  * @returns Promise<BaseRes<user_profile>>
  */
-const getUserProfile = () => {
+const getUserProfile = (userId: string) => {
   return useRequest.get<BaseRes<user_profile>>({
     baseURL,
-    url: X_POTATO_URL.GET_USER,
+    url: `${X_POTATO_URL.GET_USER}/${userId}`,
     abortRepetitiveRequest: true,
   });
 };
