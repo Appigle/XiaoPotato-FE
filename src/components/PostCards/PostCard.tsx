@@ -131,7 +131,7 @@ const PostCard = (props: PostCardProps) => {
               alt={post.creatorFirstName}
               size="sm"
               onClick={useGotoProfile}
-              className="hover: opacity-90"
+              className="hover:cursor-pointer hover:opacity-50"
             />
             <span className="ml-2 text-sm" title={post.creatorFirstName}>
               {post.creatorFirstName}.{post.creatorLastName?.[0]?.toUpperCase()}

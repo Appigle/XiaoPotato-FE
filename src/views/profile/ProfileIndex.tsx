@@ -8,11 +8,11 @@ import useGlobalStore from '@src/stores/useGlobalStore';
 import useLoginCheck from '@src/utils/hooks/login';
 import { useGoBack } from '@src/utils/hooks/nav';
 import Toast from '@src/utils/toastUtils';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import './ProfileIndex.css';
 const ProfilePage: React.FC = () => {
-  useLoginCheck();
+  const [checking] = useLoginCheck();
 
   const [profile, setProfile] = useState<user_profile | null | undefined>(null);
   const [isOpenModal, setIsOpenModal] = useState(false);
@@ -23,46 +23,33 @@ const ProfilePage: React.FC = () => {
   const setIsLoading = useGlobalStore((s) => s.setIsLoading);
   const isLoading = useGlobalStore((s) => s.isLoading);
   const { userId } = useParams<{ userId: string }>();
-  // TODO: check current user and parameter user
   const [currentUserId, setCurrentUserId] = useState(userId || userInfo?.id);
-  const [isCurrentUser, setIsCurrentUser] = useState(userId === userInfo?.id);
+  const [isCurrentUser, setIsCurrentUser] = useState(!userId || userId === `${userInfo?.id}`);
   // 从 profile 或 defaultUserAvatar 获取头像
   const [userAvatar, setUserAvatar] = useState(defaultUserAvatar);
 
-  console.log(
-    '%c [ isCurrentUser ]-29',
-    'font-size:13px; background:pink; color:#bf2c9f;',
-    isCurrentUser,
-    currentUserId,
-    setCurrentUserId,
-  );
-
-  const fetchProfileData = async () => {
-    if (!userId || !userInfo) return;
+  const fetchProfileData = useCallback(async () => {
+    if (!currentUserId) return;
     try {
       setIsLoading(true);
-      let response;
-      //if viewing own profile
-
-      if (userId === userInfo?.id.toString()) {
-        response = await xPotatoApi.userCurrent();
-        if (response.code === 200) {
-          setUserInfo(response.data);
-          setProfile(response.data);
-          setUserAvatar(response.data.userAvatar || defaultUserAvatar);
-          setIsCurrentUser(true);
-        }
+      console.log(
+        '%c [ isCurrentUser ]-36',
+        'font-size:13px; background:pink; color:#bf2c9f;',
+        isCurrentUser,
+      );
+      if (isCurrentUser) {
+        setProfile(userInfo!);
+        setUserAvatar(userInfo!.userAvatar || defaultUserAvatar);
       } else {
-        //if viewing another user's profile
-        response = await xPotatoApi.getUserProfile(userId);
+        if (!currentUserId) return;
+        const response = await xPotatoApi.getUserProfile(currentUserId);
         if (response.code === 200) {
           setProfile(response.data);
           setUserAvatar(response.data.userAvatar || defaultUserAvatar);
-          setIsCurrentUser(false);
         }
-      }
-      if (response.code !== 200) {
-        Toast.error(response.message || 'Failed to load profile');
+        if (response.code !== 200) {
+          Toast.error(response.message || 'Failed to load profile');
+        }
       }
     } catch (error) {
       console.error('Error fetching profile data:', error);
@@ -70,10 +57,18 @@ const ProfilePage: React.FC = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [currentUserId, setIsLoading, setUserAvatar, userInfo, isCurrentUser]);
+
   useEffect(() => {
+    if (checking) return;
+    setCurrentUserId(userId || userInfo?.id);
+    setIsCurrentUser(!userId || userId === `${userInfo?.id}`);
+  }, [checking, userId, userInfo?.id]);
+
+  useEffect(() => {
+    if (!currentUserId || checking) return;
     fetchProfileData();
-  }, [userId]);
+  }, [checking, fetchProfileData, setCurrentUserId, setIsCurrentUser, currentUserId, userInfo?.id]);
 
   useEffect(() => {
     setHeaderConfig({
@@ -142,12 +137,16 @@ const ProfilePage: React.FC = () => {
     setIsOpenFansModal(true);
   };
 
-  if (isLoading || !userInfo) {
-    return <div>Loading...</div>;
+  if (checking || isLoading || !userInfo) {
+    return <div className="flex h-full w-full items-center justify-center">Loading...</div>;
   }
 
   if (!profile) {
-    return <div>No profile data available.</div>;
+    return (
+      <div className="flex h-full w-full items-center justify-center">
+        No profile data available.
+      </div>
+    );
   }
 
   return (
@@ -200,14 +199,14 @@ const ProfilePage: React.FC = () => {
             y="0"
           >
             <polygon
-              className="text-blueGray-200 fill-current"
+              className="fill-current text-blue-gray-200"
               points="2560 0 2560 100 0 100"
             ></polygon>
           </svg>
         </div>
       </section>
 
-      <section className="bg-blueGray-200 relative py-16">
+      <section className="relative bg-blue-gray-200 py-16">
         <div className="container mx-auto px-4">
           <div className="relative -mt-64 mb-6 flex w-full min-w-0 flex-col break-words rounded-lg bg-white shadow-xl">
             <div className="px-6">
@@ -254,10 +253,10 @@ const ProfilePage: React.FC = () => {
                         onClick={handleOpenFollowingsModal}
                         className="group flex flex-col items-center"
                       >
-                        <span className="text-blueGray-600 block text-xl font-bold uppercase tracking-wide group-hover:text-pink-500">
+                        <span className="block text-xl font-bold uppercase tracking-wide text-blue-gray-600 group-hover:text-pink-500">
                           {profile.followCount || 0}
                         </span>
-                        <span className="text-blueGray-400 text-sm group-hover:text-pink-500">
+                        <span className="text-sm text-blue-gray-400 group-hover:text-pink-500">
                           Followings
                         </span>
                       </button>
@@ -267,10 +266,10 @@ const ProfilePage: React.FC = () => {
                         onClick={handleOpenFansModal}
                         className="group flex flex-col items-center"
                       >
-                        <span className="text-blueGray-600 block text-xl font-bold uppercase tracking-wide group-hover:text-pink-500">
+                        <span className="block text-xl font-bold uppercase tracking-wide text-blue-gray-600 group-hover:text-pink-500">
                           {profile.fansCount || 0}
                         </span>
-                        <span className="text-blueGray-400 text-sm group-hover:text-pink-500">
+                        <span className="text-sm text-blue-gray-400 group-hover:text-pink-500">
                           Followers
                         </span>
                       </button>
@@ -281,25 +280,29 @@ const ProfilePage: React.FC = () => {
 
               {/* Profile Info */}
               <div className="mt-12 text-center">
-                <h3 className="text-blueGray-700 mb-2 text-3xl font-semibold leading-normal sm:text-4xl">
+                <h3 className="mb-2 text-3xl font-semibold leading-normal text-blue-gray-700 sm:text-4xl">
                   {`${profile.firstName} ${profile.lastName}`}
                 </h3>
-                <div className="text-blueGray-400 mb-2 mt-0 text-sm font-bold uppercase leading-normal">
-                  <i className="fas fa-map-marker-alt text-blueGray-400 mr-2 text-lg"></i>
+                <div className="mb-2 mt-0 text-sm font-bold uppercase leading-normal text-blue-gray-400">
+                  <i className="fas fa-map-marker-alt mr-2 text-lg text-blue-gray-400"></i>
                   {profile.userAccount}
                 </div>
-                <div className="text-blueGray-600 mb-2 mt-0 text-sm font-bold leading-normal">
+                <div className="mb-2 mt-0 text-sm font-bold leading-normal text-blue-gray-600">
                   {profile.email || 'xiao-potato@gmail.com'} |{' '}
                   {profile.phone || '+1 (589)-455-6555'}
                 </div>
               </div>
 
               {/* Description */}
-              <div className="border-blueGray-200 mt-10 border-t py-10 text-center">
+              <div className="mt-10 border-t border-blue-gray-200 py-10 text-center">
                 <div className="flex flex-wrap justify-center">
                   <div className="w-full px-4 lg:w-9/12">
-                    <p className="text-blueGray-700 mb-4 text-lg leading-relaxed">
-                      {profile.description}
+                    <p className="mb-4 text-lg leading-relaxed text-blue-gray-700">
+                      {profile.description || (
+                        <span className="text-[12px] italic text-gray-500">
+                          To be or not to be, that is a question~
+                        </span>
+                      )}
                     </p>
                   </div>
                 </div>

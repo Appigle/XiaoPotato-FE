@@ -182,7 +182,7 @@ const UserPostsPage: React.FC = () => {
           </svg>
         </div>
       </section>
-      <section className="bg-blueGray-200 relative py-16">
+      <section className="relative bg-blue-gray-200 py-16">
         <div className="container mx-auto px-4">
           <div className="relative -mt-64 mb-6 flex w-full min-w-0 flex-col break-words rounded-lg bg-white shadow-xl">
             <div className="px-6 py-8">
@@ -216,7 +216,7 @@ const UserPostsPage: React.FC = () => {
                             </th>
                           </tr>
                         </thead>
-                        <tbody className="divide-y divide-gray-200 bg-white">
+                        <tbody className="divide-y divide-gray-200 bg-white text-blue-gray-900 dark:text-gray-400">
                           {posts.map((post) => (
                             <tr key={post.id} className="hover:bg-gray-50">
                               <td className="whitespace-nowrap px-6 py-4">{post.postTitle}</td>

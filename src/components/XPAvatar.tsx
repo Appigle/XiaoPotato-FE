@@ -50,8 +50,8 @@ const XPAvatar = (props: XPAvatarProps) => {
       onError={handleAvatarError}
       src={userAvatar}
       onClick={useGotoProfile}
-      className="hover: opacity-90"
       {...rest}
+      className={`${rest?.className} hover:cursor-pointer hover:opacity-50`}
     />
   );
 };

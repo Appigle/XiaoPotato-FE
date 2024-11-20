@@ -2,6 +2,7 @@ import { type_req_update_profile, user_profile } from '@src/@types/typeRequest';
 import React, { useEffect, useState } from 'react';
 
 import Api from '@src/Api';
+import useGlobalStore from '@src/stores/useGlobalStore';
 import FileUpload from './FileUpload';
 
 interface EditProfileModalProps {
@@ -24,7 +25,7 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({
     gender: '',
     description: '',
   });
-
+  const userInfo = useGlobalStore((s) => s.userInfo);
   // 专门存储文件的状态
   const [fileState, setFileState] = useState<{ files: File[] }>({ files: [] });
   // 上传状态
@@ -69,6 +70,7 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({
 
       // 更新 profile，包含新的头像 URL
       const updatedProfile: type_req_update_profile = {
+        ...(userInfo || {}),
         ...formData,
         id: profile.id,
         userAvatar: avatarUrl,

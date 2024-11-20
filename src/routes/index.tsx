@@ -37,7 +37,7 @@ const routers: RouteObject[] = [
         element: <Home />,
       },
       {
-        path: 'profile',
+        path: 'profile/:userId?',
         element: <ProfilePage />,
       },
       {

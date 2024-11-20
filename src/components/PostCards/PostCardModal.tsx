@@ -6,6 +6,7 @@ import { Avatar, Button, Carousel, Dialog, DialogBody } from '@material-tailwind
 import { IPostItem, typePostCardCommentRef } from '@src/@types/typePostItem';
 import Api from '@src/Api';
 import useGlobalStore from '@src/stores/useGlobalStore';
+import { useGoToProfile } from '@src/utils/hooks/nav';
 import HTTP_RES_CODE from '@src/utils/request/httpResCode';
 import { formatLargeNumber, formatStringWithTagAndUrl } from '@src/utils/stringUtils';
 import dayjs from 'dayjs';
@@ -25,6 +26,7 @@ const PostDetailModal = ({ post: _post, open = false, onClose, index }: PostDeta
   const [postImage, setPostImage] = useState(post?.postImage || '');
   const [postAvatar, setPostAvatar] = useState(post?.userAvatar || '');
   const userInfo = useGlobalStore((s) => s.userInfo);
+  const useGotoProfile = useGoToProfile();
   // const post = useGlobalStore((s) => s.post);
   const postCardCommentRef = useRef<typePostCardCommentRef>(null);
   const handleOpen = (e: boolean) => {
@@ -130,10 +132,12 @@ const PostDetailModal = ({ post: _post, open = false, onClose, index }: PostDeta
           <div className="flex items-center justify-between gap-2">
             <div className="flex items-center gap-2">
               <Avatar
-                src={postAvatar}
                 onError={handleAvatarError}
+                src={postAvatar}
                 alt={post.creatorFirstName}
                 size="sm"
+                onClick={useGotoProfile}
+                className="hover:cursor-pointer hover:opacity-50"
               />
               <span
                 className="text-md text-blue-gray-900 dark:text-gray-100"

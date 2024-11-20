@@ -126,12 +126,12 @@ const PostCardCommentItem = ({
           <XPAvatar
             src={comment.commentorAvatar || ''}
             alt={comment.commentorFirstName}
-            className="h-4 w-4"
+            className="h-6 w-6"
           />
           <span className="max-w-[150px] truncate font-medium">
             {comment.commentorFirstName}.{comment.commentorLastName?.[0].toUpperCase() || ''}
           </span>
-          <span className="dark:text-grey-100 rounded-lg border-base-100 bg-blue-gray-600 px-1 text-[10px] text-gray-300 dark:bg-blue-gray-800">
+          <span className="dark:text-grey-100 border-base-100 rounded-lg bg-blue-gray-600 px-1 text-[10px] text-gray-300 dark:bg-blue-gray-800">
             {comment.commentUserId === userInfo?.id ? 'User' : ''}
           </span>
           <span className="text-sm text-gray-500">
