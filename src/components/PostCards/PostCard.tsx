@@ -148,7 +148,7 @@ const PostCard = (props: PostCardProps) => {
               width={60}
               onChange={(b: boolean) => onLike(b)}
             />
-            {userInfo?.id === post.creatorId && (
+            {(userInfo?.id === post.creatorId || userInfo?.userRole === 'admin') && (
               <Popover placement="top-start">
                 <PopoverHandler>
                   <EllipsisVerticalIcon className="z-10 h-5 w-5 cursor-pointer rounded-sm dark:hover:bg-blue-gray-300 dark:hover:text-blue-gray-50" />
