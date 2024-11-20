@@ -51,7 +51,7 @@ const routers: RouteObject[] = [
     ],
   },
   {
-    path: '/profile',
+    path: '/profile/:userId',
     element: <ProfilePage />,
     errorElement: <ErrorPage />,
   },

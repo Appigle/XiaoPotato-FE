@@ -7,10 +7,10 @@ import UserFollowingsModal from '@src/components/UserFollowingsModal';
 import useGlobalStore from '@src/stores/useGlobalStore';
 import useLoginCheck from '@src/utils/hooks/login';
 import { useGoBack } from '@src/utils/hooks/nav';
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import './ProfileIndex.css';
 import Toast from '@src/utils/toastUtils';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import './ProfileIndex.css';
 const ProfilePage: React.FC = () => {
   useLoginCheck();
 
@@ -22,6 +22,21 @@ const ProfilePage: React.FC = () => {
   const setUserInfo = useGlobalStore((s) => s.setUserInfo);
   const setIsLoading = useGlobalStore((s) => s.setIsLoading);
   const isLoading = useGlobalStore((s) => s.isLoading);
+  const { userId } = useParams<{ userId: string }>();
+  // TODO: check current user and parameter user
+  const [currentUserId, setCurrentUserId] = useState(userId || userInfo?.id);
+  const [isCurrentUser, setIsCurrentUser] = useState(userId === userInfo?.id);
+  console.log(
+    '%c [ isCurrentUser ]-29',
+    'font-size:13px; background:pink; color:#bf2c9f;',
+    isCurrentUser,
+    currentUserId,
+    setCurrentUserId,
+  );
+
+  useEffect(() => {
+    setIsCurrentUser(userId === userInfo?.id);
+  }, [userId, userInfo?.id]);
 
   // 从 profile 或 defaultUserAvatar 获取头像
   const [userAvatar, setUserAvatar] = useState(() => {

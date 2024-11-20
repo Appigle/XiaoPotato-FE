@@ -22,6 +22,7 @@ import { IPostItem } from '@src/@types/typePostItem';
 import Api from '@src/Api';
 import HeartEffect from '@src/components/HeartEffect/index';
 import useGlobalStore from '@src/stores/useGlobalStore';
+import { useGoToProfile } from '@src/utils/hooks/nav';
 import HTTP_RES_CODE from '@src/utils/request/httpResCode';
 import { useEffect, useState } from 'react';
 type PostCardProps = {
@@ -40,6 +41,7 @@ const PostCard = (props: PostCardProps) => {
   const [userAvatar, setUserAvatar] = useState(post.userAvatar || '');
   const [iconSize, setIconSize] = useState('h-8 w-8');
   const [isConfirming, setIsConfirming] = useState(false);
+  const useGotoProfile = useGoToProfile();
 
   const onLike = (isLike: boolean) => {
     console.log('%c [ isLike ]-37', 'font-size:13px; background:pink; color:#bf2c9f;', isLike);
@@ -128,6 +130,8 @@ const PostCard = (props: PostCardProps) => {
               src={userAvatar}
               alt={post.creatorFirstName}
               size="sm"
+              onClick={useGotoProfile}
+              className="hover: opacity-90"
             />
             <span className="ml-2 text-sm" title={post.creatorFirstName}>
               {post.creatorFirstName}.{post.creatorLastName?.[0]?.toUpperCase()}
@@ -148,7 +152,7 @@ const PostCard = (props: PostCardProps) => {
               width={60}
               onChange={(b: boolean) => onLike(b)}
             />
-            {userInfo?.id === post.creatorId && (
+            {(userInfo?.id === post.creatorId || userInfo?.userRole === 'admin') && (
               <Popover placement="top-start">
                 <PopoverHandler>
                   <EllipsisVerticalIcon className="z-10 h-5 w-5 cursor-pointer rounded-sm dark:hover:bg-blue-gray-300 dark:hover:text-blue-gray-50" />
