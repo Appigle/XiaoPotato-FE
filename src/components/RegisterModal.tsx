@@ -1,4 +1,4 @@
-import { Button, Card, Dialog, Input, Typography } from '@material-tailwind/react';
+import { Button, Card, Dialog, Input, Select, Typography, Option } from '@material-tailwind/react';
 import Api from '@src/Api';
 import React, { useState } from 'react';
 import { FormErrors, validateRegisterForm } from './common/formValidation';
@@ -184,17 +184,20 @@ export function RegisterModal({ open, setOpen, openLogin }: RegisterModalProps):
               aria-label="Enter your phone number (optional)"
             />
 
-            <Input
+            <Select
               label="Gender (Optional)"
               id="gender"
-              type="text"
               size="lg"
               value={gender}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setGender(e.target.value)}
+              onChange={(e: string | undefined) => setGender(e || '')}
               className="border-t-potato-light-green focus:border-t-potato-green"
-              crossOrigin="anonymous"
-              aria-label="Enter your gender (optional)"
-            />
+              aria-label="Select your gender (optional)"
+            >
+              <Option value="">Select Gender</Option>
+              <Option value="male">Male</Option>
+              <Option value="female">Female</Option>
+              <Option value="other">Other</Option>
+            </Select>
           </div>
           {errors.general && <p className="mt-1 text-xs text-red-500">{errors.general}</p>}
           <Button className="mt-6" fullWidth type="submit" disabled={isLoading}>
