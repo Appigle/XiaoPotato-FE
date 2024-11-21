@@ -144,38 +144,54 @@ const Sidebar: React.FC = () => {
               </IconButton>
             </PopoverHandler>
           )}
-          <PopoverContent className="bg-gray-300 text-gray-100 shadow-lg dark:bg-blue-gray-900 dark:text-gray-200">
+          <PopoverContent className="border border-blue-gray-200 bg-gray-100 text-gray-100 shadow-lg dark:bg-blue-gray-900 dark:text-gray-200">
             <ul className="space-y-2">
               <li>
-                <Button variant="text" fullWidth className="text-blue-gray-900 dark:text-gray-200">
+                <Button
+                  variant="text"
+                  fullWidth
+                  className="capitalize text-blue-gray-900 dark:text-gray-200"
+                >
                   <Link to="/about"> About XiaoPotato</Link>
                 </Button>
               </li>
               <li>
-                <Button variant="text" fullWidth className="text-blue-gray-900 dark:text-gray-200">
+                <Button
+                  variant="text"
+                  fullWidth
+                  className="capitalize text-blue-gray-900 dark:text-gray-200"
+                >
                   Privacy
                 </Button>
               </li>
               <li>
-                <Button variant="text" fullWidth className="text-blue-gray-900 dark:text-gray-200">
+                <Button
+                  variant="text"
+                  fullWidth
+                  className="capitalize text-blue-gray-900 dark:text-gray-200"
+                >
                   Help Service
                 </Button>
               </li>
               <li>
-                <Button variant="text" fullWidth className="text-blue-gray-900 dark:text-gray-200">
+                <Button
+                  variant="text"
+                  fullWidth
+                  className="capitalize text-blue-gray-900 dark:text-gray-200"
+                >
                   Setting
                 </Button>
               </li>
               <li className="flex items-center justify-between">
-                <span className="text-blue-gray-900 dark:text-gray-100">
+                <span className="mr-4 text-blue-gray-900 dark:text-gray-100">
                   {currentTheme === 'dark' ? '🌛' : '☀️'}
                 </span>
-                <ButtonGroup variant="gradient" size="sm">
+                <ButtonGroup variant="outlined" size="sm">
                   <Button
                     onClick={() => onChangeTheme('light')}
                     color={iconColor as color}
                     title="Switch to light theme"
-                    className={`text-lg ${currentTheme === 'dark' ? 'bg-gray-400' : 'bg-blue-gray-900'}`}
+                    className={`text-lg ${currentTheme === 'light' ? 'bg-gray-100' : 'bg-blue-gray-900'}`}
                   >
                     ☀️
                   </Button>
@@ -183,7 +199,7 @@ const Sidebar: React.FC = () => {
                     onClick={() => onChangeTheme('dark')}
                     color={iconColor as color}
                     title="Switch to dark theme"
-                    className={`text-lg ${currentTheme === 'light' ? 'bg-gray-400' : 'bg-blue-gray-900'}`}
+                    className={`text-lg ${currentTheme === 'dark' ? 'bg-gray-100' : 'bg-blue-gray-900'}`}
                   >
                     🌛
                   </Button>
@@ -198,7 +214,13 @@ const Sidebar: React.FC = () => {
                 </ButtonGroup>
               </li>
               <li>
-                <Button variant="text" color={iconColor as color} fullWidth onClick={onLogout}>
+                <Button
+                  variant="text"
+                  color={iconColor as color}
+                  fullWidth
+                  onClick={onLogout}
+                  className="capitalize"
+                >
                   Logout
                 </Button>
               </li>
