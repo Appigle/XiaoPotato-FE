@@ -1,4 +1,3 @@
-import useGlobalStore from '@src/stores/useGlobalStore';
 import { useCallback } from 'react';
 import { useNavigate, type To } from 'react-router-dom';
 import Toast from '../toastUtils';
@@ -22,14 +21,16 @@ const useGoToMyPost = () => {
 
 const useGoToProfile = () => {
   const navigate = useNavigate();
-  const userInfo = useGlobalStore((s) => s.userInfo);
-  return useCallback(() => {
-    if (!userInfo?.id) {
-      Toast.error('User id is null!');
-      return;
-    }
-    navigate(`/xp/profile/${userInfo.id}`);
-  }, [navigate, userInfo?.id]);
+  return useCallback(
+    (userId: string | number) => {
+      if (!userId) {
+        Toast.error('User id is null!');
+        return;
+      }
+      navigate(`/xp/profile/${userId}`);
+    },
+    [navigate],
+  );
 };
 
 export { useGoBack, useGoToMyPost, useGoToProfile };

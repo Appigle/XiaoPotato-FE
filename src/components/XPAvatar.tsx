@@ -33,12 +33,13 @@ export interface XPAvatarProps extends Omit<React.ComponentProps<'img'>, 'ref'> 
   withBorder?: boolean;
   color?: colors;
   defaultSrc?: string;
+  userId: string | number;
 }
 
 const XPAvatar = (props: XPAvatarProps) => {
-  const { src, defaultSrc, ...rest } = props;
+  const { src, defaultSrc, userId = '', ...rest } = props;
   const [userAvatar, setUserAvatar] = useState(src || defaultSrc || 'err');
-  const useGotoProfile = useGoToProfile();
+  const gotoProfile = useGoToProfile();
   const handleAvatarError = () => {
     setUserAvatar(defaultUserAvatar);
   };
@@ -49,7 +50,7 @@ const XPAvatar = (props: XPAvatarProps) => {
     <Avatar
       onError={handleAvatarError}
       src={userAvatar}
-      onClick={useGotoProfile}
+      onClick={() => !!userId && gotoProfile(userId)}
       {...rest}
       className={`${rest?.className} hover:cursor-pointer hover:opacity-50`}
     />

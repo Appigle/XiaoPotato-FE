@@ -38,10 +38,10 @@ const PostCard = (props: PostCardProps) => {
   const [post, setPost] = useState(originalPost);
   const userInfo = useGlobalStore((s) => s.userInfo);
   const [postImage, setPostImage] = useState(post.postImage || '');
-  const [userAvatar, setUserAvatar] = useState(post.userAvatar || '');
+  const [userAvatar, setUserAvatar] = useState(post.creatorAvatar || '');
   const [iconSize, setIconSize] = useState('h-8 w-8');
   const [isConfirming, setIsConfirming] = useState(false);
-  const useGotoProfile = useGoToProfile();
+  const gotoProfile = useGoToProfile();
 
   const onLike = (isLike: boolean) => {
     console.log('%c [ isLike ]-37', 'font-size:13px; background:pink; color:#bf2c9f;', isLike);
@@ -130,7 +130,9 @@ const PostCard = (props: PostCardProps) => {
               src={userAvatar}
               alt={post.creatorFirstName}
               size="sm"
-              onClick={useGotoProfile}
+              onClick={() => {
+                gotoProfile(post.creatorId);
+              }}
               className="hover:cursor-pointer hover:opacity-50"
             />
             <span className="ml-2 text-sm" title={post.creatorFirstName}>

@@ -1,20 +1,19 @@
-import { useEffect, useState } from 'react';
+import { XMarkIcon } from '@heroicons/react/24/outline';
 import {
+  Button,
   Dialog,
-  DialogHeader,
   DialogBody,
   DialogFooter,
-  Avatar,
-  Button,
-  Typography,
+  DialogHeader,
   Spinner,
+  Typography,
 } from '@material-tailwind/react';
-import { format } from 'date-fns';
-import xPotatoApi from '@src/Api/xPotatoApi';
-import { BellIcon } from 'lucide-react';
 import { NotificationItem } from '@src/@types/typeRequest';
-import { XMarkIcon } from '@heroicons/react/24/outline';
-import defaultUserAvatar from '@/assets/MonaLisaAvatar.png';
+import xPotatoApi from '@src/Api/xPotatoApi';
+import XPAvatar from '@src/components/XPAvatar';
+import { format } from 'date-fns';
+import { BellIcon } from 'lucide-react';
+import { useEffect, useState } from 'react';
 interface NotificationModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -104,10 +103,11 @@ const NotificationModal = ({ isOpen, onClose }: NotificationModalProps) => {
                 key={notification.sourceId}
                 className="flex items-start gap-3 p-4 hover:bg-gray-50 dark:hover:bg-gray-800"
               >
-                <Avatar
-                  src={notification.avatar || defaultUserAvatar}
+                <XPAvatar
+                  src={notification.avatar}
                   alt={`${notification.firstName} ${notification.lastName}`}
                   className="h-10 w-10"
+                  userId={notification.sourceId}
                 />
                 <div className="flex-1">
                   <div className="flex items-baseline justify-between gap-2">

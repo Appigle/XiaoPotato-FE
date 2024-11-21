@@ -24,9 +24,9 @@ const PostDetailModal = ({ post: _post, open = false, onClose, index }: PostDeta
   const [post, setPostData] = useState(_post);
   const [isOpen, setIsOpen] = useState(open);
   const [postImage, setPostImage] = useState(post?.postImage || '');
-  const [postAvatar, setPostAvatar] = useState(post?.userAvatar || '');
+  const [postAvatar, setPostAvatar] = useState(post?.creatorAvatar || '');
   const userInfo = useGlobalStore((s) => s.userInfo);
-  const useGotoProfile = useGoToProfile();
+  const gotoProfile = useGoToProfile();
   // const post = useGlobalStore((s) => s.post);
   const postCardCommentRef = useRef<typePostCardCommentRef>(null);
   const handleOpen = (e: boolean) => {
@@ -44,7 +44,7 @@ const PostDetailModal = ({ post: _post, open = false, onClose, index }: PostDeta
   useEffect(() => {
     setPostData(_post);
     setPostImage(_post?.postImage || '');
-    setPostAvatar(_post?.userAvatar || '');
+    setPostAvatar(_post?.creatorAvatar || '');
   }, [_post]);
 
   if (!post) {
@@ -136,7 +136,9 @@ const PostDetailModal = ({ post: _post, open = false, onClose, index }: PostDeta
                 src={postAvatar}
                 alt={post.creatorFirstName}
                 size="sm"
-                onClick={useGotoProfile}
+                onClick={() => {
+                  gotoProfile(post.creatorId);
+                }}
                 className="hover:cursor-pointer hover:opacity-50"
               />
               <span

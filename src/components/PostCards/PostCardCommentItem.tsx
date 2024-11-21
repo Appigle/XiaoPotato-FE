@@ -1,13 +1,13 @@
 import { ChatBubbleOvalLeftEllipsisIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { ICommentItem, type_req_create_post_comment } from '@src/@types/typeRequest';
 import Api from '@src/Api';
+import XPAvatar from '@src/components/XPAvatar';
 import useGlobalStore from '@src/stores/useGlobalStore';
 import HTTP_RES_CODE from '@src/utils/request/httpResCode';
 import Toast from '@src/utils/toastUtils';
 import dayjs from 'dayjs';
 import { Loader2, MoreVertical, Send, X } from 'lucide-react';
 import { KeyboardEvent, useEffect, useRef, useState } from 'react';
-import XPAvatar from '../XPAvatar';
 
 const PostCardCommentItem = ({
   comment,
@@ -127,6 +127,7 @@ const PostCardCommentItem = ({
             src={comment.commentorAvatar || ''}
             alt={comment.commentorFirstName}
             className="h-6 w-6"
+            userId={comment.commentUserId}
           />
           <span className="max-w-[150px] truncate font-medium">
             {comment.commentorFirstName}.{comment.commentorLastName?.[0].toUpperCase() || ''}

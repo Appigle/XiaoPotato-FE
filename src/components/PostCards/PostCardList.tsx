@@ -80,12 +80,13 @@ const PostPostList = forwardRef<typePostListRef, PropsType>((_, ref) => {
   }, [currentSearchWord]);
 
   useEffect(() => {
+    setIsLoading(true);
     getPostDataByPage(20, currentPage, currentSearchWord || '', currentPostGenre);
     return () => {
       const abort = useRequest.getAbortAxios();
       abort.removePending(abort.getRequestId(X_POTATO_URL.POST_FILTER_PAGES, 'get'));
     };
-  }, [currentSearchWord, currentPage, currentPostGenre, getPostDataByPage]);
+  }, [currentSearchWord, currentPage, currentPostGenre, getPostDataByPage, setIsLoading]);
 
   const onRefreshPostList = useCallback(() => {
     if (isLoading) return;
@@ -108,10 +109,10 @@ const PostPostList = forwardRef<typePostListRef, PropsType>((_, ref) => {
   ]);
 
   const loadMoreCards = useCallback(async () => {
-    if (isLoading) return;
+    if (isLoading || isLoadEnd) return;
     setIsLoading(true);
     setCurrentPage(currentPage + 1);
-  }, [setCurrentPage, setIsLoading, currentPage, isLoading]);
+  }, [setCurrentPage, setIsLoading, currentPage, isLoading, isLoadEnd]);
 
   const handleScroll = useCallback(
     (e?: React.UIEvent<HTMLElement, UIEvent>) => {

@@ -163,7 +163,7 @@ const UserPostsPage: React.FC = () => {
           <span className="absolute h-full w-full bg-black opacity-50"></span>
         </div>
         <div
-          className="absolute left-4 top-4 flex h-8 w-8 cursor-pointer items-center justify-center overflow-hidden rounded-full bg-white p-1 hover:bg-gray-200"
+          className="absolute left-4 top-4 flex h-8 w-8 cursor-pointer items-center justify-center overflow-hidden rounded-full bg-white p-1 text-blue-gray-900 hover:bg-gray-200"
           onClick={() => goBack()}
         >
           <svg
