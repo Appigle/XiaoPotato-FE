@@ -67,6 +67,7 @@ const PostList = forwardRef<typePostListRef, PropsType>((_, ref) => {
         postGenre,
         currentPage: page,
         pageSize: size,
+        sort: 'desc',
       };
       return Api.xPotatoApi.getPostByPage(post).then((res) => {
         if (res.code === HTTP_RES_CODE.SUCCESS) {
