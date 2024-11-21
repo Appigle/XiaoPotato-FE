@@ -21,9 +21,12 @@ import { X_ACCESS_TOKEN } from '@src/constants/LStorageKey';
 import useEventBusStore from '@src/stores/useEventBusStore';
 import useGlobalStore from '@src/stores/useGlobalStore';
 import useTheme from '@src/utils/hooks/useTheme';
+import Toast from '@src/utils/toastUtils';
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { Zoom } from 'react-toastify';
 import NotificationModal from './NotificationModal';
+import PrivacyPolicy from './Privacy';
 
 // Sidebar component
 const Sidebar: React.FC = () => {
@@ -32,6 +35,7 @@ const Sidebar: React.FC = () => {
   const [isNotificationModalOpen, setIsNotificationModalOpen] = useState(false);
   const isDarkMode = useGlobalStore((s) => s.isDarkMode);
   const setIsOpenPostFormModal = useEventBusStore((s) => s.setIsOpenPostFormModal);
+  const setRefreshPostList = useEventBusStore((s) => s.setRefreshPostList);
   const navigate = useNavigate();
 
   const toggleSidebar = () => {
@@ -58,6 +62,11 @@ const Sidebar: React.FC = () => {
     setIsOpenPostFormModal(true);
   };
 
+  const discoveryPost = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    e.preventDefault();
+    setRefreshPostList(new Date().getTime());
+  };
+
   const onLogout = () => {
     localStorage.removeItem(X_ACCESS_TOKEN);
     navigate('/');
@@ -70,7 +79,12 @@ const Sidebar: React.FC = () => {
       <nav className="p-4">
         <ul>
           <li className="mb-2 pl-2">
-            <Link to="/discover" className="flex h-10 items-center justify-start transition-all">
+            <a
+              onClick={(e) => {
+                discoveryPost(e);
+              }}
+              className="flex h-10 cursor-pointer items-center justify-start transition-all hover:rounded-xl hover:bg-gray-900/5 hover:dark:rounded-xl hover:dark:bg-gray-100/10"
+            >
               <IconButton variant="text" color={iconColor as color}>
                 <MagnifyingGlassIcon className="h-5 w-5" />
               </IconButton>
@@ -79,14 +93,14 @@ const Sidebar: React.FC = () => {
                   Discovery
                 </span>
               )}
-            </Link>
+            </a>
           </li>
           <li className="mb-2 pl-2">
             <a
               onClick={(e) => {
                 openPostModal(e);
               }}
-              className="flex h-10 cursor-pointer items-center justify-start transition-all"
+              className="flex h-10 cursor-pointer items-center justify-start transition-all hover:rounded-xl hover:bg-gray-900/5 hover:dark:rounded-xl hover:dark:bg-gray-100/10"
             >
               <IconButton variant="text" color={iconColor as color}>
                 <PlusCircleIcon className="h-5 w-5" />
@@ -105,7 +119,7 @@ const Sidebar: React.FC = () => {
                 e.preventDefault();
                 setIsNotificationModalOpen(true);
               }}
-              className="flex h-10 items-center justify-start transition-all"
+              className="flex h-10 items-center justify-start transition-all hover:rounded-xl hover:bg-gray-900/5 hover:dark:rounded-xl hover:dark:bg-gray-100/10"
             >
               <IconButton variant="text" color={iconColor as color}>
                 <HeartIcon className="h-5 w-5" />
@@ -120,7 +134,7 @@ const Sidebar: React.FC = () => {
           <li className="mb-2 pl-2">
             <Link
               to="/xp/profile"
-              className="flex h-10 items-center justify-start overflow-hidden transition-all"
+              className="flex h-10 items-center justify-start overflow-hidden transition-all hover:rounded-xl hover:bg-gray-900/5 hover:dark:rounded-xl hover:dark:bg-gray-100/10"
             >
               <IconButton variant="text" color={iconColor as color}>
                 <UserCircleIcon className="h-5 w-5" />
@@ -150,7 +164,7 @@ const Sidebar: React.FC = () => {
                 <Button
                   variant="text"
                   fullWidth
-                  className="capitalize text-blue-gray-900 dark:text-gray-200"
+                  className="capitalize text-blue-gray-900 hover:rounded-xl hover:bg-blue-gray-100/10 hover:text-blue-gray-900 dark:text-gray-200"
                 >
                   <Link to="/about"> About XiaoPotato</Link>
                 </Button>
@@ -159,7 +173,21 @@ const Sidebar: React.FC = () => {
                 <Button
                   variant="text"
                   fullWidth
-                  className="capitalize text-blue-gray-900 dark:text-gray-200"
+                  className="capitalize text-blue-gray-900 hover:rounded-xl hover:bg-blue-gray-100/10 hover:text-blue-gray-900 dark:text-gray-200"
+                  onClick={() => {
+                    Toast(<PrivacyPolicy />, {
+                      position: 'top-center',
+                      autoClose: false,
+                      hideProgressBar: true,
+                      closeOnClick: true,
+                      pauseOnHover: true,
+                      draggable: true,
+                      progress: undefined,
+                      theme: 'light',
+                      transition: Zoom,
+                      className: 'w-[600px] min-w-[40px]',
+                    });
+                  }}
                 >
                   Privacy
                 </Button>
@@ -168,19 +196,47 @@ const Sidebar: React.FC = () => {
                 <Button
                   variant="text"
                   fullWidth
-                  className="capitalize text-blue-gray-900 dark:text-gray-200"
+                  className="capitalize text-blue-gray-900 hover:rounded-xl hover:bg-blue-gray-100/10 hover:text-blue-gray-900 dark:text-gray-200"
+                  onClick={() => {
+                    Toast(
+                      <div>
+                        🦄 You can call{' '}
+                        <a href="tel:+123456789" className="text-blue-500 underline">
+                          +1 (666)-999-5678
+                        </a>{' '}
+                        to get our perfect service!
+                      </div>,
+                      {
+                        position: 'top-center',
+                        autoClose: false,
+                        hideProgressBar: true,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: 'light',
+                        transition: Zoom,
+                        className: 'w-[500px] min-w-[40px]',
+                      },
+                    );
+                  }}
                 >
                   Help Service
                 </Button>
               </li>
               <li>
-                <Button
-                  variant="text"
-                  fullWidth
-                  className="capitalize text-blue-gray-900 dark:text-gray-200"
+                <Link
+                  to="/xp/profile"
+                  className="flex h-10 items-center justify-start overflow-hidden transition-all hover:rounded-xl hover:bg-blue-gray-100/10"
                 >
-                  Setting
-                </Button>
+                  <Button
+                    variant="text"
+                    fullWidth
+                    className="capitalize text-blue-gray-900 dark:text-gray-200"
+                  >
+                    Setting
+                  </Button>
+                </Link>
               </li>
               <li className="flex items-center justify-between">
                 <span className="mr-4 text-blue-gray-900 dark:text-gray-100">
@@ -191,7 +247,7 @@ const Sidebar: React.FC = () => {
                     onClick={() => onChangeTheme('light')}
                     color={iconColor as color}
                     title="Switch to light theme"
-                    className={`text-lg ${currentTheme === 'light' ? 'bg-gray-100' : 'bg-blue-gray-900'}`}
+                    className={`border-none bg-gray-100 text-lg outline-none focus:outline-none focus:ring-0 ${currentTheme === 'light' && 'cursor-not-allowed'}`}
                   >
                     ☀️
                   </Button>
@@ -199,15 +255,15 @@ const Sidebar: React.FC = () => {
                     onClick={() => onChangeTheme('dark')}
                     color={iconColor as color}
                     title="Switch to dark theme"
-                    className={`text-lg ${currentTheme === 'dark' ? 'bg-gray-100' : 'bg-blue-gray-900'}`}
+                    className={`border-none bg-blue-gray-900 text-lg outline-none focus:outline-none focus:ring-0 ${currentTheme === 'dark' && 'cursor-not-allowed'}`}
                   >
                     🌛
                   </Button>
                   <Button
                     onClick={() => onChangeTheme('system')}
                     color={iconColor as color}
-                    title="Switch to system theme"
-                    className="text-lg"
+                    title="Switch to system theme "
+                    className={`border-none text-lg outline-none focus:outline-none focus:ring-0 ${currentTheme === 'light' ? 'bg-gray-100' : 'bg-blue-gray-900'}`}
                   >
                     ⚙️
                   </Button>
@@ -219,7 +275,7 @@ const Sidebar: React.FC = () => {
                   color={iconColor as color}
                   fullWidth
                   onClick={onLogout}
-                  className="capitalize"
+                  className="capitalize hover:rounded-xl hover:bg-blue-gray-100/10 hover:text-blue-gray-900 dark:text-gray-200"
                 >
                   Logout
                 </Button>

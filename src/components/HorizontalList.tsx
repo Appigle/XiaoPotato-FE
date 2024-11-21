@@ -92,7 +92,7 @@ const HorizontalList: React.FC<HorizontalListProps> = ({
     <Button
       variant="text"
       key={`Real-${item.id}`}
-      className={`} flex w-fit min-w-fit items-center gap-2 !border-none text-base !font-normal !normal-case text-gray-400 outline-none transition-all hover:border-0 hover:border-none hover:outline-none focus:border-none focus:outline-none`}
+      className={`flex w-fit min-w-fit items-center gap-2 !border-none text-base !font-normal !normal-case text-gray-400 outline-none transition-all hover:border-0 hover:border-none hover:bg-gray-900/5 hover:outline-none focus:border-none focus:outline-none hover:dark:bg-gray-100/10`}
       style={{ ...textStyle, ...(activeId === item.id ? activeStyle : inActiveStyle) }}
       onClick={() => onItemClick?.(item.id as unknown as typePostGenre)}
       title={`item.id:${item.id}, activeId: ${activeId}`}

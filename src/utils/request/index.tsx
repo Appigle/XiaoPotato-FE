@@ -19,7 +19,7 @@ const _RequestInterceptors: RequestInterceptors = {
     return err;
   },
   responseInterceptor(config) {
-    logUtils.info(config.config.url, config);
+    logUtils.info(config.config.url, config.data, config);
     config.data?.data?.token && localStorage.setItem(X_ACCESS_TOKEN, config.data.data.token || '');
     if (config.config.params?.noResCheck) return config;
     if ((config.data?.code as number) > 0 && config.data?.code !== HTTP_RES_CODE.SUCCESS) {

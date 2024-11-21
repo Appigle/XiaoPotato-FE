@@ -160,10 +160,12 @@ const PostCard = (props: PostCardProps) => {
                         className="h-5 w-5 cursor-pointer hover:text-red-500"
                         onClick={onDeletePost}
                       />
-                      <PencilSquareIcon
-                        className="h-5 w-5 cursor-pointer hover:text-blue-500"
-                        onClick={openPostEdit}
-                      />
+                      {userInfo?.id === post.creatorId && (
+                        <PencilSquareIcon
+                          className="h-5 w-5 cursor-pointer hover:text-blue-500"
+                          onClick={openPostEdit}
+                        />
+                      )}
                     </>
                   ) : (
                     <>
@@ -171,6 +173,7 @@ const PostCard = (props: PostCardProps) => {
                         className="w6 hover: h-6 cursor-pointer hover:rounded-lg hover:bg-blue-gray-100"
                         onClick={onCancelDelete}
                       />
+
                       <CheckCircleIcon
                         className="w6 h-6 cursor-pointer text-red-600 hover:rounded-lg hover:bg-blue-gray-100"
                         onClick={onConfirmDelete}

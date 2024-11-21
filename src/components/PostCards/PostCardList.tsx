@@ -30,8 +30,8 @@ interface PostState {
   isLoadEnd: boolean;
   total: number;
   mode: 'create' | 'edit';
-  isModalOpen: boolean;
-  isFormModalOpen: boolean;
+  isDetailModalOpen: boolean;
+  isCreateModalOpen: boolean;
 }
 
 type PropsType = { title?: string };
@@ -45,11 +45,12 @@ const PostList = forwardRef<typePostListRef, PropsType>((_, ref) => {
     isLoadEnd: false,
     total: 0,
     mode: 'create',
-    isModalOpen: false,
-    isFormModalOpen: false,
+    isDetailModalOpen: false,
+    isCreateModalOpen: false,
   });
   const [postList, setPostList] = useState<IPostItem[]>([]);
   const loadingRef = useRef(false);
+  const isLoadEndRef = useRef(false);
   const {
     currentPostGenre: _currentPostGenre,
     isLoading,
@@ -57,7 +58,7 @@ const PostList = forwardRef<typePostListRef, PropsType>((_, ref) => {
     currentSearchWord,
     setCurrentSearchWord,
   } = useGlobalStore();
-  const setIsOpenPostFormModal = useEventBusStore((s) => s.setIsOpenPostFormModal);
+  const { setIsOpenPostFormModal, isOpenPostFormModal, refreshPostList } = useEventBusStore();
   const fetchPosts = useCallback(
     (size: number, page: number, searchWord: string, postGenre: typePostGenre) => {
       const post: type_req_get_post_by_page = {
@@ -75,6 +76,7 @@ const PostList = forwardRef<typePostListRef, PropsType>((_, ref) => {
             total,
             isLoadEnd: total <= current * size,
           }));
+          isLoadEndRef.current = total <= current * size;
           setPostList((prev) => [...prev, ...records]);
         }
       });
@@ -89,11 +91,21 @@ const PostList = forwardRef<typePostListRef, PropsType>((_, ref) => {
       currentPage: 1,
       isLoadEnd: false,
     }));
+    isLoadEndRef.current = false;
   }, []);
+
   useEffect(() => {
     setCurrentSearchWord('');
     setState((prev) => ({ ...prev, postGenre: 'All' }));
   }, [setCurrentSearchWord]);
+
+  useEffect(() => {
+    setState((prev) => ({ ...prev, isCreateModalOpen: isOpenPostFormModal }));
+  }, [isOpenPostFormModal]);
+
+  useEffect(() => {
+    handleRefresh();
+  }, [refreshPostList]);
 
   useEffect(() => {
     resetList();
@@ -105,7 +117,7 @@ const PostList = forwardRef<typePostListRef, PropsType>((_, ref) => {
   }, [currentSearchWord, resetList]);
 
   useEffect(() => {
-    if (loadingRef.current) return;
+    if (loadingRef.current || isLoadEndRef.current) return;
     loadingRef.current = true;
     setIsLoading(true);
     fetchPosts(20, state.currentPage, currentSearchWord || '', state.postGenre).finally(() => {
@@ -119,41 +131,40 @@ const PostList = forwardRef<typePostListRef, PropsType>((_, ref) => {
   }, [currentSearchWord, state.currentPage, state.postGenre, fetchPosts, setIsLoading]);
 
   const loadMoreCards = useDebounceCallback(() => {
-    if (loadingRef.current || state.isLoadEnd) return;
+    if (loadingRef.current || isLoadEndRef.current) return;
     setIsLoading(true);
     setState((prev) => ({ ...prev, currentPage: prev.currentPage + 1 }));
   }, 200);
 
   const handleScroll = useCallback(
     (e?: React.UIEvent<HTMLElement, UIEvent>) => {
-      if (loadingRef.current || !e || state.isLoadEnd) return;
+      if (loadingRef.current || !e || isLoadEndRef.current) return;
       const { scrollTop, clientHeight, scrollHeight } = e.currentTarget;
       const offset = 100;
       if (scrollTop + clientHeight >= scrollHeight - offset) {
         loadMoreCards();
       }
     },
-    [loadMoreCards, state.isLoadEnd],
+    [loadMoreCards],
   );
   const handleModalActions = useCallback(
     (
       post?: IPostItem,
       index: number = -1,
       mode: 'create' | 'edit' = 'create',
-      isForm: boolean = false,
-      isModalOpen: boolean = false,
+      isCreateModalOpen: boolean = false,
+      isDetailModalOpen: boolean = false,
     ) => {
       setState((prev) => ({
         ...prev,
         currentPost: post,
         currentIndex: index,
         mode,
-        isModalOpen,
-        isFormModalOpen: isForm,
+        isDetailModalOpen,
+        isCreateModalOpen,
       }));
-      if (isForm) {
-        setIsOpenPostFormModal(true);
-      }
+
+      setIsOpenPostFormModal(isCreateModalOpen);
     },
     [setIsOpenPostFormModal],
   );
@@ -193,12 +204,12 @@ const PostList = forwardRef<typePostListRef, PropsType>((_, ref) => {
           }
           handleModalActions();
         }}
-        open={state.isModalOpen}
+        open={state.isDetailModalOpen}
         post={state.currentPost}
       />
       <PostFormModal
         index={state.currentIndex}
-        open={state.isFormModalOpen}
+        open={state.isCreateModalOpen}
         post={state.currentPost}
         mode={state.mode}
         onClose={() => handleModalActions()}
@@ -210,14 +221,14 @@ const PostList = forwardRef<typePostListRef, PropsType>((_, ref) => {
         }}
       />
       {!!postList.length && (
-        <div className="grid grid-cols-1 gap-4 p-4 pt-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-4 p-4 pt-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5">
           {postList.map((post, index) => (
             <PostCard
               key={post.id}
               post={post}
               index={index}
               onShowDetail={(post, index) => handleModalActions(post, index, 'create', false, true)}
-              onPostEdit={(post, index) => handleModalActions(post, index, 'edit', true, true)}
+              onPostEdit={(post, index) => handleModalActions(post, index, 'edit', true, false)}
               onDelete={handleRefresh}
             />
           ))}

@@ -74,7 +74,7 @@ export function NavbarWithSearch(props: { search?: boolean }) {
   };
 
   const navList = (
-    <ul className="mb-4 mt-2 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-4">
+    <ul className="mb-4 mt-2 flex flex-col gap-2 sm:mb-0 sm:mt-0 sm:flex-row sm:items-center sm:gap-4">
       <Typography
         as="li"
         variant="small"
@@ -141,9 +141,9 @@ export function NavbarWithSearch(props: { search?: boolean }) {
             Share your gorgeous Art!
           </span>
         </Typography>
-        <div className="hidden items-center lg:flex">
+        <div className="flex items-center justify-center">
           {search && headerConfig?.hasSearch && (
-            <div className="relative flex w-full items-center justify-end md:w-max">
+            <div className="relative hidden w-full items-center justify-end md:w-max lg:flex">
               <Menu open={openMenu} handler={setOpenMenu}>
                 <MenuHandler>
                   <Button
@@ -206,7 +206,7 @@ export function NavbarWithSearch(props: { search?: boolean }) {
           <div>
             <IconButton
               variant="text"
-              className="ml-auto h-6 w-6 text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent lg:hidden"
+              className="ml-auto h-6 w-6 items-center text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent sm:flex md:hidden"
               ripple={false}
               onClick={() => setOpenNav(!openNav)}
             >
@@ -233,7 +233,7 @@ export function NavbarWithSearch(props: { search?: boolean }) {
                 </svg>
               )}
             </IconButton>
-            <div className="hidden lg:block">{navList}</div>
+            <div className="hidden md:block"> {navList}</div>
           </div>
         </div>
       </div>
