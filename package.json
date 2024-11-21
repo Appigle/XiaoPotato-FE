@@ -13,7 +13,8 @@
     "commitlint": "commitlint -x --color --edit",
     "lint-s": "lint-staged",
     "type-check": "tsc -b",
-    "i18next-interface": "npx i18next-resources-for-ts interface -i ./src/assets/locales/en -o ./src/@types/resources.d.ts"
+    "i18next-interface": "npx i18next-resources-for-ts interface -i ./src/assets/locales/en -o ./src/@types/resources.d.ts",
+    "craw-img": "node ./puppeteer/index.cjs"
   },
   "dependencies": {
     "@heroicons/react": "^2.1.5",

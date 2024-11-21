@@ -18,6 +18,15 @@ wrangler login
 wrangler pages dev dist
 ```
 
+## use puppeteer to craw the img
+
+```bash
+# fisrt update .puppeteer/index.cjs crawImgsPath and than execute the command
+npm run craw-img
+
+# copy images' path and than ask AI to general the sql based on the Post table scheme, reference: src/main/resources/sql/ddl/insertPostDataAndBindUser.sql
+```
+
 ## React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.

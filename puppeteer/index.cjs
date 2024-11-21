@@ -16,8 +16,10 @@ async function getUnsplashImages() {
   );
 
   try {
+    // TODO: search img type in 'https://unsplash.com' and copy the url
+    const crawImgsPath = 'https://unsplash.com/s/photos/sculpture-3d';
     // Navigate to Unsplash
-    await page.goto('https://unsplash.com/s/photos/sculpture-3d', {
+    await page.goto(crawImgsPath, {
       waitUntil: 'networkidle0',
       timeout: 60000,
     });
