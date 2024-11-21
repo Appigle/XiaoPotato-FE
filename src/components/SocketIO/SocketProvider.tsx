@@ -114,7 +114,11 @@ const SocketProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
           default:
             break;
         }
-        Toast.info(msg.firstName ? `${name} ${content}` : content);
+        Toast(<div>🦄 {msg.firstName ? `${name} ${content}` : content}</div>, {
+          autoClose: false,
+          hideProgressBar: true,
+          progress: undefined,
+        });
         setIsAlive(true);
         checkHeartBeat();
       },
@@ -138,7 +142,11 @@ const SocketProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
           default:
             break;
         }
-        Toast.info(`${name} ${content}`);
+        Toast(<div>🦄 {`${name} ${content}`}</div>, {
+          autoClose: false,
+          hideProgressBar: true,
+          progress: undefined,
+        });
         setIsAlive(true);
         checkHeartBeat();
       },
