@@ -24,6 +24,4 @@ dist-ssr
 *.sw?
 *.tgz
 *.tsbuildinfo
-*/.env
-.env/.env
 .wrangler
