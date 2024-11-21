@@ -1,36 +1,64 @@
-import useEventBusStore from '@/stores/useEventBusStore';
 import { BanknotesIcon } from '@heroicons/react/24/outline';
 import { Spinner } from '@material-tailwind/react';
 import { IPostItem, typePostGenre, typePostListRef } from '@src/@types/typePostItem';
 import { type_req_get_post_by_page, type_res_get_post } from '@src/@types/typeRequest';
 import Api from '@src/Api';
 import X_POTATO_URL from '@src/constants/xPotatoUrl';
+import useEventBusStore from '@src/stores/useEventBusStore';
 import useGlobalStore from '@src/stores/useGlobalStore';
 import useRequest from '@src/utils/request';
 import HTTP_RES_CODE from '@src/utils/request/httpResCode';
-import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useState } from 'react';
+import React, {
+  forwardRef,
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from 'react';
 import { HiRefresh } from 'react-icons/hi';
+import { useDebounceCallback } from 'usehooks-ts';
 import PostCard from './PostCard';
 import PostDetailModal from './PostCardModal';
 import PostFormModal from './PostFormModal';
 
+interface PostState {
+  currentPost?: IPostItem;
+  currentIndex: number;
+  currentPage: number;
+  postGenre: typePostGenre;
+  isLoadEnd: boolean;
+  total: number;
+  mode: 'create' | 'edit';
+  isModalOpen: boolean;
+  isFormModalOpen: boolean;
+}
+
 type PropsType = { title?: string };
 
 // Update PostList component to include infinite scroll
-const PostPostList = forwardRef<typePostListRef, PropsType>((_, ref) => {
+const PostList = forwardRef<typePostListRef, PropsType>((_, ref) => {
+  const [state, setState] = useState<PostState>({
+    currentIndex: -1,
+    currentPage: 1,
+    postGenre: 'All',
+    isLoadEnd: false,
+    total: 0,
+    mode: 'create',
+    isModalOpen: false,
+    isFormModalOpen: false,
+  });
   const [postList, setPostList] = useState<IPostItem[]>([]);
-  const { currentPostGenre: _currentPostGenre, isLoading, setIsLoading } = useGlobalStore();
-  const [currentPostIndex, setCurrentPostIndex] = useState(-1);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [currentPostGenre, setCurrentPostGenre] = useState(_currentPostGenre);
-  const [isLoadEnd, setIsLoadEnd] = useState(false);
-  const [total, setTotal] = useState(0);
-  const [currentPostEditOrCreateMode, setCurrentPostEditOrCreateMode] = useState<'create' | 'edit'>(
-    'create',
-  );
-  const currentSearchWord = useGlobalStore((s) => s.currentSearchWord);
-  const setCurrentSearchWord = useGlobalStore((s) => s.setCurrentSearchWord);
-  const getPostDataByPage = useCallback(
+  const loadingRef = useRef(false);
+  const {
+    currentPostGenre: _currentPostGenre,
+    isLoading,
+    setIsLoading,
+    currentSearchWord,
+    setCurrentSearchWord,
+  } = useGlobalStore();
+  const setIsOpenPostFormModal = useEventBusStore((s) => s.setIsOpenPostFormModal);
+  const fetchPosts = useCallback(
     (size: number, page: number, searchWord: string, postGenre: typePostGenre) => {
       const post: type_req_get_post_by_page = {
         postTitle: searchWord,
@@ -39,160 +67,149 @@ const PostPostList = forwardRef<typePostListRef, PropsType>((_, ref) => {
         currentPage: page,
         pageSize: size,
       };
-      return Api.xPotatoApi
-        .getPostByPage(post)
-        .then((res) => {
-          if (res.code === HTTP_RES_CODE.SUCCESS) {
-            const { total, records } = (res.data || {}) as type_res_get_post;
-            setTotal(total);
-            setPostList((pre) => {
-              return [...pre, ...records];
-            });
-          }
-        })
-        .finally(() => {
-          setIsLoading(false);
-        });
+      return Api.xPotatoApi.getPostByPage(post).then((res) => {
+        if (res.code === HTTP_RES_CODE.SUCCESS) {
+          const { total, records, current, size } = (res.data || {}) as type_res_get_post;
+          setState((prev) => ({
+            ...prev,
+            total,
+            isLoadEnd: total <= current * size,
+          }));
+          setPostList((prev) => [...prev, ...records]);
+        }
+      });
     },
-    [setIsLoading],
+    [],
   );
 
+  const resetList = useCallback(() => {
+    setPostList([]);
+    setState((prev) => ({
+      ...prev,
+      currentPage: 1,
+      isLoadEnd: false,
+    }));
+  }, []);
   useEffect(() => {
     setCurrentSearchWord('');
-    setCurrentPostGenre('All');
+    setState((prev) => ({ ...prev, postGenre: 'All' }));
   }, [setCurrentSearchWord]);
 
   useEffect(() => {
-    const currentLength = postList.length;
-    const isEnd = currentLength >= total;
-    setIsLoadEnd(isEnd);
-  }, [postList, total]);
+    resetList();
+    setState((prev) => ({ ...prev, postGenre: _currentPostGenre }));
+  }, [_currentPostGenre, resetList]);
 
   useEffect(() => {
-    setPostList([]);
-    setCurrentPostGenre(_currentPostGenre);
-    setCurrentPage(1);
-  }, [_currentPostGenre]);
+    resetList();
+  }, [currentSearchWord, resetList]);
 
   useEffect(() => {
-    setPostList([]);
-    setCurrentPage(1);
-  }, [currentSearchWord]);
-
-  useEffect(() => {
+    if (loadingRef.current) return;
+    loadingRef.current = true;
     setIsLoading(true);
-    getPostDataByPage(20, currentPage, currentSearchWord || '', currentPostGenre);
+    fetchPosts(20, state.currentPage, currentSearchWord || '', state.postGenre).finally(() => {
+      setIsLoading(false);
+      loadingRef.current = false;
+    });
     return () => {
       const abort = useRequest.getAbortAxios();
       abort.removePending(abort.getRequestId(X_POTATO_URL.POST_FILTER_PAGES, 'get'));
     };
-  }, [currentSearchWord, currentPage, currentPostGenre, getPostDataByPage, setIsLoading]);
+  }, [currentSearchWord, state.currentPage, state.postGenre, fetchPosts, setIsLoading]);
 
-  const onRefreshPostList = useCallback(() => {
-    if (isLoading) return;
-    setPostList([]);
+  const loadMoreCards = useDebounceCallback(() => {
+    if (loadingRef.current || state.isLoadEnd) return;
     setIsLoading(true);
-    setIsLoadEnd(false);
-    if (currentPage === 1) {
-      getPostDataByPage(20, currentPage, currentSearchWord || '', currentPostGenre);
-    } else {
-      setCurrentPage(1);
-    }
-  }, [
-    currentPage,
-    currentPostGenre,
-    currentSearchWord,
-    getPostDataByPage,
-    setIsLoading,
-    setIsLoadEnd,
-    isLoading,
-  ]);
-
-  const loadMoreCards = useCallback(async () => {
-    if (isLoading || isLoadEnd) return;
-    setIsLoading(true);
-    setCurrentPage(currentPage + 1);
-  }, [setCurrentPage, setIsLoading, currentPage, isLoading, isLoadEnd]);
+    setState((prev) => ({ ...prev, currentPage: prev.currentPage + 1 }));
+  }, 200);
 
   const handleScroll = useCallback(
     (e?: React.UIEvent<HTMLElement, UIEvent>) => {
-      if (isLoading || !e || isLoadEnd) return;
+      if (loadingRef.current || !e || state.isLoadEnd) return;
       const { scrollTop, clientHeight, scrollHeight } = e.currentTarget;
       const offset = 100;
-      const isBottom = scrollTop + clientHeight >= scrollHeight - offset;
-      if (isBottom) {
+      if (scrollTop + clientHeight >= scrollHeight - offset) {
         loadMoreCards();
       }
     },
-    [loadMoreCards, isLoading, isLoadEnd],
+    [loadMoreCards, state.isLoadEnd],
   );
-
+  const handleModalActions = useCallback(
+    (
+      post?: IPostItem,
+      index: number = -1,
+      mode: 'create' | 'edit' = 'create',
+      isForm: boolean = false,
+      isModalOpen: boolean = false,
+    ) => {
+      setState((prev) => ({
+        ...prev,
+        currentPost: post,
+        currentIndex: index,
+        mode,
+        isModalOpen,
+        isFormModalOpen: isForm,
+      }));
+      if (isForm) {
+        setIsOpenPostFormModal(true);
+      }
+    },
+    [setIsOpenPostFormModal],
+  );
+  const handleRefresh = useCallback(() => {
+    if (loadingRef.current) return;
+    resetList();
+    if (state.currentPage === 1) {
+      fetchPosts(20, 1, currentSearchWord || '', state.postGenre);
+    }
+  }, [resetList, state.currentPage, state.postGenre, currentSearchWord, fetchPosts]);
   useImperativeHandle(ref, () => ({
     handleScroll,
   }));
 
-  const [isOpen, setIsOpen] = useState(false);
-  const [currentPostData, setCurrentPostData] = useState<IPostItem | undefined>(undefined);
-  const openDetail = () => {
-    setIsOpen(true);
-  };
+  const renderEmptyState = () => (
+    <div className="m-auto mt-64 flex flex-col items-center justify-center gap-4">
+      <BanknotesIcon className="text-potato-500 h-12 w-12" />
+      <p className="text-center text-lg">No post found...</p>
+    </div>
+  );
 
-  const onCloseModal = (post: IPostItem, index: number) => {
-    setCurrentPostData(undefined);
-    setCurrentPostIndex(-1);
-    postList.splice(index, 1, post);
-    setPostList(postList);
-    setIsOpen(false);
-  };
-
-  const onShowDetail = (postData: IPostItem, index: number) => {
-    setCurrentPostEditOrCreateMode('create');
-    setCurrentPostData(postData);
-    setCurrentPostIndex(index);
-    openDetail();
-  };
-
-  const onPostEdit = (postData: IPostItem, index: number) => {
-    setCurrentPostEditOrCreateMode('edit');
-    setCurrentPostData(postData);
-    setCurrentPostIndex(index);
-    setIsOpenPostFormModal(true);
-  };
-
-  const setIsOpenPostFormModal = useEventBusStore((s) => s.setIsOpenPostFormModal);
-  const isOpenPostFormModal = useEventBusStore((s) => s.isOpenPostFormModal);
-  const onDeletePost = () => {
-    onRefreshPostList();
-  };
-  const onSubmitPost = (suc: boolean) => {
-    !!suc && onRefreshPostList();
-  };
-
-  const onCloseEditPost = () => {
-    setCurrentPostEditOrCreateMode('create');
-    setIsOpenPostFormModal(false);
-    setCurrentPostData(undefined);
-    setCurrentPostIndex(-1);
-  };
+  const renderBottomLine = () => (
+    <span className="h-88 flex w-full items-center justify-center py-2 text-sm italic text-gray-500">
+      ---- It's bottom line ({state.total})----
+    </span>
+  );
 
   return (
     <>
       <PostDetailModal
-        index={currentPostIndex}
-        onClose={onCloseModal}
-        open={isOpen}
-        post={currentPostData}
+        index={state.currentIndex}
+        onClose={(post, index) => {
+          if (post) {
+            const newList = [...postList];
+            newList[index] = post;
+            setPostList(newList);
+          }
+          handleModalActions();
+        }}
+        open={state.isModalOpen}
+        post={state.currentPost}
       />
       <PostFormModal
-        index={currentPostIndex}
-        open={isOpenPostFormModal}
-        post={currentPostData}
-        mode={currentPostEditOrCreateMode}
-        onClose={onCloseEditPost}
-        postCb={(suc) => {
-          onSubmitPost(suc);
+        index={state.currentIndex}
+        open={state.isFormModalOpen}
+        post={state.currentPost}
+        mode={state.mode}
+        onClose={() => handleModalActions()}
+        postCb={(success) => {
+          if (success) {
+            handleRefresh();
+          }
+          handleModalActions();
         }}
       />
+
       {!!postList.length && (
         <div className="grid grid-cols-1 gap-4 p-4 pt-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {postList.map((post, index) => (
@@ -200,25 +217,23 @@ const PostPostList = forwardRef<typePostListRef, PropsType>((_, ref) => {
               key={post.id}
               post={post}
               index={index}
-              onShowDetail={onShowDetail}
-              onPostEdit={onPostEdit}
-              onDelete={onDeletePost}
+              onShowDetail={(post, index) => handleModalActions(post, index, 'create', false, true)}
+              onPostEdit={(post, index) => handleModalActions(post, index, 'edit', true, true)}
+              onDelete={handleRefresh}
             />
           ))}
         </div>
       )}
-      {!isLoading && isLoadEnd && postList.length === 0 && (
-        <div className="m-auto mt-64 flex flex-col items-center justify-center gap-4">
-          <BanknotesIcon className="text-potato-500 h-12 w-12" />
-          <p className="text-center text-lg">No post found...</p>
-        </div>
+      {!isLoading && state.isLoadEnd && postList.length === 0 && renderEmptyState()}
+      {isLoading && !state.isLoadEnd && (
+        <Spinner color="amber" className="m-auto mt-64 h-12 w-12" />
       )}
-      {isLoading && !isLoadEnd && <Spinner color="amber" className="m-auto mt-64 h-12 w-12" />}
+      {!isLoading && state.isLoadEnd && postList.length > 0 && renderBottomLine()}
       <HiRefresh
         className={`fixed bottom-[50px] right-[50px] z-20 rounded-full text-2xl hover:cursor-pointer ${isLoading ? 'animate-spin' : ''}`}
-        onClick={onRefreshPostList}
-      ></HiRefresh>
+        onClick={handleRefresh}
+      />
     </>
   );
 });
-export default PostPostList;
+export default PostList;

@@ -1,4 +1,5 @@
 import withMT from '@material-tailwind/react/utils/withMT';
+const colors = require('tailwindcss/colors');
 
 /** @type {import('tailwindcss').Config} */
 export default withMT({
@@ -14,6 +15,7 @@ export default withMT({
         'potato-cream': '#F5E7C6',
         'potato-brown': '#8B7355',
         'potato-green': '#ccd5ae',
+        neutral: colors.neutral,
       },
     },
   },
