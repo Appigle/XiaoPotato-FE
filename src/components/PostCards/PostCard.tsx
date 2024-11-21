@@ -43,8 +43,7 @@ const PostCard = (props: PostCardProps) => {
   const [isConfirming, setIsConfirming] = useState(false);
   const gotoProfile = useGoToProfile();
 
-  const onLike = (isLike: boolean) => {
-    console.log('%c [ isLike ]-37', 'font-size:13px; background:pink; color:#bf2c9f;', isLike);
+  const onLike = () => {
     Api.xPotatoApi.postLike({ id: post.id as number }).then((res) => {
       const { data: isLikeSuc, code } = res;
       if (code === HTTP_RES_CODE.SUCCESS) {
@@ -148,12 +147,7 @@ const PostCard = (props: PostCardProps) => {
               <span className="select-none">{post.likeCount}</span>
               <span className="hidden select-none text-sm xl:inline-block">likes</span>
             </Typography>
-            <HeartEffect
-              checked={post.liked}
-              height={60}
-              width={60}
-              onChange={(b: boolean) => onLike(b)}
-            />
+            <HeartEffect checked={post.liked} height={60} width={60} onChange={() => onLike()} />
             {(userInfo?.id === post.creatorId || userInfo?.userRole === 'admin') && (
               <Popover placement="top-start">
                 <PopoverHandler>

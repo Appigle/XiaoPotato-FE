@@ -169,7 +169,7 @@ const PostList = forwardRef<typePostListRef, PropsType>((_, ref) => {
   }));
 
   const renderEmptyState = () => (
-    <div className="m-auto mt-64 flex flex-col items-center justify-center gap-4">
+    <div className="m-auto mt-64 flex flex-col items-center justify-center gap-4 text-blue-gray-900 dark:text-gray-200">
       <BanknotesIcon className="text-potato-500 h-12 w-12" />
       <p className="text-center text-lg">No post found...</p>
     </div>
@@ -209,7 +209,6 @@ const PostList = forwardRef<typePostListRef, PropsType>((_, ref) => {
           handleModalActions();
         }}
       />
-
       {!!postList.length && (
         <div className="grid grid-cols-1 gap-4 p-4 pt-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {postList.map((post, index) => (
