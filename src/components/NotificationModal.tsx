@@ -73,11 +73,17 @@ const NotificationModal = ({ isOpen, onClose }: NotificationModalProps) => {
   const totalPages = Math.ceil(total / PAGE_SIZE);
 
   return (
-    <Dialog open={isOpen} handler={onClose} className="sm:max-w-[500px]">
+    <Dialog
+      open={isOpen}
+      handler={onClose}
+      className="dark:bg-blue-gray-900 dark:text-gray-200 sm:max-w-[500px]"
+    >
       <DialogHeader className="flex items-center justify-between border-b p-4">
         <div className="flex items-center gap-2">
           <BellIcon className="h-5 w-5" />
-          <Typography variant="h5">Notifications</Typography>
+          <Typography variant="h5" className="dark:text-gray-100">
+            Notifications
+          </Typography>
         </div>
         <button
           onClick={onClose}
@@ -111,14 +117,16 @@ const NotificationModal = ({ isOpen, onClose }: NotificationModalProps) => {
                 />
                 <div className="flex-1">
                   <div className="flex items-baseline justify-between gap-2">
-                    <Typography className="font-semibold">
+                    <Typography className="font-semibold dark:text-gray-200">
                       {notification.firstName} {notification.lastName}
                     </Typography>
                     <Typography className="text-sm text-gray-500">
                       {format(new Date(notification.timestamp), 'MMM d, yyyy')}
                     </Typography>
                   </div>
-                  <Typography className="text-sm">{getNotificationText(notification)}</Typography>
+                  <Typography className="text-sm dark:text-gray-400">
+                    {getNotificationText(notification)}
+                  </Typography>
                   {notification.content && (
                     <Typography className="mt-1 text-sm text-gray-600 dark:text-gray-400">
                       {notification.content}
@@ -138,14 +146,16 @@ const NotificationModal = ({ isOpen, onClose }: NotificationModalProps) => {
               variant="outlined"
               onClick={() => handlePageChange(currentPage - 1)}
               disabled={currentPage === 1 || loading}
+              className="dark:border-blue-gray-100 dark:text-gray-100"
             >
               Previous
             </Button>
-            <Typography className="flex items-center">
+            <Typography className="flex items-center dark:border-blue-gray-100 dark:text-gray-100">
               Page {currentPage} of {totalPages}
             </Typography>
             <Button
               variant="outlined"
+              className="dark:border-blue-gray-100 dark:text-gray-100"
               onClick={() => handlePageChange(currentPage + 1)}
               disabled={currentPage === totalPages || loading}
             >

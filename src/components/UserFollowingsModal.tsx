@@ -82,22 +82,22 @@ function UserFollowingsModal({ isOpen, setIsOpen, user }: UserFollowingsModalPro
       open={isOpen}
       handler={handleClose}
       size="sm"
-      className="flex items-center justify-center bg-gray-100 p-5"
+      className="flex items-center justify-center bg-gray-100 p-5 dark:bg-blue-gray-800"
     >
       <Card color="transparent" shadow={false}>
-        <Typography variant="h5" color="blue-gray" className="mb-4">
+        <Typography variant="h5" color="blue-gray" className="mb-4 dark:text-blue-gray-200">
           Following
         </Typography>
         <div className="flex flex-col gap-6">
           {followingsList.length === 0 ? (
-            <Typography color="gray" className="text-center">
+            <Typography color="gray" className="text-center dark:text-blue-gray-200">
               No Following yet
             </Typography>
           ) : (
             followingsList.map((fan, index) => (
               <div
                 key={fan.id}
-                className="flex items-center justify-between border-b border-gray-200 pb-4"
+                className="flex items-center justify-between border-b border-gray-200 pb-4 dark:text-blue-gray-100"
               >
                 <div className="flex items-center gap-3">
                   <Avatar
@@ -109,10 +109,10 @@ function UserFollowingsModal({ isOpen, setIsOpen, user }: UserFollowingsModalPro
                     className="mr-3 size-10"
                   />
                   <div className="mr-8 flex flex-col">
-                    <Typography color="blue-gray" className="font-medium">
+                    <Typography color="blue-gray" className="font-medium dark:text-blue-gray-100">
                       {fan.firstName} {fan.lastName}
                     </Typography>
-                    <Typography color="gray" className="text-sm">
+                    <Typography color="gray" className="text-sm dark:text-blue-gray-200">
                       {fan.userAccount}
                     </Typography>
                   </div>

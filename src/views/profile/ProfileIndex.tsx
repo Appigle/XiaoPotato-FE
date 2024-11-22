@@ -16,17 +16,48 @@ const ProfilePage: React.FC = () => {
 
   const [profile, setProfile] = useState<user_profile | null | undefined>(null);
   const [isOpenModal, setIsOpenModal] = useState(false);
+  const [isFollowLoading, setIsFollowLoading] = useState(false);
   //global state
   const userInfo = useGlobalStore((s) => s.userInfo);
   const setHeaderConfig = useGlobalStore((s) => s.setHeaderConfig);
   const setUserInfo = useGlobalStore((s) => s.setUserInfo);
   const setIsLoading = useGlobalStore((s) => s.setIsLoading);
   const isLoading = useGlobalStore((s) => s.isLoading);
+
   const { userId } = useParams<{ userId: string }>();
   const [currentUserId, setCurrentUserId] = useState(userId || userInfo?.id);
   const [isCurrentUser, setIsCurrentUser] = useState(!userId || userId === `${userInfo?.id}`);
   // 从 profile 或 defaultUserAvatar 获取头像
   const [userAvatar, setUserAvatar] = useState(defaultUserAvatar);
+
+  const handleFollow = async () => {
+    if (!profile || isFollowLoading) return;
+
+    try {
+      setIsFollowLoading(true);
+      const res = await xPotatoApi.followUser({ id: profile.id });
+
+      if (res.code === 200) {
+        //update profile's followed status
+        setProfile((prev) => (prev ? { ...prev, followed: res.data } : prev));
+        //update userInfo's follow count
+        if (userInfo) {
+          const newFollowCount = res.data
+            ? (userInfo.followCount || 0) + 1
+            : (userInfo.followCount || 0) - 1;
+          setUserInfo({ ...userInfo, followCount: newFollowCount });
+        }
+        Toast.success(res.data ? 'Followed successfully' : 'Unfollowed successfully');
+      } else {
+        throw new Error(res.message || 'follow action failed');
+      }
+    } catch (e) {
+      console.error('Follow action failed:', e);
+      Toast.error('Failed to update profile');
+    } finally {
+      setIsFollowLoading(false);
+    }
+  };
 
   const fetchProfileData = useCallback(async () => {
     if (!currentUserId) return;
@@ -209,7 +240,7 @@ const ProfilePage: React.FC = () => {
       <section className="relative bg-blue-gray-200 py-16">
         <div className="container mx-auto px-4">
           <div className="relative -mt-64 mb-6 flex w-full min-w-0 flex-col break-words rounded-lg bg-white shadow-xl">
-            <div className="px-6">
+            <div className="px-6 dark:bg-blue-gray-900">
               <div className="flex flex-wrap justify-center">
                 {/* Avatar */}
                 <div className="w-full px-4 lg:order-2 lg:w-3/12">
@@ -234,12 +265,24 @@ const ProfilePage: React.FC = () => {
                     >
                       View Posts
                     </button>
-                    {isCurrentUser && (
+                    {isCurrentUser ? (
                       <button
                         className="w-40 rounded bg-pink-500 px-4 py-2 text-sm font-bold uppercase text-white shadow-md transition-all hover:bg-pink-600 hover:shadow-lg focus:outline-none active:bg-pink-700 sm:w-auto"
                         onClick={onEditProfile}
                       >
                         Edit Profile
+                      </button>
+                    ) : (
+                      <button
+                        className={`w-40 rounded px-4 py-2 text-sm font-bold uppercase text-white shadow-md transition-all focus:outline-none sm:w-auto ${
+                          profile?.followed
+                            ? 'bg-red-500 hover:bg-red-600 active:bg-red-700'
+                            : 'bg-light-blue-500 hover:bg-light-blue-600 active:bg-light-blue-700'
+                        }`}
+                        onClick={handleFollow}
+                        disabled={isFollowLoading}
+                      >
+                        {isFollowLoading ? 'Loading...' : profile?.followed ? 'Unfollow' : 'Follow'}
                       </button>
                     )}
                   </div>
@@ -253,10 +296,10 @@ const ProfilePage: React.FC = () => {
                         onClick={handleOpenFollowingsModal}
                         className="group flex flex-col items-center"
                       >
-                        <span className="block text-xl font-bold uppercase tracking-wide text-blue-gray-600 group-hover:text-pink-500">
+                        <span className="block text-xl font-bold uppercase tracking-wide text-blue-gray-600 group-hover:text-pink-500 dark:text-blue-gray-100">
                           {profile.followCount || 0}
                         </span>
-                        <span className="text-sm text-blue-gray-400 group-hover:text-pink-500">
+                        <span className="text-sm text-blue-gray-400 group-hover:text-pink-500 dark:text-blue-gray-100">
                           Followings
                         </span>
                       </button>
@@ -266,10 +309,10 @@ const ProfilePage: React.FC = () => {
                         onClick={handleOpenFansModal}
                         className="group flex flex-col items-center"
                       >
-                        <span className="block text-xl font-bold uppercase tracking-wide text-blue-gray-600 group-hover:text-pink-500">
+                        <span className="block text-xl font-bold uppercase tracking-wide text-blue-gray-600 group-hover:text-pink-500 dark:text-blue-gray-100">
                           {profile.fansCount || 0}
                         </span>
-                        <span className="text-sm text-blue-gray-400 group-hover:text-pink-500">
+                        <span className="text-sm text-blue-gray-400 group-hover:text-pink-500 dark:text-blue-gray-100">
                           Followers
                         </span>
                       </button>
@@ -280,14 +323,14 @@ const ProfilePage: React.FC = () => {
 
               {/* Profile Info */}
               <div className="mt-12 text-center">
-                <h3 className="mb-2 text-3xl font-semibold leading-normal text-blue-gray-700 sm:text-4xl">
+                <h3 className="mb-2 text-3xl font-semibold leading-normal text-blue-gray-700 dark:text-blue-gray-100 sm:text-4xl">
                   {`${profile.firstName} ${profile.lastName}`}
                 </h3>
-                <div className="mb-2 mt-0 text-sm font-bold uppercase leading-normal text-blue-gray-400">
-                  <i className="fas fa-map-marker-alt mr-2 text-lg text-blue-gray-400"></i>
+                <div className="mb-2 mt-0 text-sm font-bold uppercase leading-normal text-blue-gray-400 dark:text-blue-gray-100">
+                  <i className="fas fa-map-marker-alt mr-2 text-lg text-blue-gray-400 dark:text-blue-gray-100"></i>
                   {profile.userAccount}
                 </div>
-                <div className="mb-2 mt-0 text-sm font-bold leading-normal text-blue-gray-600">
+                <div className="mb-2 mt-0 text-sm font-bold leading-normal text-blue-gray-600 dark:text-blue-gray-100">
                   {profile.email || 'xiao-potato@gmail.com'} |{' '}
                   {profile.phone || '+1 (589)-455-6555'}
                 </div>
@@ -297,7 +340,7 @@ const ProfilePage: React.FC = () => {
               <div className="mt-10 border-t border-blue-gray-200 py-10 text-center">
                 <div className="flex flex-wrap justify-center">
                   <div className="w-full px-4 lg:w-9/12">
-                    <p className="mb-4 text-lg leading-relaxed text-blue-gray-700">
+                    <p className="mb-4 text-lg leading-relaxed text-blue-gray-700 dark:text-blue-gray-100">
                       {profile.description || (
                         <span className="text-[12px] italic text-gray-500">
                           To be or not to be, that is a question~

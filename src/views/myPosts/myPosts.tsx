@@ -3,12 +3,13 @@ import { Post, type_req_get_post_by_page } from '@src/@types/typeRequest';
 import ConfirmModal from '@src/components/ConfirmModal';
 import PostDetailModal from '@src/components/PostCards/PostCardModal';
 import PostModal from '@src/components/PostCards/PostFormModal';
+import useGlobalStore from '@src/stores/useGlobalStore';
 import { useGoBack } from '@src/utils/hooks/nav';
 import Toast from '@src/utils/toastUtils';
 import { format } from 'date-fns';
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 
 const UserPostsPage: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -21,6 +22,10 @@ const UserPostsPage: React.FC = () => {
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
   const { userId } = useParams<{ userId: string }>();
+  const [searchParams] = useSearchParams();
+  const isReadOnly = searchParams.get('readonly') === 'true';
+  const userInfo = useGlobalStore((s) => s.userInfo);
+  const isCurrentUser = userId === `${userInfo?.id}`;
 
   const goBack = useGoBack();
 
@@ -184,21 +189,24 @@ const UserPostsPage: React.FC = () => {
       </section>
       <section className="relative bg-blue-gray-200 py-16">
         <div className="container mx-auto px-4">
-          <div className="relative -mt-64 mb-6 flex w-full min-w-0 flex-col break-words rounded-lg bg-white shadow-xl">
+          <div className="relative -mt-64 mb-6 flex w-full min-w-0 flex-col break-words rounded-lg bg-white shadow-xl dark:bg-blue-gray-900">
             <div className="px-6 py-8">
-              <h1 className="mb-8 text-center text-3xl font-bold text-gray-800">User Posts</h1>
+              <h1 className="mb-8 text-center text-3xl font-bold text-gray-800 dark:text-blue-gray-100">
+                {' '}
+                {isCurrentUser ? 'My Posts' : 'User Posts'}
+              </h1>
 
               {loading ? (
                 <div className="flex justify-center py-12">
-                  <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-t-2 border-gray-900"></div>
+                  <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-t-2 border-gray-900 dark:bg-blue-gray-900"></div>
                 </div>
               ) : (
                 <div className="overflow-x-auto">
                   {posts.length > 0 ? (
                     <>
-                      <table className="w-full table-auto">
+                      <table className="w-full table-auto dark:bg-blue-gray-900">
                         <thead>
-                          <tr className="bg-gray-50">
+                          <tr className="bg-gray-50 dark:bg-blue-gray-700">
                             <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
                               Title
                             </th>
@@ -211,49 +219,71 @@ const UserPostsPage: React.FC = () => {
                             <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
                               Likes
                             </th>
-                            <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-                              Actions
-                            </th>
+                            {!isReadOnly && (
+                              <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                                Actions
+                              </th>
+                            )}
+                            {isReadOnly && (
+                              <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                                View
+                              </th>
+                            )}
                           </tr>
                         </thead>
-                        <tbody className="divide-y divide-gray-200 bg-white text-blue-gray-900 dark:text-gray-400">
+                        <tbody className="divide-y divide-gray-200 bg-white text-blue-gray-900 dark:bg-blue-gray-800 dark:text-gray-400">
                           {posts.map((post) => (
-                            <tr key={post.id} className="hover:bg-gray-50">
+                            <tr
+                              key={post.id}
+                              className="hover:bg-gray-50 dark:hover:bg-blue-gray-700"
+                            >
                               <td className="whitespace-nowrap px-6 py-4">{post.postTitle}</td>
                               <td className="whitespace-nowrap px-6 py-4">
                                 {format(new Date(post.createTime), 'yyyy-MM-dd')}
                               </td>
                               <td className="whitespace-nowrap px-6 py-4">{post.commentCount}</td>
                               <td className="whitespace-nowrap px-6 py-4">{post.likeCount}</td>
-                              <td className="whitespace-nowrap px-6 py-4">
-                                <div className="flex gap-2">
+                              {!isReadOnly && (
+                                <td className="whitespace-nowrap px-6 py-4">
+                                  <div className="flex gap-2">
+                                    <button
+                                      onClick={() => openDetailModal(post)}
+                                      className="text-blue-600 hover:text-blue-800 dark:text-blue-300 dark:hover:text-blue-500"
+                                    >
+                                      View
+                                    </button>
+                                    <button
+                                      onClick={() => openEditModal(post)}
+                                      className="text-blue-600 hover:text-blue-800 dark:text-blue-300 dark:hover:text-blue-500"
+                                    >
+                                      Edit
+                                    </button>
+                                    <button
+                                      onClick={() => openDeleteModal(post)}
+                                      className="text-red-600 hover:text-red-800"
+                                    >
+                                      Delete
+                                    </button>
+                                  </div>
+                                </td>
+                              )}
+                              {isReadOnly && (
+                                <td className="whitespace-nowrap px-6 py-4">
                                   <button
                                     onClick={() => openDetailModal(post)}
                                     className="text-blue-600 hover:text-blue-800"
                                   >
                                     View
                                   </button>
-                                  <button
-                                    onClick={() => openEditModal(post)}
-                                    className="text-blue-600 hover:text-blue-800"
-                                  >
-                                    Edit
-                                  </button>
-                                  <button
-                                    onClick={() => openDeleteModal(post)}
-                                    className="text-red-600 hover:text-red-800"
-                                  >
-                                    Delete
-                                  </button>
-                                </div>
-                              </td>
+                                </td>
+                              )}
                             </tr>
                           ))}
                         </tbody>
                       </table>
 
                       {/* Tailwind Pagination */}
-                      <div className="mt-6 flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
+                      <div className="mt-6 flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 dark:bg-blue-gray-900 dark:text-blue-gray-200 sm:px-6">
                         <div className="flex flex-1 justify-between sm:hidden">
                           <button
                             onClick={() => handlePageChange(currentPage - 1)}
@@ -272,7 +302,7 @@ const UserPostsPage: React.FC = () => {
                         </div>
                         <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
                           <div>
-                            <p className="text-sm text-gray-700">
+                            <p className="text-sm text-gray-700 dark:text-blue-gray-200">
                               Showing{' '}
                               <span className="font-medium">{(currentPage - 1) * 10 + 1} </span> to{' '}
                               <span className="font-medium">
@@ -296,7 +326,7 @@ const UserPostsPage: React.FC = () => {
                                 pageNumber === -1 ? (
                                   <span
                                     key={`ellipsis-${index}`}
-                                    className="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-700 ring-1 ring-inset ring-gray-300 focus:outline-offset-0"
+                                    className="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-700 ring-1 ring-inset ring-gray-300 focus:outline-offset-0 dark:text-blue-gray-200"
                                   >
                                     ...
                                   </span>
@@ -307,7 +337,7 @@ const UserPostsPage: React.FC = () => {
                                     className={`relative inline-flex items-center px-4 py-2 text-sm font-semibold ${
                                       pageNumber === currentPage
                                         ? 'z-10 bg-indigo-600 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
-                                        : 'text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:outline-offset-0'
+                                        : 'text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:outline-offset-0 dark:text-blue-gray-200'
                                     }`}
                                   >
                                     {pageNumber}
@@ -337,22 +367,26 @@ const UserPostsPage: React.FC = () => {
           </div>
         </div>
       </section>
-      <ConfirmModal
-        open={showDeleteModal}
-        title="Delete Post"
-        content="Are you sure you want to delete this post? This action cannot be undone."
-        confirmText="Delete"
-        cancelText="Cancel"
-        onConfirm={handleDelete}
-        onCancel={() => setShowDeleteModal(false)}
-      />
-      <PostModal
-        open={showEditModal}
-        mode="edit"
-        post={selectedPost || undefined}
-        onClose={closeEditModal}
-        postCb={handleEditPostCallback}
-      />
+      {!isReadOnly && (
+        <>
+          <ConfirmModal
+            open={showDeleteModal}
+            title="Delete Post"
+            content="Are you sure you want to delete this post? This action cannot be undone."
+            confirmText="Delete"
+            cancelText="Cancel"
+            onConfirm={handleDelete}
+            onCancel={() => setShowDeleteModal(false)}
+          />
+          <PostModal
+            open={showEditModal}
+            mode="edit"
+            post={selectedPost || undefined}
+            onClose={closeEditModal}
+            postCb={handleEditPostCallback}
+          />
+        </>
+      )}
       <PostDetailModal
         index={selectedPost?.id || 0}
         onClose={handleDetailModalClose}
