@@ -44,6 +44,7 @@ const UserPostsPage: React.FC = () => {
         postTitle: '',
         postContent: '',
         postGenre: 'All',
+        sort: 'desc',
       };
       const response = await xPotatoApi.getUserPosts(Number(userId), queryParams);
 
