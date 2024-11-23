@@ -1,9 +1,9 @@
 import { IUserItem } from '@src/@types/typeUserItem';
-import { Resend } from 'resend';
-import Toast from './toastUtils';
+import xPotatoApi from '@src/Api/xPotatoApi';
+// import { Resend } from 'resend';
 
-const RESEND_API_KEY = import.meta.env.VITE_RESEND_API_KEY || 're_';
-const resend = new Resend(RESEND_API_KEY);
+// const RESEND_API_KEY = import.meta.env.VITE_RESEND_API_KEY || 're_';
+// const resend = new Resend(RESEND_API_KEY);
 interface FormState {
   email: string;
   subject: string;
@@ -15,31 +15,11 @@ const EmailUtils = {
     if (!email || !userInfo || !subject || !content) {
       return Promise.reject(new Error('Parameter error!'));
     }
-    const [name] = email.split('@')[0];
-    return new Promise((resolve, reject) => {
-      resend.emails
-        .send({
-          from: `${name} <${userInfo!.firstName}.${userInfo!.lastName}@xiaopotato.top>`, // opt: need to Prevent repetition
-          to: [email],
-          subject: subject,
-          html: content,
-        })
-        .then(({ data, error }) => {
-          if (error) {
-            console.error(
-              '%c [ error ]-18',
-              'font-size:13px; background:pink; color:#bf2c9f;',
-              error,
-            );
-            Toast.error(error?.message);
-            reject(error);
-            return;
-          }
-          Toast.success('Email sent successfully!');
-          console.log({ data });
-          resolve(data);
-        })
-        .catch(reject);
+    return xPotatoApi.sendEmail({
+      toUser: email,
+      fromUser: `${userInfo!.firstName}.${userInfo!.lastName} <${userInfo!.firstName}.${userInfo!.lastName}@xiaopotato.top>`,
+      subject,
+      content,
     });
   },
 };

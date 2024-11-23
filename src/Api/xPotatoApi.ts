@@ -1,3 +1,4 @@
+import { typeEmail } from '@src/@types/common';
 import { IPostItem } from '@src/@types/typePostItem';
 import {
   BaseRes,
@@ -303,6 +304,19 @@ const getNotifications = (params: type_req_base_page) => {
   });
 };
 
+/**
+ * send email to user
+ * @param params typeEmail
+ * @returns Promise<BaseRes<boolean>>
+ */
+const sendEmail = (data: typeEmail) => {
+  return useRequest.post<BaseRes<boolean>>({
+    baseURL,
+    url: `/email/send`,
+    data,
+  });
+};
+
 export default {
   registerAccount,
   userLogin,
@@ -326,5 +340,6 @@ export default {
   createPost1stComment,
   createPost2ndComment,
   deletePostComment,
+  sendEmail,
   getNotifications,
 };

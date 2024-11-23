@@ -2,6 +2,7 @@ import { Button, Card, CardBody, CardFooter, Input, Textarea } from '@material-t
 import { IUserItem } from '@src/@types/typeUserItem';
 import useGlobalStore from '@src/stores/useGlobalStore';
 import EmailUtils from '@src/utils/emailUtils';
+import Toast from '@src/utils/toastUtils';
 import React, { useEffect, useState } from 'react';
 
 interface FormState {
@@ -76,11 +77,19 @@ const EmailForm: React.FC = () => {
       subject: subjectError,
       content: contentError,
     });
-
+    if (!userInfo) {
+      Toast.error('Not login!');
+      return;
+    }
     if (!emailError && !subjectError && !contentError) {
-      EmailUtils.send({ ...formState, userInfo: userInfo as IUserItem }).then(() => {
-        resetForm();
-      });
+      EmailUtils.send({ ...formState, userInfo: userInfo as IUserItem })
+        .then(() => {
+          Toast.success('Send successfully!');
+          resetForm();
+        })
+        .catch(() => {
+          Toast.error('Send failed, please try again later');
+        });
     }
   };
   const handleCancel = () => {

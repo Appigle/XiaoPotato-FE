@@ -15,6 +15,7 @@ import allGenreList from '@src/constants/genreList';
 import Key from '@src/constants/keyboard';
 import { X_ACCESS_TOKEN } from '@src/constants/LStorageKey';
 import useGlobalStore from '@src/stores/useGlobalStore';
+import useLoginCheck from '@src/utils/hooks/login';
 import React, { useEffect } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { NavLink, useNavigate } from 'react-router-dom';
@@ -23,6 +24,8 @@ import xiaoPotatoLogo from '/xiaoPotato.png';
 
 export function NavbarWithSearch(props: { search?: boolean }) {
   const { search = true } = props;
+  const [checking] = useLoginCheck();
+  console.log('%c [ checking ]-28', 'font-size:13px; background:pink; color:#bf2c9f;', checking);
   React.useEffect(() => {
     window.addEventListener('resize', () => window.innerWidth >= 960 && setOpenNav(false));
   }, []);

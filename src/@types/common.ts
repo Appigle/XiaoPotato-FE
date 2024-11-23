@@ -4,3 +4,11 @@ export type typeNavMenuItem = {
   icon?: string;
   redirect?: boolean;
 };
+
+export type typeEmail = {
+  id?: string;
+  toUser: string | string[];
+  fromUser: string;
+  subject: string;
+  content: string;
+};

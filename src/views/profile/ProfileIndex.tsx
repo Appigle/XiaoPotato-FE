@@ -11,6 +11,7 @@ import Toast from '@src/utils/toastUtils';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import './ProfileIndex.css';
+
 const ProfilePage: React.FC = () => {
   const [checking] = useLoginCheck();
 

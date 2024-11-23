@@ -1,5 +1,4 @@
 import { BanknotesIcon } from '@heroicons/react/24/outline';
-import { Spinner } from '@material-tailwind/react';
 import { IPostItem, typePostGenre, typePostListRef } from '@src/@types/typePostItem';
 import { type_req_get_post_by_page, type_res_get_post } from '@src/@types/typeRequest';
 import Api from '@src/Api';
@@ -21,6 +20,7 @@ import { useDebounceCallback } from 'usehooks-ts';
 import PostCard from './PostCard';
 import PostDetailModal from './PostCardModal';
 import PostFormModal from './PostFormModal';
+import { SkeletonCard } from './SkeletonCard';
 
 interface PostState {
   currentPost?: IPostItem;
@@ -237,7 +237,12 @@ const PostList = forwardRef<typePostListRef, PropsType>((_, ref) => {
       )}
       {!isLoading && state.isLoadEnd && postList.length === 0 && renderEmptyState()}
       {isLoading && !state.isLoadEnd && (
-        <Spinner color="amber" className="m-auto mt-64 h-12 w-12" />
+        <div className="grid grid-cols-1 gap-4 p-4 pt-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5">
+          {new Array(8).fill('love').map(() => {
+            return <SkeletonCard />;
+          })}
+        </div>
+        // <Spinner color="amber" className="m-auto mt-64 h-12 w-12" />
       )}
       {!isLoading && state.isLoadEnd && postList.length > 0 && renderBottomLine()}
       <HiRefresh

@@ -22,6 +22,7 @@ import useEventBusStore from '@src/stores/useEventBusStore';
 import useGlobalStore from '@src/stores/useGlobalStore';
 import useTheme from '@src/utils/hooks/useTheme';
 import Toast from '@src/utils/toastUtils';
+import { MailPlus } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Zoom } from 'react-toastify';
@@ -127,6 +128,21 @@ const Sidebar: React.FC = () => {
               {isExpanded && (
                 <span className="ml-2 inline-block w-fit overflow-hidden text-ellipsis whitespace-nowrap">
                   Notification
+                </span>
+              )}
+            </Link>
+          </li>
+          <li className="mb-2 pl-2">
+            <Link
+              to="/xp/email"
+              className="flex h-10 items-center justify-start overflow-hidden transition-all"
+            >
+              <IconButton variant="text" color={iconColor as color}>
+                <MailPlus className="h-4 w-4" />
+              </IconButton>
+              {isExpanded && (
+                <span className="ml-2 inline-block w-fit overflow-hidden text-ellipsis whitespace-nowrap">
+                  Invitation
                 </span>
               )}
             </Link>
