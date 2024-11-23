@@ -9,7 +9,7 @@ import {
 
 export function SkeletonCard() {
   return (
-    <Card className="mt-6 w-full animate-pulse rounded-xl bg-gray-500/80">
+    <Card className="mt-6 w-full animate-pulse rounded-xl">
       <CardHeader
         shadow={false}
         floated={false}
@@ -30,46 +30,46 @@ export function SkeletonCard() {
           />
         </svg>
       </CardHeader>
-      <CardBody>
-        <Typography as="div" variant="h1" className="w-ful mb-4 h-3 rounded-full bg-gray-300/80">
+      <CardBody className="bg-gray-200/50">
+        <Typography as="div" variant="h1" className="w-ful mb-4 h-3 rounded-full bg-gray-300/50">
           &nbsp;
         </Typography>
         <Typography
           as="div"
           variant="paragraph"
-          className="mb-2 h-2 w-full rounded-full bg-gray-300/80"
+          className="mb-2 h-2 w-full rounded-full bg-gray-400/50"
         >
           &nbsp;
         </Typography>
         <Typography
           as="div"
           variant="paragraph"
-          className="mb-2 h-2 w-full rounded-full bg-gray-300/80"
+          className="mb-2 h-2 w-full rounded-full bg-gray-400/50"
         >
           &nbsp;
         </Typography>
         <Typography
           as="div"
           variant="paragraph"
-          className="mb-2 h-2 w-full rounded-full bg-gray-300/80"
+          className="mb-2 h-2 w-full rounded-full bg-gray-400/50"
         >
           &nbsp;
         </Typography>
         <Typography
           as="div"
           variant="paragraph"
-          className="mb-2 h-2 w-full rounded-full bg-gray-300/80"
+          className="mb-2 h-2 w-full rounded-full bg-gray-400/50"
         >
           &nbsp;
         </Typography>
       </CardBody>
-      <CardFooter className="g-4 flex items-center justify-between pt-0">
+      <CardFooter className="g-4 flex items-center justify-between overflow-hidden rounded-b-xl bg-gray-200/50 pt-0">
         <div className="flex items-center justify-center gap-4">
-          <div className="h-8 w-8 rounded-full bg-gray-300/80 shadow-none hover:shadow-none"></div>
+          <div className="h-8 w-8 rounded-full bg-gray-400/50 shadow-none hover:shadow-none"></div>
           <Button
             disabled
             tabIndex={-1}
-            className="h-8 w-20 bg-gray-300/80 shadow-none hover:shadow-none"
+            className="h-8 w-20 bg-gray-400/50 shadow-none hover:shadow-none"
           >
             &nbsp;
           </Button>
@@ -79,7 +79,7 @@ export function SkeletonCard() {
           <Button
             disabled
             tabIndex={-1}
-            className="h-8 w-4 bg-gray-300/80 shadow-none hover:shadow-none"
+            className="h-8 w-4 bg-gray-400/50 shadow-none hover:shadow-none"
           >
             &nbsp;
           </Button>

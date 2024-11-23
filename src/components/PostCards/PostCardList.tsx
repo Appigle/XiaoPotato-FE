@@ -222,7 +222,7 @@ const PostList = forwardRef<typePostListRef, PropsType>((_, ref) => {
         }}
       />
       {!!postList.length && (
-        <div className="grid grid-cols-1 gap-4 p-4 pt-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5">
+        <div className="grid grid-cols-1 gap-4 p-4 pt-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
           {postList.map((post, index) => (
             <PostCard
               key={post.id}
@@ -237,7 +237,7 @@ const PostList = forwardRef<typePostListRef, PropsType>((_, ref) => {
       )}
       {!isLoading && state.isLoadEnd && postList.length === 0 && renderEmptyState()}
       {isLoading && !state.isLoadEnd && (
-        <div className="grid grid-cols-1 gap-4 p-4 pt-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5">
+        <div className="grid grid-cols-1 gap-4 p-4 pt-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
           {new Array(8).fill('love').map(() => {
             return <SkeletonCard />;
           })}
