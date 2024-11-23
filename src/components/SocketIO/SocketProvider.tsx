@@ -115,7 +115,7 @@ const SocketProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
             break;
         }
         Toast(<div>🦄 {msg.firstName ? `${name} ${content}` : content}</div>, {
-          autoClose: false,
+          autoClose: 1000 * 60 * 60 * 2,
           hideProgressBar: true,
           progress: undefined,
         });
@@ -143,7 +143,6 @@ const SocketProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
             break;
         }
         Toast(<div>🦄 {`${name} ${content}`}</div>, {
-          autoClose: false,
           hideProgressBar: true,
           progress: undefined,
         });
