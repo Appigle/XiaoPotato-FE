@@ -75,7 +75,7 @@ export function SkeletonCard() {
           </Button>
         </div>
 
-        <div className="flex items-center justify-center">
+        <div className="flex items-center justify-center overflow-hidden">
           <Button
             disabled
             tabIndex={-1}
