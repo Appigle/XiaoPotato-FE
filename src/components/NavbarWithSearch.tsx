@@ -25,7 +25,6 @@ import xiaoPotatoLogo from '/xiaoPotato.png';
 export function NavbarWithSearch(props: { search?: boolean }) {
   const { search = true } = props;
   const [checking] = useLoginCheck();
-  console.log('%c [ checking ]-28', 'font-size:13px; background:pink; color:#bf2c9f;', checking);
   React.useEffect(() => {
     window.addEventListener('resize', () => window.innerWidth >= 960 && setOpenNav(false));
   }, []);
@@ -183,6 +182,7 @@ export function NavbarWithSearch(props: { search?: boolean }) {
               </Menu>
               <Input
                 type="search"
+                disabled={checking}
                 inputRef={inputRef}
                 value={searchWord}
                 onChange={(e) => {

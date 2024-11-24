@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { X_ACCESS_TOKEN } from '@src/constants/LStorageKey';
 import useGlobalStore from '@src/stores/useGlobalStore';
+import Logger from '@src/utils/logUtils';
 import Toast from '@src/utils/toastUtils';
 import React, { useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
 import socketIOClient from 'socket.io-client';
@@ -41,44 +42,28 @@ const SocketProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     if (!socket.current) return;
 
     socket.current.on('connect', () => {
-      console.log(
-        '%c [ SocketIO:Connected and authenticated ]-32',
-        'font-size:13px; background:pink; color:#bf2c9f;',
-      );
+      Logger.debug('SocketIO: connected!');
       setIsAlive(true);
       checkHeartBeat();
       socket.current.emit('heartbeat', { userId: userInfo?.id, timestamp: Date.now() });
     });
 
     socket.current.on('error', (msg: string) => {
-      console.error(
-        '%c [ SocketIO: Error ]-32',
-        'font-size:13px; background:pink; color:#bf2c9f;',
-        msg,
-      );
+      Logger.error('SocketIO: connect failure: ', msg);
       setIsAlive(false);
     });
 
     socket.current.on('disconnect', (reason: any) => {
-      console.warn(
-        '%c [ SocketIO: disconnect ]-32',
-        'font-size:13px; background:pink; color:#bf2c9f;',
-        reason,
-      );
+      Logger.debug('SocketIO: disconnect reason: ', reason);
       setIsAlive(false);
     });
 
     socket.current.on('connect_error', (error: any) => {
-      console.error(
-        '%c [ SocketIO: connect_error ]-32',
-        'font-size:13px; background:pink; color:#bf2c9f;',
-        error,
-      );
+      Logger.error('SocketIO: connect_error: ', error);
       setIsAlive(false);
     });
 
-    socket.current.on('heartbeat', (message: string) => {
-      console.log('%c [ message ]-41', 'font-size:13px; background:pink; color:#bf2c9f;', message);
+    socket.current.on('heartbeat', () => {
       setIsAlive(true);
       checkHeartBeat();
     });
@@ -153,11 +138,7 @@ const SocketProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     socket.current.on(
       'randomResponse',
       (response: { randomNumber: number; receivedMessage: string; timestamp: number }) => {
-        console.info(
-          '%c [ SocketIO: timestamp from server:]-32',
-          'font-size:13px; background:pink; color:#bf2c9f;',
-          response.timestamp,
-        );
+        Logger.debug('SocketIO: randomResponse: ', response.timestamp);
         Toast.success(`Server response: # ${response.randomNumber}`);
         setIsAlive(true);
         checkHeartBeat();

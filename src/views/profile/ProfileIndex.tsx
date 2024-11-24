@@ -54,7 +54,6 @@ const ProfilePage: React.FC = () => {
       }
     } catch (e) {
       console.error('Follow action failed:', e);
-      Toast.error('Failed to update profile');
     } finally {
       setIsFollowLoading(false);
     }
@@ -79,13 +78,9 @@ const ProfilePage: React.FC = () => {
           setProfile(response.data);
           setUserAvatar(response.data.userAvatar || defaultUserAvatar);
         }
-        if (response.code !== 200) {
-          Toast.error(response.message || 'Failed to load profile');
-        }
       }
     } catch (error) {
       console.error('Error fetching profile data:', error);
-      Toast.error('Failed to load profile');
     } finally {
       setIsLoading(false);
     }
@@ -149,9 +144,6 @@ const ProfilePage: React.FC = () => {
 
         // 添加成功提示
         Toast.success('Profile updated successfully!');
-      } else {
-        console.error('Failed to update profile:', response.message);
-        Toast.error(response.message || 'Failed to update profile');
       }
     } catch (error) {
       console.error('Error updating profile:', error);

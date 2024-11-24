@@ -1,6 +1,6 @@
 import { X_ACCESS_TOKEN } from '@src/constants/LStorageKey';
 import axios, { AxiosError } from 'axios';
-import logUtils from '../logUtils';
+import { default as Logger, default as logUtils } from '../logUtils';
 import Toast from '../toastUtils';
 import AxiosInstance from './axios';
 import { retry } from './axiosRetry';
@@ -28,11 +28,14 @@ const _RequestInterceptors: RequestInterceptors = {
         window.location.href = '/';
         return config;
       }
-      let errMessage = 'Oops! Something went wrong!';
-      checkErrorStatus(config.data?.code, config.data?.message, (message) => {
-        errMessage = message;
-      });
-      Toast.error(errMessage);
+      checkErrorStatus(
+        config.data?.code,
+        config.data?.description || config.data?.message,
+        (message) => {
+          Logger.error(config);
+          Toast.error(message);
+        },
+      );
     }
     return config;
   },
@@ -46,11 +49,10 @@ const _RequestInterceptors: RequestInterceptors = {
         Toast.error('Network is disconnected!');
         return;
       }
-      let errMessage = err2?.code === 'ECONNABORTED' ? 'Timeout' : undefined;
+      const errMessage = err2?.code === 'ECONNABORTED' ? 'Timeout' : err2?.message || undefined;
       checkErrorStatus((err2 as AxiosError)?.response?.status, errMessage, (message) => {
-        errMessage = message;
+        Toast.error(message || errMessage);
       });
-      Toast.error(errMessage);
     });
   },
 };

@@ -12,11 +12,6 @@ const Main: React.FC = () => {
   const [scrollTop, setScrollTop] = useState(0);
   const postCardListRef = useRef<typePostListRef>(null);
   const { userInfo, userChecking } = useGlobalStore();
-  console.log(
-    '%c [ userChecking ]-15',
-    'font-size:13px; background:pink; color:#bf2c9f;',
-    userChecking,
-  );
   const handleScroll = (e: React.UIEvent<HTMLElement, UIEvent>) => {
     setScrollTop((e.target as HTMLElement).scrollTop);
     postCardListRef.current?.handleScroll(e);
