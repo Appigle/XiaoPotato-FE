@@ -6,6 +6,7 @@ import EmailUtils from '@src/utils/emailUtils';
 import HTTP_RES_CODE from '@src/utils/request/httpResCode';
 import Toast from '@src/utils/toastUtils';
 import React, { useEffect, useState } from 'react';
+import emailTemplate from './template';
 
 interface FormState {
   email: string;
@@ -41,6 +42,8 @@ const validateSubject = (subject: string): string => {
 const validateContent = (content: string): string => {
   if (!content) {
     return 'Content is required';
+  } else if (content.length > 2000) {
+    return 'content must be less than 2000 characters';
   }
   return '';
 };
@@ -57,6 +60,7 @@ const EmailForm: React.FC = () => {
     content: '',
   });
   const [errors, setErrors] = useState<FormErrors>({});
+  const [useTemplate, setUseTemplate] = useState(false);
   const userInfo = useGlobalStore((s) => s.userInfo);
   const setHeaderConfig = useGlobalStore((s) => s.setHeaderConfig);
   const { currentEmailDetail } = useEventBusStore();
@@ -65,6 +69,7 @@ const EmailForm: React.FC = () => {
     if (!currentEmailDetail) {
       return;
     }
+    setUseTemplate(false);
     setFormState({
       email: currentEmailDetail.toUser,
       subject: currentEmailDetail.subject,
@@ -100,7 +105,8 @@ const EmailForm: React.FC = () => {
       EmailUtils.send({ ...formState, userInfo: userInfo as IUserItem }).then((res) => {
         console.log('%c [ res ]-87', 'font-size:13px; background:pink; color:#bf2c9f;', res);
         if (res.code === HTTP_RES_CODE.SUCCESS) {
-          // resetForm();
+          resetForm();
+          Toast.success('Send successfully!');
         }
       });
     }
@@ -110,6 +116,7 @@ const EmailForm: React.FC = () => {
   };
 
   const resetForm = () => {
+    setUseTemplate(false);
     setFormState({
       email: '',
       subject: '',
@@ -136,11 +143,26 @@ const EmailForm: React.FC = () => {
     setFormState((prevState) => ({ ...prevState, content: event.target.value }));
     setErrors((prevErrors) => ({ ...prevErrors, content: validateContent(event.target.value) }));
   };
-
+  const handleTemplate = (type: number) => {
+    const newEmail = { ...emailTemplate(userInfo!)[type], email: formState.email || '' };
+    setFormState(newEmail);
+    setUseTemplate(true);
+  };
   return (
-    <div className="flex h-full w-full items-center justify-center">
+    <div className="flex h-full w-full flex-col items-center justify-center gap-4">
+      <div className="flex items-center gap-4">
+        <span>Template: </span>
+        <Button
+          className=""
+          onClick={() => {
+            handleTemplate(0);
+          }}
+        >
+          + Invitation
+        </Button>
+      </div>
       <Card
-        className={`w-full max-w-md bg-gray-100 text-blue-gray-900 dark:bg-blue-gray-800 dark:text-gray-100`}
+        className={`w-full max-w-xl bg-gray-100 text-blue-gray-900 dark:bg-blue-gray-800 dark:text-gray-100`}
       >
         <CardBody>
           <div className="mb-4">
@@ -179,14 +201,21 @@ const EmailForm: React.FC = () => {
             <label htmlFor="content" className="mb-2 block">
               Content
             </label>
-            <Textarea
-              id="content"
-              placeholder="Enter email content"
-              value={formState.content}
-              onChange={handleContentChange}
-              error={!!errors.content}
-              className="text-blue-gray-900 dark:text-gray-200"
-            />
+            {useTemplate ? (
+              <div
+                className="max-h-[300px] overflow-scroll bg-gray-200"
+                dangerouslySetInnerHTML={{ __html: formState.content }}
+              ></div>
+            ) : (
+              <Textarea
+                id="content"
+                placeholder="Enter email content"
+                value={formState.content}
+                onChange={handleContentChange}
+                error={!!errors.content}
+                className="min-h-[300px] text-blue-gray-900 dark:text-gray-200"
+              />
+            )}
             {errors.content && <div className="mt-2 text-red-500">{errors.content}</div>}
           </div>
         </CardBody>

@@ -16,11 +16,11 @@ interface ContextMenuPosition {
 // EmailList.tsx
 import {
   Alert,
+  Button,
   ButtonGroup,
   Card,
   Checkbox,
   IconButton,
-  List,
   ListItem,
   Typography,
 } from '@material-tailwind/react';
@@ -71,7 +71,11 @@ const EmailList = forwardRef<typeEmailListRef, EmailListProps>(
             totalPages: response.data.pages,
           });
         } catch (error) {
-          if (error instanceof Error && error.name === 'AbortError') return;
+          if (
+            error instanceof Error &&
+            (error.name === 'AbortError' || error.name === 'CanceledError')
+          )
+            return;
 
           setState((prev) => ({
             ...prev,
@@ -171,7 +175,7 @@ const EmailList = forwardRef<typeEmailListRef, EmailListProps>(
       <ListItem
         ripple={false}
         key={email.emailId}
-        className={`cursor-pointer border-b-2 border-b-blue-gray-200 bg-gray-100 text-blue-gray-900 transition-colors duration-200 hover:bg-gray-300 dark:bg-blue-gray-900/20 dark:text-gray-200 dark:hover:bg-blue-gray-800`}
+        className={`relative cursor-pointer border-b-2 border-b-blue-gray-200 bg-gray-100 text-blue-gray-900 transition-colors duration-200 hover:bg-gray-300 dark:bg-blue-gray-900/20 dark:text-gray-200 dark:hover:bg-blue-gray-800`}
         onContextMenu={(e) => handleContextMenu(e, email.emailId)}
         onClick={() => handleDetail(email)}
       >
@@ -218,17 +222,6 @@ const EmailList = forwardRef<typeEmailListRef, EmailListProps>(
             >
               {email.content}
             </Typography>
-          </div>
-
-          <div className="absolute right-4 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
-            <IconButton
-              variant="text"
-              size="sm"
-              onClick={() => handleDeleteEmail(email.emailId)}
-              className="text-gray-700 hover:bg-red-100 hover:text-red-500 dark:text-gray-400 dark:hover:bg-red-900/30 dark:hover:text-red-400"
-            >
-              <Trash2Icon className="h-4 w-4" />
-            </IconButton>
           </div>
         </div>
       </ListItem>
@@ -300,7 +293,9 @@ const EmailList = forwardRef<typeEmailListRef, EmailListProps>(
                 </div>
               ) : (
                 <>
-                  <List className="overflow-y-scroll p-0">{state.data.map(renderEmailItem)}</List>
+                  <div className="flex h-full flex-col gap-4 overflow-y-scroll p-0">
+                    {state.data.map(renderEmailItem)}
+                  </div>
                   {renderPagination()}
                 </>
               )}
@@ -317,13 +312,13 @@ const EmailList = forwardRef<typeEmailListRef, EmailListProps>(
             }}
           >
             <div className="bg-gray-100 py-1 dark:bg-blue-gray-900">
-              <button
+              <Button
                 className="flex w-full items-center gap-2 px-4 py-2 text-left text-red-500 transition-colors duration-200 hover:bg-red-100 dark:text-red-400 dark:hover:bg-red-900/30"
                 onClick={() => handleDeleteEmail(contextMenu.emailId!)}
               >
                 <Trash2Icon className="h-4 w-4" />
                 Delete
-              </button>
+              </Button>
             </div>
           </div>
         )}
