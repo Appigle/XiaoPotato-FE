@@ -7,11 +7,13 @@ import {
   Post,
   type_req_base_page,
   type_req_create_post_comment,
+  type_req_get_emails,
   type_req_get_fans_by_page,
   type_req_get_post_1st_comment,
   type_req_get_post_2nd_comment,
   type_req_get_post_by_page,
   type_req_post_create,
+  type_req_send_email,
   type_req_update_profile,
   type_req_user_login,
   type_req_user_register,
@@ -309,11 +311,36 @@ const getNotifications = (params: type_req_base_page) => {
  * @param params typeEmail
  * @returns Promise<BaseRes<boolean>>
  */
-const sendEmail = (data: typeEmail) => {
+const sendEmail = (data: type_req_send_email) => {
   return useRequest.post<BaseRes<boolean>>({
     baseURL,
-    url: `/email/send`,
+    url: X_POTATO_URL.EMAIL_SEND,
     data,
+  });
+};
+
+/**
+ * delete email
+ * @returns Promise<BaseRes<boolean>>
+ */
+const deleteEmail = (id: number) => {
+  return useRequest.post<BaseRes<boolean>>({
+    baseURL,
+    url: X_POTATO_URL.EMAIL_DELETE,
+    data: { id },
+  });
+};
+
+/**
+ * get user's email
+ * @param params type_req_get_emails
+ * @returns Promise<BaseRes<BaseResPageData<typeEmail>>>
+ */
+const getEmailByPage = (params: type_req_get_emails) => {
+  return useRequest.get<BaseRes<BaseResPageData<typeEmail>>>({
+    baseURL,
+    url: X_POTATO_URL.EMAIL_SELECT_BY_PAGE,
+    params,
   });
 };
 
@@ -342,4 +369,6 @@ export default {
   deletePostComment,
   sendEmail,
   getNotifications,
+  deleteEmail,
+  getEmailByPage,
 };

@@ -5,10 +5,13 @@ export type typeNavMenuItem = {
   redirect?: boolean;
 };
 
-export type typeEmail = {
-  id?: string;
-  toUser: string | string[];
+export interface typeEmail {
+  emailId: number;
+  userId: number;
   fromUser: string;
+  toUser: string;
   subject: string;
   content: string;
-};
+  createTime: string;
+  isDelete: number;
+}

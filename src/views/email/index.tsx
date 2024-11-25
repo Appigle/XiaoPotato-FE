@@ -1,195 +1,60 @@
-import { Button, Card, CardBody, CardFooter, Input, Textarea } from '@material-tailwind/react';
-import { IUserItem } from '@src/@types/typeUserItem';
-import useGlobalStore from '@src/stores/useGlobalStore';
-import EmailUtils from '@src/utils/emailUtils';
+// App.tsx or page component
+import { IconButton, Typography } from '@material-tailwind/react';
+import Api from '@src/Api';
+import HTTP_RES_CODE from '@src/utils/request/httpResCode';
 import Toast from '@src/utils/toastUtils';
-import React, { useEffect, useState } from 'react';
+import { Moon, Sun } from 'lucide-react';
+import React from 'react';
+import EmailForm from './EmailForm';
+import EmailList from './EmailList';
 
-interface FormState {
-  email: string;
-  subject: string;
-  content: string;
-}
+const EmailPage: React.FC = () => {
+  const handleDelete = async (emailId: number) => {
+    try {
+      const response = await Api.xPotatoApi.deleteEmail(emailId);
 
-interface FormErrors {
-  email?: string;
-  subject?: string;
-  content?: string;
-}
-
-// Extract validation logic into separate functions
-const validateEmail = (email: string): string => {
-  if (!email) {
-    return 'Email is required';
-  } else if (!isValidEmail(email)) {
-    return 'Email is not valid';
-  }
-  return '';
-};
-
-const validateSubject = (subject: string): string => {
-  if (!subject) {
-    return 'Subject is required';
-  } else if (subject.length > 100) {
-    return 'Subject must be less than 100 characters';
-  }
-  return '';
-};
-
-const validateContent = (content: string): string => {
-  if (!content) {
-    return 'Content is required';
-  }
-  return '';
-};
-
-const isValidEmail = (email: string): boolean => {
-  // Simple email validation regex
-  return /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(email);
-};
-
-const EmailForm: React.FC = () => {
-  const [formState, setFormState] = useState<FormState>({
-    email: '',
-    subject: '',
-    content: '',
-  });
-  const [errors, setErrors] = useState<FormErrors>({});
-  const userInfo = useGlobalStore((s) => s.userInfo);
-  const setHeaderConfig = useGlobalStore((s) => s.setHeaderConfig);
-  useEffect(() => {
-    setHeaderConfig({
-      hasSearch: false,
-    });
-    return () => {
-      setHeaderConfig({
-        hasSearch: true,
-      });
-    };
-  }, [setHeaderConfig]);
-  const handleSubmit = () => {
-    const emailError = validateEmail(formState.email);
-    const subjectError = validateSubject(formState.subject);
-    const contentError = validateContent(formState.content);
-
-    setErrors({
-      email: emailError,
-      subject: subjectError,
-      content: contentError,
-    });
-    if (!userInfo) {
-      Toast.error('Not login!');
-      return;
-    }
-    if (!emailError && !subjectError && !contentError) {
-      EmailUtils.send({ ...formState, userInfo: userInfo as IUserItem })
-        .then(() => {
-          Toast.success('Send successfully!');
-          resetForm();
-        })
-        .catch(() => {
-          Toast.error('Send failed, please try again later');
-        });
+      if (response.code === HTTP_RES_CODE.SUCCESS) {
+        Toast.success('Delete successfully!');
+      }
+    } catch (error) {
+      console.error('Error deleting email:', error);
     }
   };
-  const handleCancel = () => {
-    resetForm();
+
+  const handleSelectionChange = (selectedIds: Set<number>) => {
+    console.log('Selected emails:', Array.from(selectedIds));
   };
 
-  const resetForm = () => {
-    setFormState({
-      email: '',
-      subject: '',
-      content: '',
-    });
-    setErrors({
-      email: '',
-      subject: '',
-      content: '',
-    });
-  };
-
-  const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setFormState((prevState) => ({ ...prevState, email: event.target.value }));
-    setErrors((prevErrors) => ({ ...prevErrors, email: validateEmail(event.target.value) }));
-  };
-
-  const handleSubjectChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setFormState((prevState) => ({ ...prevState, subject: event.target.value }));
-    setErrors((prevErrors) => ({ ...prevErrors, subject: validateSubject(event.target.value) }));
-  };
-
-  const handleContentChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setFormState((prevState) => ({ ...prevState, content: event.target.value }));
-    setErrors((prevErrors) => ({ ...prevErrors, content: validateContent(event.target.value) }));
+  const toggleDarkMode = () => {
+    document.documentElement.classList.toggle('dark');
   };
 
   return (
-    <div className="flex h-full w-full items-center justify-center">
-      <Card
-        className={`w-full max-w-md bg-gray-100 text-blue-gray-900 dark:bg-blue-gray-900 dark:text-gray-100`}
-      >
-        <CardBody>
-          <div className="mb-4">
-            <label htmlFor="email" className="mb-2 block">
-              Email Address
-            </label>
-            <Input
-              id="email"
-              type="email"
-              crossOrigin=""
-              placeholder="Enter email address"
-              value={formState.email}
-              onChange={handleEmailChange}
-              error={!!errors.email}
-            />
-            {errors.email && <div className="mt-2 text-red-500">{errors.email}</div>}
-          </div>
-          <div className="mb-4">
-            <label htmlFor="subject" className="mb-2 block">
-              Email Subject
-            </label>
-            <Input
-              id="subject"
-              crossOrigin=""
-              type="text"
-              placeholder="Enter email subject"
-              value={formState.subject}
-              onChange={handleSubjectChange}
-              error={!!errors.subject}
-            />
-            {errors.subject && <div className="mt-2 text-red-500">{errors.subject}</div>}
-          </div>
-          <div className="mb-4">
-            <label htmlFor="content" className="mb-2 block">
-              Email Content
-            </label>
-            <Textarea
-              id="content"
-              placeholder="Enter email content"
-              value={formState.content}
-              onChange={handleContentChange}
-              error={!!errors.content}
-            />
-            {errors.content && <div className="mt-2 text-red-500">{errors.content}</div>}
-          </div>
-        </CardBody>
-        <CardFooter className="flex justify-between">
-          <Button variant="outlined" onClick={resetForm}>
-            Reset
-          </Button>
-          <div className="flex">
-            <Button variant="outlined" onClick={handleCancel} className="mr-4">
-              Cancel
-            </Button>
-            <Button variant="filled" onClick={handleSubmit}>
-              Submit
-            </Button>
-          </div>
-        </CardFooter>
-      </Card>
+    <div className="flex h-full w-full bg-gray-100 transition-colors duration-200 dark:bg-blue-gray-900/95">
+      <div className="w-3/7 min-w-[300px] p-4">
+        <div className="mb-6 flex w-full items-center justify-between">
+          <Typography variant="h4" className="text-blue-gray-900 dark:text-gray-200">
+            Inbox
+          </Typography>
+          <IconButton
+            variant="text"
+            onClick={toggleDarkMode}
+            className="text-blue-gray-900 dark:text-gray-200"
+          >
+            <Moon className="hidden h-5 w-5 dark:block" />
+            <Sun className="block h-5 w-5 dark:hidden" />
+          </IconButton>
+        </div>
+
+        <EmailList
+          pageSize={15}
+          onDelete={handleDelete}
+          onSelectionChange={handleSelectionChange}
+        />
+      </div>
+      <EmailForm />
     </div>
   );
 };
 
-export default EmailForm;
+export default EmailPage;

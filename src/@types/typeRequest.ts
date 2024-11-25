@@ -1,3 +1,4 @@
+import { typeEmail } from './common';
 import { IPostItem } from './typePostItem';
 import { IUserItem } from './typeUserItem';
 
@@ -111,3 +112,10 @@ export interface NotificationItem {
   notificationType: string;
 }
 export interface type_res_get_notifications extends BaseResPageData<NotificationItem> {}
+
+export interface type_req_get_emails
+  extends type_req_base_page,
+    Partial<Pick<typeEmail, 'subject' | 'toUser' | 'content'>> {}
+
+export interface type_req_send_email
+  extends Partial<Pick<typeEmail, 'fromUser' | 'subject' | 'toUser' | 'content'>> {}

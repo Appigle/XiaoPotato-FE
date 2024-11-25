@@ -238,8 +238,8 @@ const PostList = forwardRef<typePostListRef, PropsType>((_, ref) => {
       {!isLoading && state.isLoadEnd && postList.length === 0 && renderEmptyState()}
       {isLoading && !state.isLoadEnd && (
         <div className="grid grid-cols-1 gap-4 p-4 pt-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-          {new Array(8).fill('love').map(() => {
-            return <SkeletonCard />;
+          {new Array(8).fill('love').map((_, index) => {
+            return <SkeletonCard key={`${_}_${index}`} />;
           })}
         </div>
         // <Spinner color="amber" className="m-auto mt-64 h-12 w-12" />

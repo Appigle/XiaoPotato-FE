@@ -20,4 +20,7 @@ export default {
   POST_LIKE: '/like/likeByPostId',
   POST_SAVE: '/save/saveByPostId',
   GET_USER_POSTS: '/post/selectByUserId',
+  EMAIL_SEND: '/email/send',
+  EMAIL_DELETE: '/email/delete',
+  EMAIL_SELECT_BY_PAGE: '/email/selectByPage',
 };
