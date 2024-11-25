@@ -55,4 +55,8 @@ interface typePostCardCommentRef {
   goToComment: () => void;
 }
 
-export type { IPostItem, typePostCardCommentRef, typePostListRef };
+type typeEmailListRef = {
+  handleRefresh: () => void;
+};
+
+export type { IPostItem, typeEmailListRef, typePostCardCommentRef, typePostListRef };

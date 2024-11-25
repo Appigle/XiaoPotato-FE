@@ -1,5 +1,6 @@
 import { Button, Card, CardBody, CardFooter, Input, Textarea } from '@material-tailwind/react';
 import { IUserItem } from '@src/@types/typeUserItem';
+import useEventBusStore from '@src/stores/useEventBusStore';
 import useGlobalStore from '@src/stores/useGlobalStore';
 import EmailUtils from '@src/utils/emailUtils';
 import HTTP_RES_CODE from '@src/utils/request/httpResCode';
@@ -58,6 +59,19 @@ const EmailForm: React.FC = () => {
   const [errors, setErrors] = useState<FormErrors>({});
   const userInfo = useGlobalStore((s) => s.userInfo);
   const setHeaderConfig = useGlobalStore((s) => s.setHeaderConfig);
+  const { currentEmailDetail } = useEventBusStore();
+
+  useEffect(() => {
+    if (!currentEmailDetail) {
+      return;
+    }
+    setFormState({
+      email: currentEmailDetail.toUser,
+      subject: currentEmailDetail.subject,
+      content: currentEmailDetail.content,
+    });
+  }, [currentEmailDetail]);
+
   useEffect(() => {
     setHeaderConfig({
       hasSearch: false,
@@ -86,7 +100,7 @@ const EmailForm: React.FC = () => {
       EmailUtils.send({ ...formState, userInfo: userInfo as IUserItem }).then((res) => {
         console.log('%c [ res ]-87', 'font-size:13px; background:pink; color:#bf2c9f;', res);
         if (res.code === HTTP_RES_CODE.SUCCESS) {
-          resetForm();
+          // resetForm();
         }
       });
     }
@@ -126,7 +140,7 @@ const EmailForm: React.FC = () => {
   return (
     <div className="flex h-full w-full items-center justify-center">
       <Card
-        className={`w-full max-w-md bg-gray-100 text-blue-gray-900 dark:bg-blue-gray-900 dark:text-gray-100`}
+        className={`w-full max-w-md bg-gray-100 text-blue-gray-900 dark:bg-blue-gray-800 dark:text-gray-100`}
       >
         <CardBody>
           <div className="mb-4">
@@ -141,6 +155,7 @@ const EmailForm: React.FC = () => {
               value={formState.email}
               onChange={handleEmailChange}
               error={!!errors.email}
+              className="text-blue-gray-900 dark:text-gray-200"
             />
             {errors.email && <div className="mt-2 text-red-500">{errors.email}</div>}
           </div>
@@ -156,6 +171,7 @@ const EmailForm: React.FC = () => {
               value={formState.subject}
               onChange={handleSubjectChange}
               error={!!errors.subject}
+              className="text-blue-gray-900 dark:text-gray-200"
             />
             {errors.subject && <div className="mt-2 text-red-500">{errors.subject}</div>}
           </div>
@@ -169,16 +185,21 @@ const EmailForm: React.FC = () => {
               value={formState.content}
               onChange={handleContentChange}
               error={!!errors.content}
+              className="text-blue-gray-900 dark:text-gray-200"
             />
             {errors.content && <div className="mt-2 text-red-500">{errors.content}</div>}
           </div>
         </CardBody>
-        <CardFooter className="flex justify-between">
-          <Button variant="outlined" onClick={resetForm}>
+        <CardFooter className="flex justify-end gap-4">
+          <Button
+            variant="outlined"
+            onClick={resetForm}
+            className="text-blue-gray-900 dark:text-gray-200"
+          >
             Reset
           </Button>
           <div className="flex">
-            <Button variant="outlined" onClick={handleCancel} className="mr-4">
+            <Button variant="outlined" onClick={handleCancel} className="mr-4 hidden">
               Cancel
             </Button>
             <Button variant="filled" onClick={handleSubmit}>
