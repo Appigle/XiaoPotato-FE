@@ -9,6 +9,8 @@ interface EventBusStore {
   setRefreshPostList: (n: number) => void;
   currentEmailDetail: typeEmail | null;
   setCurrentEmailDetail: (n: typeEmail) => void;
+  refreshEmailListCount: number;
+  setFreshEmailListCount: () => void;
 }
 
 const useEventBusStore = create<EventBusStore>((set) => ({
@@ -18,6 +20,9 @@ const useEventBusStore = create<EventBusStore>((set) => ({
   setRefreshPostList: (n) => set({ refreshPostList: n }),
   currentEmailDetail: null,
   setCurrentEmailDetail: (e) => set({ currentEmailDetail: e }),
+  refreshEmailListCount: 0,
+  setFreshEmailListCount: () =>
+    set((s) => ({ ...s, refreshEmailListCount: s.refreshEmailListCount + 1 })),
 }));
 
 export default useEventBusStore;

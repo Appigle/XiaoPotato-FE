@@ -1,12 +1,15 @@
 import { Button, Card, CardBody, CardFooter, Input, Textarea } from '@material-tailwind/react';
 import { IUserItem } from '@src/@types/typeUserItem';
+import busEvent from '@src/constants/busEvent';
 import useEventBusStore from '@src/stores/useEventBusStore';
 import useGlobalStore from '@src/stores/useGlobalStore';
+import bus from '@src/utils/bus';
 import EmailUtils from '@src/utils/emailUtils';
 import HTTP_RES_CODE from '@src/utils/request/httpResCode';
 import Toast from '@src/utils/toastUtils';
 import React, { useEffect, useState } from 'react';
 import emailTemplate from './template';
+import { checkEmailContent } from './utils';
 
 interface FormState {
   email: string;
@@ -69,7 +72,7 @@ const EmailForm: React.FC = () => {
     if (!currentEmailDetail) {
       return;
     }
-    setUseTemplate(false);
+    setUseTemplate(checkEmailContent(currentEmailDetail.content));
     setFormState({
       email: currentEmailDetail.toUser,
       subject: currentEmailDetail.subject,
@@ -103,9 +106,9 @@ const EmailForm: React.FC = () => {
     }
     if (!emailError && !subjectError && !contentError) {
       EmailUtils.send({ ...formState, userInfo: userInfo as IUserItem }).then((res) => {
-        console.log('%c [ res ]-87', 'font-size:13px; background:pink; color:#bf2c9f;', res);
         if (res.code === HTTP_RES_CODE.SUCCESS) {
           resetForm();
+          bus.emit(busEvent.REFRESH_EMAIL_LIST);
           Toast.success('Send successfully!');
         }
       });
@@ -150,7 +153,7 @@ const EmailForm: React.FC = () => {
   };
   return (
     <div className="flex h-full w-full flex-col items-center justify-center gap-4">
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-4 text-blue-gray-900 dark:text-gray-200">
         <span>Template: </span>
         <Button
           className=""

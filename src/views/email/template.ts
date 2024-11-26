@@ -38,6 +38,7 @@ const emailTemplate = (user: user_profile): FormState[] => {
   <div style="border-top: 1px solid #e2e8f0; margin-top: 30px; padding-top: 20px; color: #718096; font-size: 14px;">
     Best,<br>
     ${user?.firstName}.${user?.lastName}<br>
+    <span style="display:none;width:0px;height:0px;position:absolute;">__template</span>
   </div>
 </div>`,
     },

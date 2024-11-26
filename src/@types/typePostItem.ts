@@ -57,6 +57,7 @@ interface typePostCardCommentRef {
 
 type typeEmailListRef = {
   handleRefresh: () => void;
+  handleSelectAll: (select: boolean) => void;
 };
 
 export type { IPostItem, typeEmailListRef, typePostCardCommentRef, typePostListRef };

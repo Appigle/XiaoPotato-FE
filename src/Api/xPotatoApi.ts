@@ -328,6 +328,11 @@ const deleteEmail = (id: number) => {
     baseURL,
     url: X_POTATO_URL.EMAIL_DELETE,
     data: { id },
+    abortRepetitiveRequest: false,
+    retryConfig: {
+      count: 1,
+      waitTime: 0,
+    },
   });
 };
 

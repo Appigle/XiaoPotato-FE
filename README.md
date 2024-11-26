@@ -47,7 +47,7 @@ Currently, two official plugins are available:
 - option: [flowbite-react](https://flowbite-react.com/docs/getting-started/introduction)
 - [Top 5 Tailwind Component Libraries: Apestein 2023](https://dev.to/apestein/top-5-tailwind-component-libraries-m0c)
 
-### React
+### Dependencies and notes
 
 - [React-Hook-Form](https://react-hook-form.com/)
 - [React-Query](https://react-query.tanstack.com/)
@@ -64,6 +64,9 @@ Currently, two official plugins are available:
 - [React-Textarea-Autosize](https://github.com/Andarist/react-textarea-autosize)
 - [React-hooks-ts](https://usehooks-ts.com/react-hook/use-media-query)
 - [React-email](https://react.email/docs/integrations/resend)
+- [React-xss-defence](https://www.dhiwise.com/post/react-xss-advanced-strategies-for-mitigating-security-threats)
+- [dompurify](https://www.npmjs.com/package/dompurify)
+- [EventBus mitt](https://github.com/developit/mitt)
 
 ## Expanding the ESLint configuration
 

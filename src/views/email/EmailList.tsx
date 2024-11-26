@@ -1,4 +1,23 @@
-// types.ts
+import {
+  Alert,
+  Button,
+  ButtonGroup,
+  Card,
+  Checkbox,
+  IconButton,
+  ListItem,
+  Typography,
+} from '@material-tailwind/react';
+import { typeEmail } from '@src/@types/common';
+import { typeEmailListRef } from '@src/@types/typePostItem';
+import Api from '@src/Api';
+import busEvent from '@src/constants/busEvent';
+import useEventBusStore from '@src/stores/useEventBusStore';
+import bus from '@src/utils/bus';
+import HTTP_RES_CODE from '@src/utils/request/httpResCode';
+import { ChevronLeftIcon, ChevronRightIcon, RefreshCwIcon, Trash2Icon } from 'lucide-react';
+import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useState } from 'react';
+import { checkEmailContent } from './utils';
 
 interface EmailListState {
   status: 'idle' | 'loading' | 'error' | 'success';
@@ -13,35 +32,16 @@ interface ContextMenuPosition {
   emailId: number | null;
 }
 
-// EmailList.tsx
-import {
-  Alert,
-  Button,
-  ButtonGroup,
-  Card,
-  Checkbox,
-  IconButton,
-  ListItem,
-  Typography,
-} from '@material-tailwind/react';
-import { typeEmail } from '@src/@types/common';
-import { typeEmailListRef } from '@src/@types/typePostItem';
-import Api from '@src/Api';
-import useEventBusStore from '@src/stores/useEventBusStore';
-import HTTP_RES_CODE from '@src/utils/request/httpResCode';
-import { ChevronLeftIcon, ChevronRightIcon, RefreshCwIcon, Trash2Icon } from 'lucide-react';
-import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useState } from 'react';
-
 interface EmailListProps {
   pageSize?: number;
   needSelect?: boolean;
-  onDelete?: (emailId: number) => Promise<void>;
-  onSelectionChange?: (selectedIds: Set<number>) => void;
+  onDelete?: (emailId: number, showToast: boolean) => Promise<void>;
+  onSelectionChange?: (selectedIds: Set<number>, selectAll: boolean) => void;
 }
 
 const EmailList = forwardRef<typeEmailListRef, EmailListProps>(
   ({ pageSize = 10, needSelect = false, onDelete, onSelectionChange }, ref) => {
-    const { setCurrentEmailDetail } = useEventBusStore();
+    const { setCurrentEmailDetail, currentEmailDetail } = useEventBusStore();
     const [state, setState] = useState<EmailListState>({
       status: 'idle',
       data: [],
@@ -87,6 +87,21 @@ const EmailList = forwardRef<typeEmailListRef, EmailListProps>(
       [pageSize],
     );
 
+    const handleRefresh = () => {
+      if (currentPage !== 1) {
+        setCurrentPage(1);
+      } else {
+        fetchEmails(currentPage);
+      }
+    };
+
+    useEffect(() => {
+      bus.on(busEvent.REFRESH_EMAIL_LIST, handleRefresh);
+      return () => {
+        bus.off(busEvent.REFRESH_EMAIL_LIST, handleRefresh);
+      };
+    }, []);
+
     useEffect(() => {
       fetchEmails(currentPage);
     }, [currentPage, fetchEmails]);
@@ -109,11 +124,18 @@ const EmailList = forwardRef<typeEmailListRef, EmailListProps>(
     const handleDeleteEmail = async (emailId: number) => {
       try {
         if (onDelete) {
-          await onDelete(emailId);
+          if (selectedEmails.size > 0) {
+            Promise.all(Array.from(selectedEmails).map((m, i) => onDelete(m, i === 0))).then(() => {
+              Array.from(selectedEmails).map((m2) => {
+                toggleEmailSelection(m2);
+              });
+            });
+          } else {
+            await onDelete(emailId, true);
+          }
+
           fetchEmails();
         }
-      } catch (error) {
-        console.error('Failed to delete email:', error);
       } finally {
         setContextMenu({ x: 0, y: 0, emailId: null });
       }
@@ -127,9 +149,12 @@ const EmailList = forwardRef<typeEmailListRef, EmailListProps>(
         } else {
           next.add(emailId);
         }
-        onSelectionChange?.(next);
+        onSelectionChange?.(next, next.size === state.data.length);
         return next;
       });
+    };
+    const selectAll = () => {
+      setSelectedEmails(new Set(state.data.map((m) => m.emailId)));
     };
 
     const formatDate = (dateString: string) => {
@@ -155,72 +180,109 @@ const EmailList = forwardRef<typeEmailListRef, EmailListProps>(
       }
     };
 
-    const handleDetail = (e: typeEmail) => {
-      setCurrentEmailDetail(e);
+    const handleDetail = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, email: typeEmail) => {
+      if (e.shiftKey) {
+        return;
+      }
+      setCurrentEmailDetail(email);
     };
 
-    const handleRefresh = () => {
-      if (currentPage !== 1) {
-        setCurrentPage(1);
+    const handleSelectAll = (select: boolean) => {
+      if (select) {
+        selectAll();
       } else {
-        fetchEmails(1);
+        selectedEmails.clear();
       }
     };
 
     useImperativeHandle(ref, () => ({
       handleRefresh,
+      handleSelectAll,
     }));
 
-    const renderEmailItem = (email: typeEmail) => (
+    const formatContent = (content: string) => {
+      const newContent = checkEmailContent(content) ? '[Please click to see detail!]' : content;
+      return newContent;
+    };
+    const handleListClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+      if (e.shiftKey) {
+        let start = -1;
+        let end = -1;
+        state.data.forEach((el, index) => {
+          if (start === -1 && currentEmailDetail?.emailId === el.emailId) {
+            start = index;
+            return;
+          }
+        });
+        let parent = e.target as HTMLElement | null;
+        while (parent && parent.id !== '__list-parent') {
+          parent = parent.parentElement;
+
+          end = Number(parent?.dataset?.index || -1);
+        }
+        if (start >= 0 && end >= 0) {
+          const range = state.data.slice(Math.min(start, end), Math.max(start, end) + 1);
+          setSelectedEmails((prev) => {
+            const next = new Set(prev);
+            range.map((m) => {
+              if (next.has(m.emailId)) {
+                next.delete(m.emailId);
+              } else {
+                next.add(m.emailId);
+              }
+            });
+            onSelectionChange?.(next, next.size === state.data.length);
+            return next;
+          });
+        }
+      }
+    };
+
+    const renderEmailItem = (email: typeEmail, index: number) => (
       <ListItem
         ripple={false}
         key={email.emailId}
-        className={`relative cursor-pointer border-b-2 border-b-blue-gray-200 bg-gray-100 text-blue-gray-900 transition-colors duration-200 hover:bg-gray-300 dark:bg-blue-gray-900/20 dark:text-gray-200 dark:hover:bg-blue-gray-800`}
+        data-index={index}
+        id="__list-parent"
+        onClick={(e) => handleListClick(e)}
+        className={`relative cursor-pointer border-b-2 border-b-blue-gray-200 bg-gray-100 text-blue-gray-900 transition-colors duration-200 hover:bg-gray-300 dark:bg-blue-gray-900/20 dark:text-gray-200 dark:hover:bg-blue-gray-800 ${currentEmailDetail?.emailId === email.emailId ? '!dark:bg-blue-gray-900/80 !bg-gray-400/60' : ''}`}
         onContextMenu={(e) => handleContextMenu(e, email.emailId)}
-        onClick={() => handleDetail(email)}
       >
-        <div className="flex w-full items-center gap-4 px-4 py-2">
+        <div className="flex w-full items-center gap-2">
           {needSelect && (
-            <div
-              className={`transition-opacity duration-200 ${selectedEmails.has(email.emailId) ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'} `}
-            >
-              <Checkbox
-                crossOrigin={''}
-                checked={selectedEmails.has(email.emailId)}
-                onChange={() => toggleEmailSelection(email.emailId)}
-                className="h-5 w-5 dark:border-gray-200"
-                color="blue"
-              />
-            </div>
+            <Checkbox
+              crossOrigin={''}
+              checked={selectedEmails.has(email.emailId)}
+              onChange={() => toggleEmailSelection(email.emailId)}
+              className="h-4 w-4 border-blue-gray-900 dark:border-gray-200"
+              color="blue"
+            />
           )}
 
-          <div className="min-w-0 flex-grow">
+          <div className="min-w-0 flex-grow" onClick={(e) => handleDetail(e, email)}>
             <div className="flex items-baseline justify-between">
               <Typography
                 variant="h6"
-                className="mr-2 truncate font-semibold text-blue-gray-900 dark:text-gray-200"
+                className="mr-2 select-none truncate font-semibold text-blue-gray-900 dark:text-gray-200"
                 title={email.toUser}
               >
                 {email.toUser}
               </Typography>
               <Typography
-                className="whitespace-nowrap text-sm text-gray-700 dark:text-gray-400"
+                className="select-none whitespace-nowrap text-sm text-gray-700 dark:text-gray-400"
                 title={email.createTime}
               >
                 {formatDate(email.createTime)}
               </Typography>
             </div>
             <Typography
-              className="truncate text-sm font-medium text-blue-gray-900 dark:text-gray-200"
+              className="select-none truncate text-sm font-medium text-blue-gray-900 dark:text-gray-200"
               title={email.subject}
             >
               {email.subject}
             </Typography>
-            <Typography
-              className="truncate text-sm text-gray-700 dark:text-gray-400"
-              title={email.content}
-            >
-              {email.content}
+            <Typography className="select-none truncate text-sm text-gray-700 dark:text-gray-400">
+              {formatContent(email.content)}
             </Typography>
           </div>
         </div>
@@ -229,7 +291,7 @@ const EmailList = forwardRef<typeEmailListRef, EmailListProps>(
 
     const renderPagination = () => (
       <div className="flex items-center justify-center gap-4 border-t border-gray-300 p-4 dark:border-blue-gray-800">
-        <ButtonGroup variant="outlined" size="sm" className="bg-transparent">
+        <ButtonGroup variant="outlined" size="sm" className="bg-transparent" ripple={true}>
           <IconButton
             disabled={currentPage === 1}
             onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
@@ -237,11 +299,14 @@ const EmailList = forwardRef<typeEmailListRef, EmailListProps>(
           >
             <ChevronLeftIcon className="h-4 w-4" />
           </IconButton>
-          <div className="flex min-w-[4rem] items-center justify-center border-x border-gray-300 dark:border-blue-gray-800">
+          <Button
+            size="sm"
+            className="flex min-w-[4rem] items-center justify-center border-x border-gray-300 px-0 py-0 dark:border-blue-gray-800"
+          >
             <Typography className="font-normal text-blue-gray-900 dark:text-gray-200">
               {currentPage} / {state.totalPages}
             </Typography>
-          </div>
+          </Button>
           <IconButton
             disabled={currentPage === state.totalPages}
             onClick={() => setCurrentPage((p) => Math.min(state.totalPages, p + 1))}
@@ -256,6 +321,7 @@ const EmailList = forwardRef<typeEmailListRef, EmailListProps>(
     return (
       <>
         <Card className="h-[calc(100%-60px)] w-full justify-between bg-gray-100 dark:bg-blue-gray-800/50">
+          {/* {Array.from(selectedEmails).join('/')} */}
           {state.status === 'loading' && (
             <div
               className="flex h-96 items-center justify-center"
