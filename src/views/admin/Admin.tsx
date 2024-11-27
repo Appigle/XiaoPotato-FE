@@ -29,7 +29,7 @@ import { IUserItem } from '@src/@types/typeUserItem';
 const Admin: React.FC = () => {
   const [checking] = useLoginCheck();
   const [users, setUsers] = useState<IUserItem[]>([]);
-  const [userToDelete, setUserToDelete] = useState<number | null>();
+  const [userToDelete, setUserToDelete] = useState<number | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
   const [userBeingDeleted, setUserBeingDeleted] = useState<IUserItem | undefined>();
 
@@ -93,6 +93,13 @@ const Admin: React.FC = () => {
     return () => setHeaderConfig({ hasSearch: true });
   }, [setHeaderConfig]);
 
+  useEffect(() => {
+    if (userToDelete) {
+      const user = users.find((u) => u.id === userToDelete);
+      setUserBeingDeleted(user);
+    }
+  }, [userToDelete, users]);
+
   const goBack = useGoBack();
 
   if (checking || userInfo?.userRole !== 'admin') {
@@ -103,7 +110,7 @@ const Admin: React.FC = () => {
     <main className="page-content min-h-screen bg-gray-50 dark:bg-gray-900">
       <div
         className="fixed left-4 top-4 z-10 flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-white shadow-md transition-all duration-300 hover:bg-gray-100"
-        onClick={() => goBack}
+        onClick={goBack}
       >
         <ArrowLeftIcon className="h-5 w-5 text-blue-gray-900" />
       </div>
@@ -217,7 +224,6 @@ const Admin: React.FC = () => {
                               color="red"
                               onClick={() => {
                                 setUserToDelete(user.id);
-                                setUserBeingDeleted(user);
                               }}
                               className="hover:bg-red-50"
                             >

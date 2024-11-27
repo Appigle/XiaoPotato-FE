@@ -168,6 +168,9 @@ const postDelete = (data: { id: number }) => {
     baseURL,
     url: X_POTATO_URL.POST_DELETE,
     data,
+    headers: {
+      Authorization: 'Bearer ' + localStorage.getItem('token'), // 或其他认证方式
+    },
   });
 };
 

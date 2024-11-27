@@ -2,16 +2,28 @@ import { useCallback } from 'react';
 import { useNavigate, type To } from 'react-router-dom';
 import Toast from '../toastUtils';
 
+// const useGoBack = () => {
+//   const navigate = useNavigate();
+//   return useCallback(
+//     (path?: string | undefined) => {
+//       navigate((path || history.length > 1 ? -1 : '/xp/home') as To);
+//     },
+//     [navigate],
+//   );
+// };
 const useGoBack = () => {
   const navigate = useNavigate();
   return useCallback(
-    (path?: string | undefined) => {
-      navigate((path || history.length > 1 ? -1 : '/xp/home') as To);
+    (e?: React.MouseEvent<HTMLDivElement> | string) => {
+      if (typeof e === 'string') {
+        navigate(e);
+      } else {
+        navigate((history.length > 1 ? -1 : '/xp/home') as To);
+      }
     },
     [navigate],
   );
 };
-
 const useGoToMyPost = () => {
   const navigate = useNavigate();
   return useCallback(() => {
