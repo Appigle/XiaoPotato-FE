@@ -24,7 +24,7 @@ import useGlobalStore from '@src/stores/useGlobalStore';
 import useTheme from '@src/utils/hooks/useTheme';
 import Toast from '@src/utils/toastUtils';
 import { MailPlus, UsersIcon } from 'lucide-react';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Zoom } from 'react-toastify';
 import NotificationModal from './NotificationModal';
@@ -34,12 +34,14 @@ import PrivacyPolicy from './Privacy';
 const Sidebar: React.FC = () => {
   const [isExpanded, setIsExpanded] = useState(true);
   const { currentTheme, setCurrentTheme, resetToSystemTheme } = useTheme();
+  const [showRedDot, setShowRedDot] = useState(true);
   const [isNotificationModalOpen, setIsNotificationModalOpen] = useState(false);
   const isDarkMode = useGlobalStore((s) => s.isDarkMode);
   const setIsOpenPostFormModal = useEventBusStore((s) => s.setIsOpenPostFormModal);
   const setRefreshPostList = useEventBusStore((s) => s.setRefreshPostList);
   const navigate = useNavigate();
   const userInfo = useGlobalStore((s) => s.userInfo);
+  const timerRef = useRef<number | null>();
 
   const toggleSidebar = () => {
     setIsExpanded(!isExpanded);
@@ -74,6 +76,20 @@ const Sidebar: React.FC = () => {
     localStorage.removeItem(X_ACCESS_TOKEN);
     navigate('/');
   };
+
+  const handleRedDot = () => {
+    setShowRedDot(false);
+    timerRef.current = window.setTimeout(() => {
+      setShowRedDot(true);
+    }, 6000);
+  };
+
+  useEffect(() => {
+    return () => {
+      timerRef.current && clearTimeout(timerRef.current);
+      timerRef.current = null;
+    };
+  }, []);
 
   return (
     <div
@@ -115,15 +131,19 @@ const Sidebar: React.FC = () => {
               )}
             </a>
           </li>
-          <li className="mb-2 pl-2">
+          <li className="relative mb-2 pl-2">
             <Link
               to="#"
               onClick={(e) => {
                 e.preventDefault();
+                handleRedDot();
                 setIsNotificationModalOpen(true);
               }}
               className="flex h-10 items-center justify-start transition-all hover:rounded-xl hover:bg-gray-900/5 hover:dark:rounded-xl hover:dark:bg-gray-100/10"
             >
+              {showRedDot && (
+                <div className="absolute left-[35px] top-[0px] z-10 h-2 w-2 rounded-full border-2 border-white bg-red-500 p-1 text-[10px]"></div>
+              )}
               <IconButton variant="text" color={iconColor as color}>
                 <HeartIcon className="h-5 w-5" />
               </IconButton>
@@ -158,7 +178,7 @@ const Sidebar: React.FC = () => {
                   className="flex h-10 items-center justify-start overflow-hidden transition-all hover:rounded-xl hover:bg-gray-900/5 hover:dark:rounded-xl hover:dark:bg-gray-100/10"
                 >
                   <IconButton variant="text" color={iconColor as color}>
-                    <UsersIcon className="h-5 w-5" />
+                    <UsersIcon className="h-4 w-4" />
                   </IconButton>
                   {isExpanded && (
                     <span className="ml-2 inline-block w-fit overflow-hidden text-ellipsis whitespace-nowrap">
@@ -173,7 +193,7 @@ const Sidebar: React.FC = () => {
                   className="flex h-10 items-center justify-start overflow-hidden transition-all hover:rounded-xl hover:bg-gray-900/5 hover:dark:rounded-xl hover:dark:bg-gray-100/10"
                 >
                   <IconButton variant="text" color={iconColor as color}>
-                    <DocumentTextIcon className="h-5 w-5" />
+                    <DocumentTextIcon className="h-4 w-4" />
                   </IconButton>
                   {isExpanded && (
                     <span className="ml-2 inline-block w-fit overflow-hidden text-ellipsis whitespace-nowrap">
