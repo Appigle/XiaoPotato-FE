@@ -7,6 +7,8 @@ import {
   Post,
   type_req_base_page,
   type_req_create_post_comment,
+  type_req_get_all_post,
+  type_req_get_all_users,
   type_req_get_emails,
   type_req_get_fans_by_page,
   type_req_get_post_1st_comment,
@@ -349,6 +351,41 @@ const getEmailByPage = (params: type_req_get_emails) => {
   });
 };
 
+/**
+ * get all users
+ * @param params type_req_get_all_users
+ * @returns  Promise<BaseRes<BaseResPageData<type_res_user_login>>>
+ */
+const getAllUsers = (params: type_req_get_all_users) => {
+  console.log('Making request to:', X_POTATO_URL.ADMIN_GET_USERS);
+  return useRequest.get<BaseRes<BaseResPageData<type_res_user_login>>>({
+    baseURL,
+    url: X_POTATO_URL.ADMIN_GET_USERS,
+    params,
+  });
+};
+
+const deleteUser = (id: number) => {
+  return useRequest.post<BaseRes<boolean>>({
+    baseURL,
+    url: `/user/deleteById`,
+    data: { id },
+  });
+};
+
+/**Get all post
+ * @param params type_req_get_all_post
+ * @returns Promise<BaseRes<BaseResPageData<IPostItem>>>
+ */
+
+const getAllPost = (params: type_req_get_all_post) => {
+  return useRequest.get<BaseRes<BaseResPageData<IPostItem>>>({
+    baseURL,
+    url: X_POTATO_URL.ADMIN_GET_POSTS,
+    params,
+  });
+};
+
 export default {
   registerAccount,
   userLogin,
@@ -376,4 +413,7 @@ export default {
   getNotifications,
   deleteEmail,
   getEmailByPage,
+  getAllUsers,
+  deleteUser,
+  getAllPost,
 };

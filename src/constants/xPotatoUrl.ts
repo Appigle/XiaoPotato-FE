@@ -23,4 +23,6 @@ export default {
   EMAIL_SEND: '/email/send',
   EMAIL_DELETE: '/email/delete',
   EMAIL_SELECT_BY_PAGE: '/email/selectByPage',
+  ADMIN_GET_USERS: '/user/selectByPage',
+  ADMIN_GET_POSTS: '/post/selectByPage',
 };

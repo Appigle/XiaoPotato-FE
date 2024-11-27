@@ -1,6 +1,7 @@
 import {
   ChevronDoubleLeftIcon,
   ChevronDoubleRightIcon,
+  DocumentTextIcon,
   EllipsisHorizontalIcon,
   HeartIcon,
   MagnifyingGlassIcon,
@@ -22,7 +23,7 @@ import useEventBusStore from '@src/stores/useEventBusStore';
 import useGlobalStore from '@src/stores/useGlobalStore';
 import useTheme from '@src/utils/hooks/useTheme';
 import Toast from '@src/utils/toastUtils';
-import { MailPlus } from 'lucide-react';
+import { MailPlus, UsersIcon } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Zoom } from 'react-toastify';
@@ -38,6 +39,7 @@ const Sidebar: React.FC = () => {
   const setIsOpenPostFormModal = useEventBusStore((s) => s.setIsOpenPostFormModal);
   const setRefreshPostList = useEventBusStore((s) => s.setRefreshPostList);
   const navigate = useNavigate();
+  const userInfo = useGlobalStore((s) => s.userInfo);
 
   const toggleSidebar = () => {
     setIsExpanded(!isExpanded);
@@ -147,21 +149,57 @@ const Sidebar: React.FC = () => {
               )}
             </Link>
           </li>
-          <li className="mb-2 pl-2">
-            <Link
-              to="/xp/profile"
-              className="flex h-10 items-center justify-start overflow-hidden transition-all hover:rounded-xl hover:bg-gray-900/5 hover:dark:rounded-xl hover:dark:bg-gray-100/10"
-            >
-              <IconButton variant="text" color={iconColor as color}>
-                <UserCircleIcon className="h-5 w-5" />
-              </IconButton>
-              {isExpanded && (
-                <span className="ml-2 inline-block w-fit overflow-hidden text-ellipsis whitespace-nowrap">
-                  Me
-                </span>
-              )}
-            </Link>
-          </li>
+          {/*只在用户是 admin 时显示 */}
+          {userInfo?.userRole === 'admin' ? (
+            <>
+              <li className="mb-2 pl-2">
+                <Link
+                  to="/admin/users"
+                  className="flex h-10 items-center justify-start overflow-hidden transition-all hover:rounded-xl hover:bg-gray-900/5 hover:dark:rounded-xl hover:dark:bg-gray-100/10"
+                >
+                  <IconButton variant="text" color={iconColor as color}>
+                    <UsersIcon className="h-5 w-5" />
+                  </IconButton>
+                  {isExpanded && (
+                    <span className="ml-2 inline-block w-fit overflow-hidden text-ellipsis whitespace-nowrap">
+                      Manage Users
+                    </span>
+                  )}
+                </Link>
+              </li>
+              <li className="mb-2 pl-2">
+                <Link
+                  to="/admin/posts"
+                  className="flex h-10 items-center justify-start overflow-hidden transition-all hover:rounded-xl hover:bg-gray-900/5 hover:dark:rounded-xl hover:dark:bg-gray-100/10"
+                >
+                  <IconButton variant="text" color={iconColor as color}>
+                    <DocumentTextIcon className="h-5 w-5" />
+                  </IconButton>
+                  {isExpanded && (
+                    <span className="ml-2 inline-block w-fit overflow-hidden text-ellipsis whitespace-nowrap">
+                      Manage Posts
+                    </span>
+                  )}
+                </Link>
+              </li>
+            </>
+          ) : (
+            <li className="mb-2 pl-2">
+              <Link
+                to="/xp/profile"
+                className="flex h-10 items-center justify-start overflow-hidden transition-all hover:rounded-xl hover:bg-gray-900/5 hover:dark:rounded-xl hover:dark:bg-gray-100/10"
+              >
+                <IconButton variant="text" color={iconColor as color}>
+                  <UserCircleIcon className="h-5 w-5" />
+                </IconButton>
+                {isExpanded && (
+                  <span className="ml-2 inline-block w-fit overflow-hidden text-ellipsis whitespace-nowrap">
+                    Me
+                  </span>
+                )}
+              </Link>
+            </li>
+          )}
         </ul>
       </nav>
       <div className="flex justify-between p-4">

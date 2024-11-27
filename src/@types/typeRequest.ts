@@ -119,3 +119,14 @@ export interface type_req_get_emails
 
 export interface type_req_send_email
   extends Partial<Pick<typeEmail, 'fromUser' | 'subject' | 'toUser' | 'content'>> {}
+export interface type_req_get_all_users extends type_req_base_page {
+  userId: number;
+  searchName: string;
+}
+export interface type_req_get_all_post extends type_req_base_page {
+  userId: number;
+  postTitle: string;
+  postContent: string;
+  postGenre: string;
+  sort: string;
+}
