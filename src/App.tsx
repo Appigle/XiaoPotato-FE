@@ -27,6 +27,7 @@ function App() {
   const { t } = useTranslation();
   const [menu] = useState<typeNavMenuItem[]>([]);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [isGuest, setIsGuest] = useState(false);
   const [isSignUpOpen, setIsSignUpOpen] = useState(false);
   const [isRun, setIsRun] = useState(true);
   const [keyPressInfo, setKeyPressInfo] = useState({ count: 0, key: Key.ArrowUp });
@@ -44,6 +45,10 @@ function App() {
   }, [initTheme]);
 
   const handleLoginClick = () => {
+    setIsLoginOpen(!isLoginOpen);
+  };
+  const handleGuestLoginClick = () => {
+    setIsGuest(true);
     setIsLoginOpen(!isLoginOpen);
   };
   const handleSignUpClick = () => {
@@ -124,6 +129,9 @@ function App() {
               <Button className="w-fit px-4 py-2" onClick={handleSignUpClick}>
                 Sign Up
               </Button>
+              <Button className="w-fit px-4 py-2" onClick={handleGuestLoginClick}>
+                Guest
+              </Button>
             </div>
           </div>
           <p className="mt-10">
@@ -143,7 +151,7 @@ function App() {
             </span>
           </p>
           <p className="absolute bottom-14 text-white">
-            &#169; 2024, M,Y/Z,Q/L,C Welcome the Xiao Potato World!
+            &#169; 2024, Z,MY/F,ZQ/C,L Welcome the Xiao Potato World!
             <a
               href="https://github.com/Appigle/XiaoPotato-FE"
               target="_blank"
@@ -156,8 +164,13 @@ function App() {
       </div>
       <LoginModal
         open={isLoginOpen}
-        setOpen={setIsLoginOpen}
+        isGuest={isGuest}
+        setOpen={(b) => {
+          setIsLoginOpen(b);
+          setIsGuest(false);
+        }}
         openSignUp={() => {
+          setIsGuest(false);
           setIsLoginOpen(false);
           setIsSignUpOpen(true);
         }}
