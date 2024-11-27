@@ -284,7 +284,7 @@ const Sidebar: React.FC = () => {
                 </Link>
               </li>
               <li className="flex items-center justify-between">
-                <span className="mr-4 text-blue-gray-900 dark:text-gray-100">
+                <span className="mr-4 hidden text-blue-gray-900 dark:text-gray-100">
                   {currentTheme === 'dark' ? '🌛' : '☀️'}
                 </span>
                 <ButtonGroup variant="outlined" size="sm">

@@ -1,20 +1,31 @@
 import { Button, Card, Dialog, Input, Typography } from '@material-tailwind/react';
 import Api from '@src/Api';
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 interface LoginModalProps {
   open: boolean;
+  isGuest: boolean;
   setOpen: (open: boolean) => void;
   openSignUp: () => void;
 }
 
-export function LoginModal({ open, setOpen, openSignUp }: LoginModalProps): JSX.Element {
+export function LoginModal({ open, setOpen, openSignUp, isGuest }: LoginModalProps): JSX.Element {
   const [userAccount, setUserAccount] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isGuest) {
+      setUserAccount('Guest');
+      setPassword('Guest123');
+    } else {
+      setUserAccount(userAccount);
+      setPassword(password);
+    }
+  }, [isGuest]);
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -42,7 +53,11 @@ export function LoginModal({ open, setOpen, openSignUp }: LoginModalProps): JSX.
   return (
     <Dialog
       open={open}
-      handler={() => setOpen(false)}
+      handler={() => {
+        setUserAccount('');
+        setPassword('');
+        setOpen(false);
+      }}
       size="sm"
       className="flex items-center justify-center bg-gray-100 p-5"
     >
