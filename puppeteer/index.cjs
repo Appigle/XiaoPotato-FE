@@ -17,8 +17,8 @@ async function getUnsplashImages() {
 
   try {
     // TODO: search img type in 'https://unsplash.com' and copy the url
-    const crawImgsPath = 'https://unsplash.com/s/photos/avatar';
-    // const crawImgsPath = 'https://unsplash.com/s/photos/sculpture-3d';
+    // const crawImgsPath = 'https://unsplash.com/s/photos/avatar';
+    const crawImgsPath = 'https://unsplash.com/s/photos/dream';
     // Navigate to Unsplash
     await page.goto(crawImgsPath, {
       waitUntil: 'networkidle0',

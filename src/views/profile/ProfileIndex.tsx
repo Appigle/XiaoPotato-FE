@@ -333,7 +333,7 @@ const ProfilePage: React.FC = () => {
               <div className="mt-10 border-t border-blue-gray-200 py-10 text-center">
                 <div className="flex flex-wrap justify-center">
                   <div className="w-full px-4 lg:w-9/12">
-                    <p className="mb-4 text-lg leading-relaxed text-blue-gray-700 dark:text-blue-gray-100">
+                    <p className="mb-4 font-[cursive] text-lg font-bold italic leading-relaxed text-blue-gray-700 dark:text-blue-gray-100">
                       {profile.description || (
                         <span className="text-[12px] italic text-gray-500">
                           To be or not to be, that is a question~
