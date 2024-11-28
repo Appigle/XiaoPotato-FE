@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 const HeroSection = () => {
   const [scrollY, setScrollY] = useState(0);
@@ -49,10 +49,11 @@ const HeroSection = () => {
       {/* Background video */}
       <div className="fixed inset-0">
         <video className="h-full w-full object-cover" autoPlay muted loop playsInline>
-          <source
+          {/* <source
             src="https://fe-video-qc.xhscdn.com/fe-platform/158ed48cadc8cc5ff56ee5c784f0f447de01c371.mp4"
             type="video/mp4"
-          />
+          /> */}
+          <source src="/videoplayback_003.mp4" type="video/mp4" />
         </video>
       </div>
 

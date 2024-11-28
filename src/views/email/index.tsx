@@ -3,6 +3,7 @@ import { Checkbox, IconButton, Typography } from '@material-tailwind/react';
 import { typeEmailListRef } from '@src/@types/typePostItem';
 import Api from '@src/Api';
 import Popover from '@src/components/Popover';
+import { useGoBack } from '@src/utils/hooks/nav';
 import HTTP_RES_CODE from '@src/utils/request/httpResCode';
 import Toast from '@src/utils/toastUtils';
 import { Moon, RefreshCcw, Sun } from 'lucide-react';
@@ -14,6 +15,7 @@ const EmailPage: React.FC = () => {
   const emailListRef = useRef<typeEmailListRef>(null);
   const selectAllRef = useRef<HTMLInputElement>(null);
   const [cbChecked, setCbChecked] = useState(false);
+  const goBack = useGoBack();
 
   const handleDelete = async (emailId: number, showToast: boolean) => {
     try {
@@ -54,18 +56,39 @@ const EmailPage: React.FC = () => {
   };
 
   return (
-    <div className="flex h-full w-full bg-gray-100 transition-colors duration-200 dark:bg-blue-gray-900/95">
+    <div className="relative flex h-full w-full bg-gray-100 transition-colors duration-200 dark:bg-blue-gray-900/95">
       <div className="relative w-5/12 min-w-[340px] p-4">
         <div className="mb-4 flex w-full items-center justify-between">
-          <Typography variant="h4" className="text-blue-gray-900 dark:text-gray-200">
-            Inbox
-            <Popover
-              placement="right"
-              popoverClassName="w-80"
-              content="Use 'shiftKey' to select multiple E-mail."
-              childProps={{ className: 'w-3 h-3 ml-1 align-bottom' }}
-            />
-          </Typography>
+          <div className="flex items-center justify-center gap-2">
+            <div
+              className="left-4 top-4 flex h-8 w-8 cursor-pointer items-center justify-center overflow-hidden rounded-full bg-white/80 p-1 text-blue-gray-900 hover:bg-gray-200"
+              onClick={goBack}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="currentColor"
+                className="size-5"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3"
+                />
+              </svg>
+            </div>
+            <Typography variant="h4" className="text-blue-gray-900 dark:text-gray-200">
+              Inbox
+              <Popover
+                placement="right"
+                popoverClassName="w-80"
+                content="Use 'shift' to select multiple E-mail."
+                childProps={{ className: 'w-3 h-3 ml-1 align-bottom' }}
+              />
+            </Typography>
+          </div>
           <div className="flex items-center justify-center gap-1">
             <div className="flex cursor-pointer items-center justify-center">
               <label htmlFor="selectAll" className="text-blue-gray-900 dark:text-gray-200">
@@ -110,7 +133,7 @@ const EmailPage: React.FC = () => {
             <IconButton
               variant="text"
               onClick={toggleDarkMode}
-              className="text-blue-gray-900 dark:text-gray-200"
+              className="hidden text-blue-gray-900 dark:text-gray-200"
             >
               <Moon className="hidden h-5 w-5 dark:block" />
               <Sun className="block h-5 w-5 dark:hidden" />

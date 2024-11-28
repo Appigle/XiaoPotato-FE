@@ -320,7 +320,7 @@ const EmailList = forwardRef<typeEmailListRef, EmailListProps>(
 
     return (
       <>
-        <Card className="h-[calc(100%-60px)] w-full justify-between bg-gray-100 dark:bg-blue-gray-800/50">
+        <Card className="h-[calc(100%-60px)] w-full justify-between border-t-[1px] border-gray-300 bg-gray-100 dark:bg-blue-gray-800/50">
           {/* {Array.from(selectedEmails).join('/')} */}
           {state.status === 'loading' && (
             <div
@@ -359,7 +359,7 @@ const EmailList = forwardRef<typeEmailListRef, EmailListProps>(
                 </div>
               ) : (
                 <>
-                  <div className="flex h-full flex-col gap-4 overflow-y-scroll p-0">
+                  <div className="flex h-full flex-col gap-4 overflow-y-auto p-0">
                     {state.data.map(renderEmailItem)}
                   </div>
                   {renderPagination()}

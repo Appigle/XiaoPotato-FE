@@ -25,7 +25,7 @@ import useGlobalStore from '@src/stores/useGlobalStore';
 import useTheme from '@src/utils/hooks/useTheme';
 import HTTP_RES_CODE from '@src/utils/request/httpResCode';
 import Toast from '@src/utils/toastUtils';
-import { MailPlus, UsersIcon } from 'lucide-react';
+import { MailPlus, SpellCheck2, UsersIcon } from 'lucide-react';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Zoom } from 'react-toastify';
@@ -179,6 +179,21 @@ const Sidebar: React.FC = () => {
               {isExpanded && (
                 <span className="ml-2 inline-block w-fit overflow-hidden text-ellipsis whitespace-nowrap">
                   Invitation
+                </span>
+              )}
+            </Link>
+          </li>
+          <li className="mb-2 pl-2">
+            <Link
+              to="/about"
+              className="flex h-10 items-center justify-start overflow-hidden transition-all hover:rounded-xl hover:bg-gray-900/5 hover:dark:rounded-xl hover:dark:bg-gray-100/10"
+            >
+              <IconButton variant="text" color={iconColor as color}>
+                <SpellCheck2 className="h-5 w-5" />
+              </IconButton>
+              {isExpanded && (
+                <span className="ml-2 inline-block w-fit overflow-hidden text-ellipsis whitespace-nowrap">
+                  About
                 </span>
               )}
             </Link>

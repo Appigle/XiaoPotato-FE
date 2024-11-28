@@ -165,7 +165,7 @@ const EmailForm: React.FC = () => {
         </Button>
       </div>
       <Card
-        className={`w-full max-w-xl bg-gray-100 text-blue-gray-900 dark:bg-blue-gray-800 dark:text-gray-100`}
+        className={`w-full max-w-xl border-t-[1px] border-gray-300 bg-gray-100 text-blue-gray-900 dark:bg-blue-gray-800 dark:text-gray-100`}
       >
         <CardBody>
           <div className="mb-4">
