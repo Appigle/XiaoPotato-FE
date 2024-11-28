@@ -18,13 +18,15 @@ import {
 } from '@material-tailwind/react';
 import { color } from '@material-tailwind/react/types/components/alert';
 import { typeTheme } from '@src/@types/typeTheme';
+import Api from '@src/Api';
 import { X_ACCESS_TOKEN } from '@src/constants/LStorageKey';
 import useEventBusStore from '@src/stores/useEventBusStore';
 import useGlobalStore from '@src/stores/useGlobalStore';
 import useTheme from '@src/utils/hooks/useTheme';
+import HTTP_RES_CODE from '@src/utils/request/httpResCode';
 import Toast from '@src/utils/toastUtils';
 import { MailPlus, UsersIcon } from 'lucide-react';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Zoom } from 'react-toastify';
 import NotificationModal from './NotificationModal';
@@ -34,7 +36,7 @@ import PrivacyPolicy from './Privacy';
 const Sidebar: React.FC = () => {
   const [isExpanded, setIsExpanded] = useState(true);
   const { currentTheme, setCurrentTheme, resetToSystemTheme } = useTheme();
-  const [showRedDot, setShowRedDot] = useState(true);
+  const [notifyCount, setNotifyCount] = useState(0);
   const [isNotificationModalOpen, setIsNotificationModalOpen] = useState(false);
   const isDarkMode = useGlobalStore((s) => s.isDarkMode);
   const setIsOpenPostFormModal = useEventBusStore((s) => s.setIsOpenPostFormModal);
@@ -77,11 +79,8 @@ const Sidebar: React.FC = () => {
     navigate('/');
   };
 
-  const handleRedDot = () => {
-    setShowRedDot(false);
-    timerRef.current = window.setTimeout(() => {
-      setShowRedDot(true);
-    }, 6000);
+  const handleNotifyCount = () => {
+    setNotifyCount(0);
   };
 
   useEffect(() => {
@@ -90,6 +89,19 @@ const Sidebar: React.FC = () => {
       timerRef.current = null;
     };
   }, []);
+
+  const getUnreadNotificationCount = useCallback(() => {
+    if (!userInfo?.id) return;
+    Api.xPotatoApi.getUserUnreadNotificationCount({ id: userInfo?.id as number }).then((res) => {
+      if (res.code === HTTP_RES_CODE.SUCCESS) {
+        setNotifyCount(res.data);
+      }
+    });
+  }, [userInfo?.id]);
+
+  useEffect(() => {
+    getUnreadNotificationCount();
+  }, [getUnreadNotificationCount]);
 
   return (
     <div
@@ -136,13 +148,15 @@ const Sidebar: React.FC = () => {
               to="#"
               onClick={(e) => {
                 e.preventDefault();
-                handleRedDot();
+                handleNotifyCount();
                 setIsNotificationModalOpen(true);
               }}
               className="flex h-10 items-center justify-start transition-all hover:rounded-xl hover:bg-gray-900/5 hover:dark:rounded-xl hover:dark:bg-gray-100/10"
             >
-              {showRedDot && (
-                <div className="absolute left-[35px] top-[0px] z-10 h-2 w-2 rounded-full border-2 border-white bg-red-500 p-1 text-[10px]"></div>
+              {notifyCount > 0 && (
+                <div className="absolute left-[35px] top-[0px] z-10 flex h-5 w-fit min-w-5 items-center justify-center rounded-full border-2 border-white bg-red-500 p-1 text-[10px]">
+                  {notifyCount > 99 ? '99+' : notifyCount}
+                </div>
               )}
               <IconButton variant="text" color={iconColor as color}>
                 <HeartIcon className="h-5 w-5" />

@@ -25,4 +25,5 @@ export default {
   EMAIL_SELECT_BY_PAGE: '/email/selectByPage',
   ADMIN_GET_USERS: '/user/selectByPage',
   ADMIN_GET_POSTS: '/post/selectByPage',
+  USER_GET_NOTIFICATION_COUNT: '/user/getNotificationCountById',
 };

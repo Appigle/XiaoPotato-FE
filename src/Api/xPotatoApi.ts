@@ -389,6 +389,17 @@ const getAllPost = (params: type_req_get_all_post) => {
   });
 };
 
+/**Get unread notification count
+ * @returns Promise<BaseRes<number>>
+ */
+const getUserUnreadNotificationCount = (params: { id: number }) => {
+  return useRequest.get<BaseRes<number>>({
+    baseURL,
+    url: X_POTATO_URL.USER_GET_NOTIFICATION_COUNT,
+    params,
+  });
+};
+
 export default {
   registerAccount,
   userLogin,
@@ -419,4 +430,5 @@ export default {
   getAllUsers,
   deleteUser,
   getAllPost,
+  getUserUnreadNotificationCount,
 };
