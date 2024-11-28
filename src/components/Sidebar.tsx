@@ -29,12 +29,14 @@ import { MailPlus, SpellCheck2, UsersIcon } from 'lucide-react';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Zoom } from 'react-toastify';
+import { useMediaQuery } from 'usehooks-ts';
 import NotificationModal from './NotificationModal';
 import PrivacyPolicy from './Privacy';
 
 // Sidebar component
 const Sidebar: React.FC = () => {
-  const [isExpanded, setIsExpanded] = useState(true);
+  const matches = useMediaQuery('(min-width: 768px)');
+  const [isExpanded, setIsExpanded] = useState(matches);
   const { currentTheme, setCurrentTheme, resetToSystemTheme } = useTheme();
   const [notifyCount, setNotifyCount] = useState(0);
   const [isNotificationModalOpen, setIsNotificationModalOpen] = useState(false);

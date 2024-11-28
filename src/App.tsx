@@ -28,6 +28,7 @@ function App() {
   const [menu] = useState<typeNavMenuItem[]>([]);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isGuest, setIsGuest] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [isSignUpOpen, setIsSignUpOpen] = useState(false);
   const [isRun, setIsRun] = useState(true);
   const [keyPressInfo, setKeyPressInfo] = useState({ count: 0, key: Key.ArrowUp });
@@ -49,6 +50,12 @@ function App() {
   };
   const handleGuestLoginClick = () => {
     setIsGuest(true);
+    setIsAdmin(false);
+    setIsLoginOpen(!isLoginOpen);
+  };
+  const handleAdminLogin = () => {
+    setIsGuest(false);
+    setIsAdmin(true);
     setIsLoginOpen(!isLoginOpen);
   };
   const handleSignUpClick = () => {
@@ -94,7 +101,7 @@ function App() {
           </div>
           <h1
             onClick={() => toast('Welcome to Potato art world!')}
-            className="via-slate-200 my-4 inline-block bg-gradient-to-r from-pink-600 to-yellow-400 bg-clip-text text-6xl font-bold text-transparent"
+            className="via-slate-200 my-4 inline-block bg-gradient-to-r from-pink-600 to-yellow-400 bg-clip-text p-4 text-6xl font-bold text-transparent"
           >
             {t('XiaoPotatoArtPlatform')}
           </h1>
@@ -150,12 +157,13 @@ function App() {
               {isRun ? ' to pause' : ' to start'}
             </span>
           </p>
-          <p className="absolute bottom-14 text-white">
-            &#169; 2024, Z,MY/F,ZQ/C,L Welcome the Xiao Potato World!
+          <p className="absolute bottom-14 mt-4 whitespace-normal p-4 text-[12] text-gray-200 sm:text-xs">
+            &#169; 2024, <span onDoubleClick={handleAdminLogin}>Z,MY/F,ZQ/C,L</span> Welcome the
+            XiaoPotato World!
             <a
               href="https://github.com/Appigle/XiaoPotato-FE"
               target="_blank"
-              className="bg-slate-500 mx-4 inline-block h-6 w-6 rounded-full"
+              className="bg-slate-500 m-t-2 mx-4 inline-block h-6 w-6 rounded-full bg-gray-400"
             >
               <img src={githubMark} alt="Github mark" width="32px" height="32px" />
             </a>
@@ -165,12 +173,15 @@ function App() {
       <LoginModal
         open={isLoginOpen}
         isGuest={isGuest}
+        isAdmin={isAdmin}
         setOpen={(b) => {
           setIsLoginOpen(b);
           setIsGuest(false);
+          setIsAdmin(false);
         }}
         openSignUp={() => {
           setIsGuest(false);
+          setIsAdmin(false);
           setIsLoginOpen(false);
           setIsSignUpOpen(true);
         }}

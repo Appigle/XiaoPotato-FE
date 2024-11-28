@@ -1,4 +1,4 @@
-import { Button, Card, Dialog, Input, Select, Typography, Option } from '@material-tailwind/react';
+import { Button, Card, Dialog, Input, Option, Select, Typography } from '@material-tailwind/react';
 import Api from '@src/Api';
 import React, { useState } from 'react';
 import { FormErrors, validateRegisterForm } from './common/formValidation';
@@ -79,7 +79,10 @@ export function RegisterModal({ open, setOpen, openLogin }: RegisterModalProps):
         <Typography color="gray" className="mt-1 font-normal">
           Create your account to join us.
         </Typography>
-        <form className="mb-2 mt-8 w-80 max-w-screen-lg sm:w-96" onSubmit={handleSubmit}>
+        <form
+          className="w-70 mb-2 mt-8 max-w-screen-lg align-middle sm:w-96"
+          onSubmit={handleSubmit}
+        >
           <div className="mb-4 flex flex-col gap-4">
             <Input
               label="First Name"

@@ -7,11 +7,18 @@ import { useNavigate } from 'react-router-dom';
 interface LoginModalProps {
   open: boolean;
   isGuest: boolean;
+  isAdmin: boolean;
   setOpen: (open: boolean) => void;
   openSignUp: () => void;
 }
 
-export function LoginModal({ open, setOpen, openSignUp, isGuest }: LoginModalProps): JSX.Element {
+export function LoginModal({
+  open,
+  setOpen,
+  openSignUp,
+  isGuest,
+  isAdmin,
+}: LoginModalProps): JSX.Element {
   const [userAccount, setUserAccount] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -21,11 +28,14 @@ export function LoginModal({ open, setOpen, openSignUp, isGuest }: LoginModalPro
     if (isGuest) {
       setUserAccount('Guest');
       setPassword('Guest123');
+    } else if (isAdmin) {
+      setUserAccount('admin');
+      setPassword('admin123');
     } else {
       setUserAccount(userAccount);
       setPassword(password);
     }
-  }, [isGuest]);
+  }, [isGuest, isAdmin]);
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -68,7 +78,10 @@ export function LoginModal({ open, setOpen, openSignUp, isGuest }: LoginModalPro
         <Typography color="gray" className="mt-1 font-normal">
           Welcome. Enter your details to Sign In.
         </Typography>
-        <form className="mb-2 mt-8 w-80 max-w-screen-lg sm:w-96" onSubmit={handleLogin}>
+        <form
+          className="w-70 mb-2 mt-8 max-w-screen-lg align-middle sm:w-96"
+          onSubmit={handleLogin}
+        >
           <div className="mb-4 flex flex-col gap-4">
             <Input
               label="User Account"
@@ -80,7 +93,6 @@ export function LoginModal({ open, setOpen, openSignUp, isGuest }: LoginModalPro
               className="border-t-blue-gray-200 focus:border-t-gray-900"
               crossOrigin="anonymous"
             />
-
             <Input
               label="Password"
               id="password"

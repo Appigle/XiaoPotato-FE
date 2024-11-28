@@ -2,6 +2,10 @@
 
 Frontend of the XiaoPotato application
 
+## Website
+
+![XiaoPotato](./public/XiaoPotatoQrCode002.png)
+
 ## Installation
 
 ```bash
