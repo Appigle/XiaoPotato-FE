@@ -154,7 +154,7 @@ const Sidebar: React.FC = () => {
               className="flex h-10 items-center justify-start transition-all hover:rounded-xl hover:bg-gray-900/5 hover:dark:rounded-xl hover:dark:bg-gray-100/10"
             >
               {notifyCount > 0 && (
-                <div className="absolute left-[35px] top-[0px] z-10 flex h-5 w-fit min-w-5 items-center justify-center rounded-full border-2 border-white bg-red-500 p-1 text-[10px]">
+                <div className="absolute left-[35px] top-[0px] z-10 flex h-5 w-fit min-w-5 items-center justify-center rounded-full border-2 border-white bg-red-500 p-1 text-[10px] text-white">
                   {notifyCount > 99 ? '99+' : notifyCount}
                 </div>
               )}
