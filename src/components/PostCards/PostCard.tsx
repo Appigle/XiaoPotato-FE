@@ -21,6 +21,7 @@ import {
 import { IPostItem } from '@src/@types/typePostItem';
 import Api from '@src/Api';
 import HeartEffect from '@src/components/HeartEffect/index';
+import allGenreList from '@src/constants/genreList';
 import useGlobalStore from '@src/stores/useGlobalStore';
 import { useGoToProfile } from '@src/utils/hooks/nav';
 import HTTP_RES_CODE from '@src/utils/request/httpResCode';
@@ -116,12 +117,13 @@ const PostCard = (props: PostCardProps) => {
         />
         {/* <img src={postImage} onError={handleImageError} alt={post.postTitle} className="w-full" /> */}
       </CardHeader>
-      <CardBody className="flex flex-1 cursor-pointer" onClick={openDetail}>
+      <CardBody className="flex flex-1 cursor-pointer flex-col" onClick={openDetail}>
         <Typography
           variant="paragraph"
           title={post.postTitle}
           className="text-md three-line-ellipsis text-blue-900 dark:text-gray-100"
         >
+          <span>{allGenreList.find((f) => f.name === post.postGenre)?.emoji}</span>
           {post.postTitle}
         </Typography>
       </CardBody>

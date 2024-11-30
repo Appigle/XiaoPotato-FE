@@ -164,10 +164,10 @@ const PostDetailModal = ({ post: _post, open = false, onClose, index }: PostDeta
           </div>
           <div className="scrollbar-hide mt-4 flex max-h-[70vh] flex-1 flex-col gap-4 overflow-auto py-4">
             <h3 className="text-xl text-blue-gray-900 dark:text-gray-100">{post.postTitle}</h3>
-            <p className="text-sm text-blue-gray-900 dark:text-gray-100">
+            <div className="text-sm text-blue-gray-900 dark:text-gray-100">
               {formatStringWithTagAndUrl(post.postContent)}
               <p className="mt-4 text-blue-200">#{post.postGenre}</p>
-            </p>
+            </div>
             <p className="flex items-center justify-end px-2 text-[12px] text-blue-gray-800 dark:text-gray-400">
               Create at: {dayjs(post.createTime).format('MM/DD/YYYY')}
             </p>

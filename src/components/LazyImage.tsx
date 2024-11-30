@@ -74,7 +74,7 @@ const LazyImage: React.FC<LazyImageProps> = ({
   };
 
   const containerStyle: React.CSSProperties = {
-    minHeight: height || '200px',
+    minHeight: height || '100px',
     ...dimensions,
   };
 

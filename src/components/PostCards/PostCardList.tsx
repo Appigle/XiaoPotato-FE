@@ -85,19 +85,20 @@ const PostList = forwardRef<typePostListRef, PropsType>((_, ref) => {
       });
   }, [currentSearchWord, state.currentPage, state.sort, state.postGenre, refreshKey]);
 
-  const resetListAndState = () => {
+  const resetListAndState = (data?: { postGenre?: typePostGenre; sort?: sortType }) => {
     setPostList([]);
-    setState({ ...state, currentPage: 1, isLoadEnd: false });
+    setState({ ...state, ...(data || {}), currentPage: 1, isLoadEnd: false });
   };
+
   const setRefreshKeyValue = (prev: number) => (prev > 9999 ? 0 : prev + 1);
 
   useEffect(() => {
     setState((prev) => ({ ...prev, isCreateModalOpen: isOpenPostFormModal }));
   }, [isOpenPostFormModal]);
 
-  const handleRefresh = () => {
+  const handleRefresh = (data?: { postGenre?: typePostGenre; sort?: sortType }) => {
     if (isLoading) return;
-    resetListAndState();
+    resetListAndState(data);
     setRefreshKey(setRefreshKeyValue);
   };
 
@@ -107,13 +108,11 @@ const PostList = forwardRef<typePostListRef, PropsType>((_, ref) => {
 
   const handleSort = (sort: sortType = '') => {
     if (isLoading) return;
-    setState((prev) => ({ ...prev, sort }));
-    handleRefresh();
+    handleRefresh({ sort });
   };
 
   useEffect(() => {
-    setState((prev) => ({ ...prev, postGenre: _currentPostGenre }));
-    handleRefresh();
+    handleRefresh({ postGenre: _currentPostGenre });
   }, [_currentPostGenre]);
 
   useEffect(() => {
@@ -226,7 +225,7 @@ const PostList = forwardRef<typePostListRef, PropsType>((_, ref) => {
       {!isLoading && state.isLoadEnd && postList.length === 0 && renderEmptyState()}
       {isLoading && !state.isLoadEnd && (
         <div className="grid grid-cols-1 gap-4 p-4 pt-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-          {new Array(8).fill('love').map((_, index) => {
+          {new Array(4).fill('love').map((_, index) => {
             return <SkeletonCard key={`${_}_${index}`} />;
           })}
         </div>
@@ -235,7 +234,7 @@ const PostList = forwardRef<typePostListRef, PropsType>((_, ref) => {
       {!isLoading && state.isLoadEnd && postList.length > 0 && renderBottomLine()}
       <HiRefresh
         className={`fixed bottom-[50px] right-[50px] z-20 rounded-full text-2xl hover:cursor-pointer dark:text-gray-200 ${isLoading ? 'animate-spin' : ''}`}
-        onClick={handleRefresh}
+        onClick={() => handleRefresh()}
       />
       <Menu
         animate={{
