@@ -1,20 +1,12 @@
 import { BanknotesIcon } from '@heroicons/react/24/outline';
+import { Button, Menu, MenuHandler, MenuItem, MenuList } from '@material-tailwind/react';
 import { IPostItem, typePostGenre, typePostListRef } from '@src/@types/typePostItem';
 import { type_req_get_post_by_page, type_res_get_post } from '@src/@types/typeRequest';
 import Api from '@src/Api';
-import X_POTATO_URL from '@src/constants/xPotatoUrl';
 import useEventBusStore from '@src/stores/useEventBusStore';
 import useGlobalStore from '@src/stores/useGlobalStore';
-import useRequest from '@src/utils/request';
 import HTTP_RES_CODE from '@src/utils/request/httpResCode';
-import React, {
-  forwardRef,
-  useCallback,
-  useEffect,
-  useImperativeHandle,
-  useRef,
-  useState,
-} from 'react';
+import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useState } from 'react';
 import { HiRefresh } from 'react-icons/hi';
 import { useDebounceCallback } from 'usehooks-ts';
 import PostCard from './PostCard';
@@ -22,6 +14,7 @@ import PostDetailModal from './PostCardModal';
 import PostFormModal from './PostFormModal';
 import { SkeletonCard } from './SkeletonCard';
 
+type sortType = 'desc' | 'asc' | '';
 interface PostState {
   currentPost?: IPostItem;
   currentIndex: number;
@@ -32,12 +25,16 @@ interface PostState {
   mode: 'create' | 'edit';
   isDetailModalOpen: boolean;
   isCreateModalOpen: boolean;
+  sort?: sortType;
 }
 
 type PropsType = { title?: string };
 
+const PAGE_SIZE = 20;
+
 // Update PostList component to include infinite scroll
 const PostList = forwardRef<typePostListRef, PropsType>((_, ref) => {
+  const [refreshKey, setRefreshKey] = useState(0);
   const [state, setState] = useState<PostState>({
     currentIndex: -1,
     currentPage: 1,
@@ -47,10 +44,9 @@ const PostList = forwardRef<typePostListRef, PropsType>((_, ref) => {
     mode: 'create',
     isDetailModalOpen: false,
     isCreateModalOpen: false,
+    sort: '', // desc/asc
   });
   const [postList, setPostList] = useState<IPostItem[]>([]);
-  const loadingRef = useRef(false);
-  const isLoadEndRef = useRef(false);
   const {
     currentPostGenre: _currentPostGenre,
     isLoading,
@@ -59,17 +55,21 @@ const PostList = forwardRef<typePostListRef, PropsType>((_, ref) => {
     setCurrentSearchWord,
   } = useGlobalStore();
   const { setIsOpenPostFormModal, isOpenPostFormModal, refreshPostList } = useEventBusStore();
-  const fetchPosts = useCallback(
-    (size: number, page: number, searchWord: string, postGenre: typePostGenre) => {
-      const post: type_req_get_post_by_page = {
-        postTitle: searchWord,
-        postContent: searchWord,
-        postGenre,
-        currentPage: page,
-        pageSize: size,
-        sort: 'desc',
-      };
-      return Api.xPotatoApi.getPostByPage(post).then((res) => {
+
+  const fetchPosts = useCallback(() => {
+    if (isLoading) return;
+    setIsLoading(true);
+    const post: type_req_get_post_by_page = {
+      postTitle: currentSearchWord,
+      postContent: currentSearchWord,
+      postGenre: state.postGenre,
+      currentPage: state.currentPage,
+      pageSize: PAGE_SIZE,
+      sort: state.sort,
+    };
+    return Api.xPotatoApi
+      .getPostByPage(post)
+      .then((res) => {
         if (res.code === HTTP_RES_CODE.SUCCESS) {
           const { total, records, current, size } = (res.data || {}) as type_res_get_post;
           setState((prev) => ({
@@ -77,23 +77,44 @@ const PostList = forwardRef<typePostListRef, PropsType>((_, ref) => {
             total,
             isLoadEnd: total <= current * size,
           }));
-          isLoadEndRef.current = total <= current * size;
-          setPostList((prev) => [...prev, ...records]);
+          setPostList((prev) => (current === 1 ? records : [...prev, ...records]));
         }
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
-    },
-    [],
-  );
+  }, [currentSearchWord, state.currentPage, state.sort, state.postGenre, refreshKey]);
 
-  const resetList = useCallback(() => {
+  const resetListAndState = () => {
     setPostList([]);
-    setState((prev) => ({
-      ...prev,
-      currentPage: 1,
-      isLoadEnd: false,
-    }));
-    isLoadEndRef.current = false;
-  }, []);
+    setState({ ...state, currentPage: 1, isLoadEnd: false });
+  };
+  const setRefreshKeyValue = (prev: number) => (prev > 9999 ? 0 : prev + 1);
+
+  useEffect(() => {
+    setState((prev) => ({ ...prev, isCreateModalOpen: isOpenPostFormModal }));
+  }, [isOpenPostFormModal]);
+
+  const handleRefresh = () => {
+    if (isLoading) return;
+    resetListAndState();
+    setRefreshKey(setRefreshKeyValue);
+  };
+
+  useEffect(() => {
+    handleRefresh();
+  }, [refreshPostList]);
+
+  const handleSort = (sort: sortType = '') => {
+    if (isLoading) return;
+    setState((prev) => ({ ...prev, sort }));
+    handleRefresh();
+  };
+
+  useEffect(() => {
+    setState((prev) => ({ ...prev, postGenre: _currentPostGenre }));
+    handleRefresh();
+  }, [_currentPostGenre]);
 
   useEffect(() => {
     setCurrentSearchWord('');
@@ -101,53 +122,30 @@ const PostList = forwardRef<typePostListRef, PropsType>((_, ref) => {
   }, [setCurrentSearchWord]);
 
   useEffect(() => {
-    setState((prev) => ({ ...prev, isCreateModalOpen: isOpenPostFormModal }));
-  }, [isOpenPostFormModal]);
-
-  useEffect(() => {
-    handleRefresh();
-  }, [refreshPostList]);
-
-  useEffect(() => {
-    resetList();
-    setState((prev) => ({ ...prev, postGenre: _currentPostGenre }));
-  }, [_currentPostGenre, resetList]);
-
-  useEffect(() => {
-    resetList();
-  }, [currentSearchWord, resetList]);
-
-  useEffect(() => {
-    if (loadingRef.current || isLoadEndRef.current) return;
-    loadingRef.current = true;
-    setIsLoading(true);
-    fetchPosts(20, state.currentPage, currentSearchWord || '', state.postGenre).finally(() => {
-      setIsLoading(false);
-      loadingRef.current = false;
-    });
-    return () => {
-      const abort = useRequest.getAbortAxios();
-      abort.removePending(abort.getRequestId(X_POTATO_URL.POST_FILTER_PAGES, 'get'));
-    };
-  }, [currentSearchWord, state.currentPage, state.postGenre, fetchPosts, setIsLoading]);
+    fetchPosts();
+  }, [fetchPosts]);
 
   const loadMoreCards = useDebounceCallback(() => {
-    if (loadingRef.current || isLoadEndRef.current) return;
-    setIsLoading(true);
+    if (isLoading || state.isLoadEnd) return;
     setState((prev) => ({ ...prev, currentPage: prev.currentPage + 1 }));
-  }, 200);
+  }, 500);
 
   const handleScroll = useCallback(
     (e?: React.UIEvent<HTMLElement, UIEvent>) => {
-      if (loadingRef.current || !e || isLoadEndRef.current) return;
+      if (isLoading || state.isLoadEnd || !e) return;
       const { scrollTop, clientHeight, scrollHeight } = e.currentTarget;
       const offset = 100;
       if (scrollTop + clientHeight >= scrollHeight - offset) {
         loadMoreCards();
       }
     },
-    [loadMoreCards],
+    [loadMoreCards, state.isLoadEnd, isLoading],
   );
+
+  useImperativeHandle(ref, () => ({
+    handleScroll,
+  }));
+
   const handleModalActions = useCallback(
     (
       post?: IPostItem,
@@ -169,16 +167,6 @@ const PostList = forwardRef<typePostListRef, PropsType>((_, ref) => {
     },
     [setIsOpenPostFormModal],
   );
-  const handleRefresh = useCallback(() => {
-    if (loadingRef.current) return;
-    resetList();
-    if (state.currentPage === 1) {
-      fetchPosts(20, 1, currentSearchWord || '', state.postGenre);
-    }
-  }, [resetList, state.currentPage, state.postGenre, currentSearchWord, fetchPosts]);
-  useImperativeHandle(ref, () => ({
-    handleScroll,
-  }));
 
   const renderEmptyState = () => (
     <div className="m-auto mt-64 flex flex-col items-center justify-center gap-4 text-blue-gray-900 dark:text-gray-200">
@@ -246,9 +234,48 @@ const PostList = forwardRef<typePostListRef, PropsType>((_, ref) => {
       )}
       {!isLoading && state.isLoadEnd && postList.length > 0 && renderBottomLine()}
       <HiRefresh
-        className={`fixed bottom-[50px] right-[50px] z-20 rounded-full text-2xl hover:cursor-pointer ${isLoading ? 'animate-spin' : ''}`}
+        className={`fixed bottom-[50px] right-[50px] z-20 rounded-full text-2xl hover:cursor-pointer dark:text-gray-200 ${isLoading ? 'animate-spin' : ''}`}
         onClick={handleRefresh}
       />
+      <Menu
+        animate={{
+          mount: { y: 0 },
+          unmount: { y: 25 },
+        }}
+      >
+        <MenuHandler>
+          <Button
+            size="sm"
+            variant="text"
+            disabled={isLoading}
+            className={`${isLoading ? 'cursor-not-allowed' : ''} !fixed bottom-[50px] right-[100px] z-20 rounded-full bg-blue-gray-900/80 px-2 py-1 text-[12px] capitalize text-white hover:cursor-pointer dark:bg-gray-200 dark:text-blue-gray-900`}
+          >
+            Sort
+          </Button>
+        </MenuHandler>
+        <MenuList
+          className={`w-[100px] min-w-[120px] border-none bg-blue-gray-900/80 px-2 py-1 text-[12px] capitalize text-white outline-none hover:cursor-pointer dark:bg-gray-400/80 dark:text-blue-gray-900`}
+        >
+          <MenuItem
+            onClick={() => handleSort('')}
+            className={`focus:bg-none hover:dark:bg-blue-gray-900 hover:dark:text-gray-200 ${state.sort === '' ? 'bg-gray-300 text-blue-gray-900 dark:bg-blue-gray-800/50 dark:text-gray-200' : ''}`}
+          >
+            Recommend
+          </MenuItem>
+          <MenuItem
+            onClick={() => handleSort('desc')}
+            className={`focus:bg-none hover:dark:bg-blue-gray-900 hover:dark:text-gray-200 ${state.sort === 'desc' ? 'bg-gray-300 text-blue-gray-900 dark:bg-blue-gray-800/50 dark:text-gray-200' : ''}`}
+          >
+            Desc
+          </MenuItem>
+          <MenuItem
+            onClick={() => handleSort('asc')}
+            className={`focus:bg-currentColor active:bg-currentColor hover:dark:bg-blue-gray-900 hover:dark:text-gray-200 ${state.sort === 'asc' ? 'bg-gray-300 text-blue-gray-900 dark:bg-blue-gray-800/50 dark:text-gray-200' : ''}`}
+          >
+            Asc
+          </MenuItem>
+        </MenuList>
+      </Menu>
     </>
   );
 });

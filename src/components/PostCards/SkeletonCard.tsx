@@ -9,7 +9,7 @@ import {
 
 export function SkeletonCard() {
   return (
-    <Card className="mt-6 w-full animate-pulse rounded-xl">
+    <Card className="w-full animate-pulse rounded-xl">
       <CardHeader
         shadow={false}
         floated={false}

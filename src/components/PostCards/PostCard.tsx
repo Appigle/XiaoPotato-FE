@@ -25,6 +25,7 @@ import useGlobalStore from '@src/stores/useGlobalStore';
 import { useGoToProfile } from '@src/utils/hooks/nav';
 import HTTP_RES_CODE from '@src/utils/request/httpResCode';
 import { useEffect, useState } from 'react';
+import LazyImage from '../LazyImage';
 type PostCardProps = {
   post: IPostItem;
   index: number;
@@ -107,7 +108,13 @@ const PostCard = (props: PostCardProps) => {
         className="m-0 cursor-pointer rounded-none"
         onClick={openDetail}
       >
-        <img src={postImage} onError={handleImageError} alt={post.postTitle} className="w-full" />
+        <LazyImage
+          src={postImage}
+          onError={handleImageError}
+          alt={post.postTitle}
+          className="w-full"
+        />
+        {/* <img src={postImage} onError={handleImageError} alt={post.postTitle} className="w-full" /> */}
       </CardHeader>
       <CardBody className="flex flex-1 cursor-pointer" onClick={openDetail}>
         <Typography

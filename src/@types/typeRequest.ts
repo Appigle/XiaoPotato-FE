@@ -50,7 +50,7 @@ export interface type_req_get_post_by_page
   extends Partial<Pick<IPostItem, 'postTitle' | 'postContent' | 'postGenre'>> {
   currentPage: number;
   pageSize: number;
-  sort: 'asc' | 'desc';
+  sort?: 'asc' | 'desc' | '';
 }
 export interface type_res_get_post extends BaseResPageData<IPostItem> {}
 

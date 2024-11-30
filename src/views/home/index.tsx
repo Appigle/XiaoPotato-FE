@@ -19,7 +19,7 @@ const Main: React.FC = () => {
 
   return (
     <main
-      className="flex-1 overflow-y-auto"
+      className="relative flex-1 overflow-y-auto"
       onScroll={(e) => {
         handleScroll(e);
       }}
