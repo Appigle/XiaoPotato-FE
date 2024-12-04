@@ -57,7 +57,7 @@ const PostList = forwardRef<typePostListRef, PropsType>((_, ref) => {
   const { setIsOpenPostFormModal, isOpenPostFormModal, refreshPostList } = useEventBusStore();
 
   const fetchPosts = useCallback(() => {
-    if (isLoading || state.isLoadEnd) return;
+    if (isLoading || state.isLoadEnd || state.total <= postList.length) return;
     setIsLoading(true);
     const post: type_req_get_post_by_page = {
       postTitle: currentSearchWord,
