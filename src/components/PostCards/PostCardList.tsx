@@ -36,6 +36,7 @@ const PAGE_SIZE = 20;
 // Update PostList component to include infinite scroll
 const PostList = forwardRef<typePostListRef, PropsType>((_, ref) => {
   const [refreshKey, setRefreshKey] = useState(0);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [state, setState] = useState<PostState>({
     currentIndex: -1,
     currentPage: 1,
@@ -91,6 +92,7 @@ const PostList = forwardRef<typePostListRef, PropsType>((_, ref) => {
       .finally(() => {
         setTimeout(() => {
           setIsLoading(false);
+          setIsLoadingMore(false);
         }, 1 * 1000);
       });
   }, [state.currentPage, state.sort, state.postGenre, refreshKey]);
@@ -142,7 +144,8 @@ const PostList = forwardRef<typePostListRef, PropsType>((_, ref) => {
       JSON.stringify(state, null, 2),
       postList.length,
     );
-    if (isLoading || state.isLoadEnd) return;
+    if (isLoadingMore || state.isLoadEnd) return;
+    setIsLoadingMore(true);
     setState((prev) => ({ ...prev, currentPage: prev.currentPage + 1 }));
   }, 500);
 
