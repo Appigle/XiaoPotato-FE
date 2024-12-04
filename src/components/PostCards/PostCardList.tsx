@@ -5,6 +5,7 @@ import { type_req_get_post_by_page, type_res_get_post } from '@src/@types/typeRe
 import Api from '@src/Api';
 import useEventBusStore from '@src/stores/useEventBusStore';
 import useGlobalStore from '@src/stores/useGlobalStore';
+import Logger from '@src/utils/logUtils';
 import HTTP_RES_CODE from '@src/utils/request/httpResCode';
 import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useState } from 'react';
 import { HiRefresh } from 'react-icons/hi';
@@ -57,6 +58,13 @@ const PostList = forwardRef<typePostListRef, PropsType>((_, ref) => {
   const { setIsOpenPostFormModal, isOpenPostFormModal, refreshPostList } = useEventBusStore();
 
   const fetchPosts = useCallback(() => {
+    Logger.log(
+      '%c [ fetchPosts:isLoading, state, postList.length ]-60',
+      'font-size:13px; background:pink; color:#bf2c9f;',
+      isLoading,
+      JSON.stringify(state, null, 2),
+      postList.length,
+    );
     if (isLoading || state.isLoadEnd || (state.total > 0 && state.total <= postList.length)) return;
     setIsLoading(true);
     const post: type_req_get_post_by_page = {
@@ -81,7 +89,9 @@ const PostList = forwardRef<typePostListRef, PropsType>((_, ref) => {
         }
       })
       .finally(() => {
-        setIsLoading(false);
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 1 * 1000);
       });
   }, [state.currentPage, state.sort, state.postGenre, refreshKey]);
 
@@ -125,6 +135,13 @@ const PostList = forwardRef<typePostListRef, PropsType>((_, ref) => {
   }, [fetchPosts]);
 
   const loadMoreCards = useDebounceCallback(() => {
+    Logger.log(
+      '%c [ loadMoreCards:isLoading, state, postList.length ]-60',
+      'font-size:13px; background:pink; color:#bf2c9f;',
+      isLoading,
+      JSON.stringify(state, null, 2),
+      postList.length,
+    );
     if (isLoading || state.isLoadEnd) return;
     setState((prev) => ({ ...prev, currentPage: prev.currentPage + 1 }));
   }, 500);
