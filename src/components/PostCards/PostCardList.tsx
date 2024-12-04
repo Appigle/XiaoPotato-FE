@@ -76,25 +76,19 @@ const PostList = forwardRef<typePostListRef, PropsType>((_, ref) => {
       pageSize: PAGE_SIZE,
       sort: state.sort,
     };
-    return Api.xPotatoApi
-      .getPostByPage(post)
-      .then((res) => {
-        if (res.code === HTTP_RES_CODE.SUCCESS) {
-          const { total, records, current, size } = (res.data || {}) as type_res_get_post;
-          setState((prev) => ({
-            ...prev,
-            total,
-            isLoadEnd: prev.isLoadEnd || total <= current * size,
-          }));
-          setPostList((prev) => (current === 1 ? records : [...prev, ...records]));
-        }
-      })
-      .finally(() => {
-        setTimeout(() => {
-          setIsLoading(false);
-          setIsLoadingMore(false);
-        }, 1 * 1000);
-      });
+    return Api.xPotatoApi.getPostByPage(post).then((res) => {
+      if (res.code === HTTP_RES_CODE.SUCCESS) {
+        const { total, records, current, size } = (res.data || {}) as type_res_get_post;
+        setState((prev) => ({
+          ...prev,
+          total,
+          isLoadEnd: prev.isLoadEnd || total <= current * size,
+        }));
+        setPostList((prev) => (current === 1 ? records : [...prev, ...records]));
+        setIsLoading(false);
+        setIsLoadingMore(false);
+      }
+    });
   }, [state.currentPage, state.sort, state.postGenre, refreshKey]);
 
   const resetListAndState = (data?: { postGenre?: typePostGenre; sort?: sortType }) => {
