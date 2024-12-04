@@ -7,7 +7,14 @@ import useEventBusStore from '@src/stores/useEventBusStore';
 import useGlobalStore from '@src/stores/useGlobalStore';
 import Logger from '@src/utils/logUtils';
 import HTTP_RES_CODE from '@src/utils/request/httpResCode';
-import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useState } from 'react';
+import React, {
+  forwardRef,
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from 'react';
 import { HiRefresh } from 'react-icons/hi';
 import { useDebounceCallback } from 'usehooks-ts';
 import PostCard from './PostCard';
@@ -36,7 +43,7 @@ const PAGE_SIZE = 20;
 // Update PostList component to include infinite scroll
 const PostList = forwardRef<typePostListRef, PropsType>((_, ref) => {
   const [refreshKey, setRefreshKey] = useState(0);
-  const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const isLoadingMoreRef = useRef<boolean>();
   const [state, setState] = useState<PostState>({
     currentIndex: -1,
     currentPage: 1,
@@ -80,7 +87,7 @@ const PostList = forwardRef<typePostListRef, PropsType>((_, ref) => {
         }));
         setPostList((prev) => (current === 1 ? records : [...prev, ...records]));
         setIsLoading(false);
-        setIsLoadingMore(false);
+        isLoadingMoreRef.current = false;
       }
     });
   }, [state.currentPage, state.sort, state.postGenre, refreshKey]);
@@ -125,9 +132,9 @@ const PostList = forwardRef<typePostListRef, PropsType>((_, ref) => {
   }, [fetchPosts]);
 
   const loadMoreCards = useDebounceCallback(() => {
-    Logger.log(isLoadingMore, JSON.stringify(state, null, 2), postList.length);
-    if (isLoadingMore || state.isLoadEnd) return;
-    setIsLoadingMore(true);
+    Logger.log(isLoadingMoreRef.current, JSON.stringify(state, null, 2), postList.length);
+    if (isLoadingMoreRef.current || state.isLoadEnd) return;
+    isLoadingMoreRef.current = true;
     setState((prev) => ({ ...prev, currentPage: prev.currentPage + 1 }));
   }, 500);
 
