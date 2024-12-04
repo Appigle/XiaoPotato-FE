@@ -177,14 +177,7 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({
                 onChange={handleChange}
               />
             </div>
-            <div className="flex items-center justify-between">
-              <button
-                className="focus:shadow-outline rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700 focus:outline-none disabled:opacity-50"
-                type="submit"
-                disabled={isSubmitting}
-              >
-                {isSubmitting ? 'Saving...' : 'Save Changes'}
-              </button>
+            <div className="flex items-center justify-end">
               <button
                 className="focus:shadow-outline rounded bg-gray-500 px-4 py-2 font-bold text-white hover:bg-gray-700 focus:outline-none"
                 type="button"
@@ -192,6 +185,13 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({
                 disabled={isSubmitting}
               >
                 Cancel
+              </button>
+              <button
+                className="focus:shadow-outline rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700 focus:outline-none disabled:opacity-50"
+                type="submit"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? 'Saving...' : 'Save Changes'}
               </button>
             </div>
           </form>

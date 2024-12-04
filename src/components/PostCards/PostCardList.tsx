@@ -1,5 +1,5 @@
 import { BanknotesIcon } from '@heroicons/react/24/outline';
-import { Button, Menu, MenuHandler, MenuItem, MenuList } from '@material-tailwind/react';
+import { Button, Menu, MenuHandler, MenuItem, MenuList, Spinner } from '@material-tailwind/react';
 import { IPostItem, typePostGenre, typePostListRef } from '@src/@types/typePostItem';
 import { type_req_get_post_by_page, type_res_get_post } from '@src/@types/typeRequest';
 import Api from '@src/Api';
@@ -57,7 +57,7 @@ const PostList = forwardRef<typePostListRef, PropsType>((_, ref) => {
   const { setIsOpenPostFormModal, isOpenPostFormModal, refreshPostList } = useEventBusStore();
 
   const fetchPosts = useCallback(() => {
-    if (isLoading) return;
+    if (isLoading || state.isLoadEnd) return;
     setIsLoading(true);
     const post: type_req_get_post_by_page = {
       postTitle: currentSearchWord,
@@ -217,20 +217,23 @@ const PostList = forwardRef<typePostListRef, PropsType>((_, ref) => {
               index={index}
               onShowDetail={(post, index) => handleModalActions(post, index, 'create', false, true)}
               onPostEdit={(post, index) => handleModalActions(post, index, 'edit', true, false)}
-              onDelete={handleRefresh}
+              onDelete={() => handleRefresh()}
             />
           ))}
         </div>
       )}
       {!isLoading && state.isLoadEnd && postList.length === 0 && renderEmptyState()}
-      {isLoading && !state.isLoadEnd && (
-        <div className="grid grid-cols-1 gap-4 p-4 pt-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-          {new Array(4).fill('love').map((_, index) => {
-            return <SkeletonCard key={`${_}_${index}`} />;
-          })}
-        </div>
-        // <Spinner color="amber" className="m-auto mt-64 h-12 w-12" />
-      )}
+      {isLoading &&
+        !state.isLoadEnd &&
+        (postList.length === 0 ? (
+          <div className="grid grid-cols-1 gap-4 p-4 pt-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+            {new Array(4).fill('love').map((_, index) => {
+              return <SkeletonCard key={`${_}_${index}`} />;
+            })}
+          </div>
+        ) : (
+          <Spinner color="amber" className="m-auto h-12 w-12" />
+        ))}
       {!isLoading && state.isLoadEnd && postList.length > 0 && renderBottomLine()}
       <HiRefresh
         className={`fixed bottom-[50px] right-[50px] z-20 rounded-full text-2xl hover:cursor-pointer dark:text-gray-200 ${isLoading ? 'animate-spin' : ''}`}
