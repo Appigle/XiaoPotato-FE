@@ -59,13 +59,7 @@ const PostList = forwardRef<typePostListRef, PropsType>((_, ref) => {
   const { setIsOpenPostFormModal, isOpenPostFormModal, refreshPostList } = useEventBusStore();
 
   const fetchPosts = useCallback(() => {
-    Logger.log(
-      '%c [ fetchPosts:isLoading, state, postList.length ]-60',
-      'font-size:13px; background:pink; color:#bf2c9f;',
-      isLoading,
-      JSON.stringify(state, null, 2),
-      postList.length,
-    );
+    Logger.log(isLoading, JSON.stringify(state, null, 2), postList.length);
     if (isLoading || state.isLoadEnd || (state.total > 0 && state.total <= postList.length)) return;
     setIsLoading(true);
     const post: type_req_get_post_by_page = {
@@ -131,13 +125,7 @@ const PostList = forwardRef<typePostListRef, PropsType>((_, ref) => {
   }, [fetchPosts]);
 
   const loadMoreCards = useDebounceCallback(() => {
-    Logger.log(
-      '%c [ loadMoreCards:isLoading, state, postList.length ]-60',
-      'font-size:13px; background:pink; color:#bf2c9f;',
-      isLoading,
-      JSON.stringify(state, null, 2),
-      postList.length,
-    );
+    Logger.log(isLoadingMore, JSON.stringify(state, null, 2), postList.length);
     if (isLoadingMore || state.isLoadEnd) return;
     setIsLoadingMore(true);
     setState((prev) => ({ ...prev, currentPage: prev.currentPage + 1 }));
