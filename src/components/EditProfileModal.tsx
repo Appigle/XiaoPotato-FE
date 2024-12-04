@@ -177,7 +177,7 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({
                 onChange={handleChange}
               />
             </div>
-            <div className="flex items-center justify-end">
+            <div className="flex items-center justify-end gap-4">
               <button
                 className="focus:shadow-outline rounded bg-gray-500 px-4 py-2 font-bold text-white hover:bg-gray-700 focus:outline-none"
                 type="button"

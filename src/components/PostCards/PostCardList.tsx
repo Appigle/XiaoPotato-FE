@@ -83,7 +83,7 @@ const PostList = forwardRef<typePostListRef, PropsType>((_, ref) => {
       .finally(() => {
         setIsLoading(false);
       });
-  }, [currentSearchWord, state.currentPage, state.sort, state.postGenre, refreshKey]);
+  }, [state.currentPage, state.sort, state.postGenre, refreshKey]);
 
   const resetListAndState = (data?: { postGenre?: typePostGenre; sort?: sortType }) => {
     setPostList([]);
@@ -104,7 +104,7 @@ const PostList = forwardRef<typePostListRef, PropsType>((_, ref) => {
 
   useEffect(() => {
     handleRefresh();
-  }, [refreshPostList]);
+  }, [refreshPostList, currentSearchWord]);
 
   const handleSort = (sort: sortType = '') => {
     if (isLoading) return;
