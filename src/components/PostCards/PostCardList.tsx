@@ -83,7 +83,7 @@ const PostList = forwardRef<typePostListRef, PropsType>((_, ref) => {
           setState((prev) => ({
             ...prev,
             total,
-            isLoadEnd: total <= current * size,
+            isLoadEnd: prev.isLoadEnd || total <= current * size,
           }));
           setPostList((prev) => (current === 1 ? records : [...prev, ...records]));
         }
