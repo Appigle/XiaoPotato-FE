@@ -1,12 +1,14 @@
 import { Button, Card, CardBody, CardFooter, Input, Textarea } from '@material-tailwind/react';
 import { IUserItem } from '@src/@types/typeUserItem';
 import busEvent from '@src/constants/busEvent';
+import { EMAIL_QUOTA_KEY } from '@src/constants/LStorageKey';
 import useEventBusStore from '@src/stores/useEventBusStore';
 import useGlobalStore from '@src/stores/useGlobalStore';
 import bus from '@src/utils/bus';
 import EmailUtils from '@src/utils/emailUtils';
 import HTTP_RES_CODE from '@src/utils/request/httpResCode';
 import Toast from '@src/utils/toastUtils';
+import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
 import emailTemplate from './template';
 import { checkEmailContent } from './utils';
@@ -22,6 +24,8 @@ interface FormErrors {
   subject?: string;
   content?: string;
 }
+
+type emailQuotaType = { quota: number; time: number };
 
 // Extract validation logic into separate functions
 const validateEmail = (email: string): string => {
@@ -56,6 +60,8 @@ const isValidEmail = (email: string): boolean => {
   return /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(email);
 };
 
+const MAX_EMAIL_QUOTA: number = 1;
+
 const EmailForm: React.FC = () => {
   const [formState, setFormState] = useState<FormState>({
     email: '',
@@ -67,7 +73,24 @@ const EmailForm: React.FC = () => {
   const userInfo = useGlobalStore((s) => s.userInfo);
   const setHeaderConfig = useGlobalStore((s) => s.setHeaderConfig);
   const { currentEmailDetail } = useEventBusStore();
-
+  const [quotaUsedUp, setQuotaUsedUp] = useState(false);
+  const [emailQuota, setEmailQuota] = useState<emailQuotaType>(() => {
+    const eq = JSON.parse(
+      localStorage.getItem(EMAIL_QUOTA_KEY) ||
+        JSON.stringify({
+          quota: 0,
+          time: dayjs().valueOf(),
+        }),
+    ) as emailQuotaType;
+    const before1Day = dayjs(eq.time).isBefore(dayjs().subtract(1, 'day'));
+    if (before1Day) {
+      return { quota: 0, time: dayjs().valueOf() };
+    }
+    return eq;
+  });
+  useEffect(() => {
+    setQuotaUsedUp(emailQuota.quota > MAX_EMAIL_QUOTA);
+  }, [emailQuota]);
   useEffect(() => {
     if (!currentEmailDetail) {
       return;
@@ -90,6 +113,7 @@ const EmailForm: React.FC = () => {
       });
     };
   }, [setHeaderConfig]);
+
   const handleSubmit = () => {
     const emailError = validateEmail(formState.email);
     const subjectError = validateSubject(formState.subject);
@@ -104,9 +128,21 @@ const EmailForm: React.FC = () => {
       Toast.error('Not login!');
       return;
     }
+    if (!!emailQuota && emailQuota.quota > MAX_EMAIL_QUOTA) {
+      Toast.error("Today's invitation quota has been used up!");
+      return;
+    }
     if (!emailError && !subjectError && !contentError) {
       EmailUtils.send({ ...formState, userInfo: userInfo as IUserItem }).then((res) => {
         if (res.code === HTTP_RES_CODE.SUCCESS) {
+          setEmailQuota({ quota: emailQuota.quota + 1, time: dayjs().valueOf() });
+          localStorage.setItem(
+            EMAIL_QUOTA_KEY,
+            JSON.stringify({
+              quota: emailQuota.quota + 1,
+              time: dayjs().valueOf(),
+            }),
+          );
           resetForm();
           bus.emit(busEvent.REFRESH_EMAIL_LIST);
           Toast.success('Send successfully!');
@@ -165,7 +201,7 @@ const EmailForm: React.FC = () => {
         </Button>
       </div>
       <Card
-        className={`w-full max-w-xl border-t-[1px] border-gray-300 bg-gray-100 text-blue-gray-900 dark:bg-blue-gray-800 dark:text-gray-100`}
+        className={`m-4 w-[80%] border-t-[1px] border-gray-300 bg-gray-100 text-blue-gray-900 dark:bg-blue-gray-800 dark:text-gray-100`}
       >
         <CardBody>
           <div className="mb-4">
@@ -223,20 +259,27 @@ const EmailForm: React.FC = () => {
           </div>
         </CardBody>
         <CardFooter className="flex justify-end gap-4">
-          <Button
-            variant="outlined"
-            onClick={resetForm}
-            className="text-blue-gray-900 dark:text-gray-200"
-          >
-            Reset
-          </Button>
-          <div className="flex">
-            <Button variant="outlined" onClick={handleCancel} className="mr-4 hidden">
-              Cancel
+          {quotaUsedUp && (
+            <div className="text-md flex flex-1 items-center text-red-600">
+              You've reached your daily email invitation limit!
+            </div>
+          )}
+          <div className="flex gap-4">
+            <Button
+              variant="outlined"
+              onClick={resetForm}
+              className="text-blue-gray-900 dark:text-gray-200"
+            >
+              Reset
             </Button>
-            <Button variant="filled" onClick={handleSubmit}>
-              Submit
-            </Button>
+            <div className="flex gap-4">
+              <Button variant="outlined" onClick={handleCancel} className="mr-4 hidden">
+                Cancel
+              </Button>
+              <Button variant="filled" onClick={handleSubmit} disabled={quotaUsedUp}>
+                Submit({emailQuota.quota}/{MAX_EMAIL_QUOTA + 1})
+              </Button>
+            </div>
           </div>
         </CardFooter>
       </Card>
