@@ -1,0 +1,807 @@
+[
+  {
+    "index": 1,
+    "zh": "你好！",
+    "en": "Hello!",
+    "zh_answer": "你好！很高兴见到你！",
+    "en_answer": "Hello! Nice to meet you!"
+  },
+  {
+    "index": 2,
+    "zh": "请简单介绍一下你自己。",
+    "en": "Could you please introduce yourself briefly?",
+    "zh_answer": "我叫张三，来自中国，目前在学习英语。",
+    "en_answer": "My name is Zhang San, and I am from China. I am currently studying English."
+  },
+  {
+    "index": 3,
+    "zh": "你住在哪里？",
+    "en": "Where do you live?",
+    "zh_answer": "我住在北京，一个充满活力的城市。",
+    "en_answer": "I live in Beijing, a vibrant city."
+  },
+  {
+    "index": 4,
+    "zh": "你来自哪个国家？",
+    "en": "Which country are you from?",
+    "zh_answer": "我来自中国。",
+    "en_answer": "I am from China."
+  },
+  {
+    "index": 5,
+    "zh": "你为什么学英语？",
+    "en": "Why are you learning English?",
+    "zh_answer": "我学英语是为了提高我的职业前景，并与更多人交流。",
+    "en_answer": "I am learning English to improve my career prospects and communicate with more people."
+  },
+  {
+    "index": 6,
+    "zh": "你平时喜欢做什么？",
+    "en": "What do you usually like to do in your free time?",
+    "zh_answer": "我喜欢读书、听音乐，有时候还会去健身。",
+    "en_answer": "I like reading, listening to music, and sometimes going to the gym."
+  },
+  {
+    "index": 7,
+    "zh": "你喜欢你的家乡吗？",
+    "en": "Do you like your hometown?",
+    "zh_answer": "是的，我非常喜欢我的家乡，它有很多美丽的自然景色。",
+    "en_answer": "Yes, I really like my hometown. It has a lot of beautiful natural scenery."
+  },
+  {
+    "index": 8,
+    "zh": "你如何描述你的家乡？",
+    "en": "How would you describe your hometown?",
+    "zh_answer": "我的家乡是一个宁静的小镇，那里的人们非常友好。",
+    "en_answer": "My hometown is a peaceful small town, and the people there are very friendly."
+  },
+  {
+    "index": 9,
+    "zh": "你最喜欢的季节是什么？",
+    "en": "What is your favorite season?",
+    "zh_answer": "我最喜欢春天，因为那时花朵盛开，天气也很温暖。",
+    "en_answer": "My favorite season is spring because the flowers bloom and the weather is warm."
+  },
+  {
+    "index": 10,
+    "zh": "你喜欢旅行吗？",
+    "en": "Do you like traveling?",
+    "zh_answer": "是的，我非常喜欢旅行，我觉得旅行可以开阔眼界。",
+    "en_answer": "Yes, I love traveling. I think it broadens my horizons."
+  },
+  {
+    "index": 11,
+    "zh": "你去过哪些国家？",
+    "en": "Which countries have you visited?",
+    "zh_answer": "我去过日本、韩国和加拿大。",
+    "en_answer": "I have visited Japan, South Korea, and Canada."
+  },
+  {
+    "index": 12,
+    "zh": "你喜欢看电影吗？",
+    "en": "Do you like watching movies?",
+    "zh_answer": "是的，我喜欢看电影，尤其是科幻电影。",
+    "en_answer": "Yes, I like watching movies, especially science fiction."
+  },
+  {
+    "index": 13,
+    "zh": "你最喜欢哪种类型的电影？",
+    "en": "What type of movies do you like the most?",
+    "zh_answer": "我最喜欢科幻电影，因为它们很有想象力。",
+    "en_answer": "I like science fiction movies the most because they are imaginative."
+  },
+  {
+    "index": 14,
+    "zh": "你通常怎样庆祝生日？",
+    "en": "How do you usually celebrate your birthday?",
+    "zh_answer": "我通常和家人或朋友一起庆祝，吃蛋糕并一起度过美好的时光。",
+    "en_answer": "I usually celebrate with family or friends, have some cake, and spend a great time together."
+  },
+  {
+    "index": 15,
+    "zh": "你有兄弟姐妹吗？",
+    "en": "Do you have any siblings?",
+    "zh_answer": "是的，我有一个妹妹。",
+    "en_answer": "Yes, I have a younger sister."
+  },
+  {
+    "index": 16,
+    "zh": "你如何与家人保持联系？",
+    "en": "How do you stay in touch with your family?",
+    "zh_answer": "我通过视频通话和社交媒体与家人保持联系。",
+    "en_answer": "I stay in touch with my family through video calls and social media."
+  },
+  {
+    "index": 17,
+    "zh": "你喜欢在家做饭吗？",
+    "en": "Do you like cooking at home?",
+    "zh_answer": "是的，我喜欢做饭，特别是尝试新食谱。",
+    "en_answer": "Yes, I enjoy cooking, especially trying out new recipes."
+  },
+  {
+    "index": 18,
+    "zh": "你认为科技对生活的影响是什么？",
+    "en": "What do you think is the impact of technology on life?",
+    "zh_answer": "我认为科技极大地提高了我们的生活质量，尤其是在沟通和工作效率方面。",
+    "en_answer": "I think technology has greatly improved our quality of life, especially in communication and work efficiency."
+  },
+  {
+    "index": 19,
+    "zh": "你使用社交媒体吗？",
+    "en": "Do you use social media?",
+    "zh_answer": "是的，我经常使用社交媒体来与朋友和家人保持联系。",
+    "en_answer": "Yes, I frequently use social media to stay connected with friends and family."
+  },
+  {
+    "index": 20,
+    "zh": "你最喜欢的社交媒体平台是什么？",
+    "en": "What is your favorite social media platform?",
+    "zh_answer": "我最喜欢的社交媒体平台是微信，因为它功能全面，可以聊天、支付等。",
+    "en_answer": "My favorite social media platform is WeChat because it is versatile for chatting, payments, and more."
+  },
+  {
+    "index": 21,
+    "zh": "你觉得朋友在生活中重要吗？",
+    "en": "Do you think friends are important in life?",
+    "zh_answer": "是的，我觉得朋友对我们的支持和陪伴非常重要。",
+    "en_answer": "Yes, I think friends are very important for support and companionship."
+  },
+  {
+    "index": 22,
+    "zh": "你喜欢读书吗？",
+    "en": "Do you enjoy reading books?",
+    "zh_answer": "是的，我喜欢读书，它让我增长知识并放松。",
+    "en_answer": "Yes, I enjoy reading. It helps me gain knowledge and relax."
+  },
+  {
+    "index": 23,
+    "zh": "你通常喜欢读哪种书？",
+    "en": "What types of books do you usually like to read?",
+    "zh_answer": "我通常喜欢读小说和历史类书籍。",
+    "en_answer": "I usually enjoy reading novels and history books."
+  },
+  {
+    "index": 24,
+    "zh": "你觉得健身重要吗？",
+    "en": "Do you think fitness is important?",
+    "zh_answer": "是的，健身对保持健康和精力充沛非常重要。",
+    "en_answer": "Yes, fitness is very important for staying healthy and energetic."
+  },
+  {
+    "index": 25,
+    "zh": "你喜欢运动吗？",
+    "en": "Do you enjoy playing sports?",
+    "zh_answer": "是的，我喜欢打篮球。",
+    "en_answer": "Yes, I enjoy playing basketball."
+  },
+  {
+    "index": 26,
+    "zh": "你觉得在生活中保持好奇心重要吗？",
+    "en": "Do you think it's important to stay curious in life?",
+    "zh_answer": "是的，我认为保持好奇心可以帮助我们不断学习和成长。",
+    "en_answer": "Yes, I believe staying curious helps us continue learning and growing."
+  },
+  {
+    "index": 27,
+    "zh": "你对未来的科技发展有什么期待？",
+    "en": "What are your expectations for future technological developments?",
+    "zh_answer": "我期待科技能够更好地改善我们的生活，尤其是在医疗和教育领域。",
+    "en_answer": "I expect technology to improve our lives, especially in healthcare and education."
+  },
+  {
+    "index": 28,
+    "zh": "你认为工作中的创造力重要吗？",
+    "en": "Do you think creativity is important in work?",
+    "zh_answer": "是的，创造力可以帮助解决问题并带来新的机会。",
+    "en_answer": "Yes, creativity helps in problem-solving and brings new opportunities."
+  },
+  {
+    "index": 29,
+    "zh": "你喜欢与人合作吗？",
+    "en": "Do you enjoy working with others?",
+    "zh_answer": "是的，我认为团队合作可以带来更多的想法和更好的结果。",
+    "en_answer": "Yes, I think teamwork brings more ideas and better outcomes."
+  },
+  {
+    "index": 30,
+    "zh": "你更喜欢在早上还是晚上工作？",
+    "en": "Do you prefer working in the morning or at night?",
+    "zh_answer": "我更喜欢早上工作，因为那时我的精力更充沛。",
+    "en_answer": "I prefer working in the morning because I feel more energetic."
+  },
+  {
+    "index": 31,
+    "zh": "你对可持续生活有何看法？",
+    "en": "What is your opinion on sustainable living?",
+    "zh_answer": "我认为可持续生活对环境非常重要，我们应该减少浪费。",
+    "en_answer": "I think sustainable living is crucial for the environment, and we should reduce waste."
+  },
+  {
+    "index": 32,
+    "zh": "你觉得未来人们的生活会如何变化？",
+    "en": "How do you think people's lives will change in the future?",
+    "zh_answer": "我认为未来的生活会更加数字化，人们会依赖科技更多。",
+    "en_answer": "I think life will become more digital, and people will rely more on technology."
+  },
+  {
+    "index": 33,
+    "zh": "你认为全球旅游对文化交流有什么影响？",
+    "en": "What do you think is the impact of global tourism on cultural exchange?",
+    "zh_answer": "全球旅游促进了文化交流，使不同国家的人们互相理解和学习。",
+    "en_answer": "Global tourism promotes cultural exchange, allowing people from different countries to understand and learn from each other."
+  },
+  {
+    "index": 34,
+    "zh": "你通常如何度过假期？",
+    "en": "How do you usually spend your holidays?",
+    "zh_answer": "我喜欢去新的地方旅行，体验不同的文化和美食。",
+    "en_answer": "I like traveling to new places, experiencing different cultures and foods."
+  },
+  {
+    "index": 35,
+    "zh": "你喜欢和朋友一起度假吗？",
+    "en": "Do you enjoy spending holidays with friends?",
+    "zh_answer": "是的，与朋友一起度假更有趣，也可以分享美好的时刻。",
+    "en_answer": "Yes, holidays with friends are more fun, and it's great to share good moments."
+  },
+  {
+    "index": 36,
+    "zh": "你会愿意在海外工作吗？",
+    "en": "Would you be willing to work abroad?",
+    "zh_answer": "是的，我非常愿意在海外工作，因为这将是一次很好的学习和发展机会。",
+    "en_answer": "Yes, I would love to work abroad as it would be a great learning and growth opportunity."
+  },
+  {
+    "index": 37,
+    "zh": "你觉得未来的教育会怎样发展？",
+    "en": "How do you think education will develop in the future?",
+    "zh_answer": "我认为未来的教育将更加依赖在线学习和数字资源。",
+    "en_answer": "I think future education will rely more on online learning and digital resources."
+  },
+  {
+    "index": 38,
+    "zh": "你更喜欢传统课堂还是在线学习？",
+    "en": "Do you prefer traditional classrooms or online learning?",
+    "zh_answer": "我更喜欢传统课堂，因为面对面的互动对学习很有帮助。",
+    "en_answer": "I prefer traditional classrooms because face-to-face interaction helps with learning."
+  },
+  {
+    "index": 39,
+    "zh": "你觉得在线购物比实体购物更好吗？",
+    "en": "Do you think online shopping is better than shopping in physical stores?",
+    "zh_answer": "是的，我觉得在线购物更方便，选择也更多。",
+    "en_answer": "Yes, I think online shopping is more convenient and offers more choices."
+  },
+  {
+    "index": 40,
+    "zh": "你如何看待人工智能的发展？",
+    "en": "What do you think about the development of artificial intelligence?",
+    "zh_answer": "我认为人工智能的发展有助于提高效率，但我们也需要注意道德问题。",
+    "en_answer": "I think AI development helps improve efficiency, but we also need to address ethical concerns."
+  },
+  {
+    "index": 41,
+    "zh": "你觉得科技会取代人类的工作吗？",
+    "en": "Do you think technology will replace human jobs?",
+    "zh_answer": "在某些领域，科技可能会取代一些工作，但也会创造新的机会。",
+    "en_answer": "In some fields, technology might replace certain jobs, but it will also create new opportunities."
+  },
+  {
+    "index": 42,
+    "zh": "你觉得社交媒体对人际关系有何影响？",
+    "en": "How do you think social media affects relationships?",
+    "zh_answer": "社交媒体使我们更容易保持联系，但也可能导致误解和隔阂。",
+    "en_answer": "Social media makes it easier to stay in touch, but it can also lead to misunderstandings and distance."
+  },
+  {
+    "index": 43,
+    "zh": "你认为团队合作对项目成功的重要性如何？",
+    "en": "How important do you think teamwork is to project success?",
+    "zh_answer": "团队合作非常重要，因为它能带来更多的想法和更快的进展。",
+    "en_answer": "Teamwork is crucial because it brings more ideas and allows for faster progress."
+  },
+  {
+    "index": 44,
+    "zh": "你觉得学习外语对职业发展有帮助吗？",
+    "en": "Do you think learning foreign languages helps with career development?",
+    "zh_answer": "是的，学习外语可以帮助我们与更多人交流，并提升职业竞争力。",
+    "en_answer": "Yes, learning foreign languages helps us communicate with more people and enhances career competitiveness."
+  },
+  {
+    "index": 45,
+    "zh": "你喜欢观看体育赛事吗？",
+    "en": "Do you enjoy watching sports events?",
+    "zh_answer": "是的，我喜欢观看篮球比赛，尤其是NBA。",
+    "en_answer": "Yes, I enjoy watching basketball games, especially the NBA."
+  },
+  {
+    "index": 46,
+    "zh": "你觉得未来的工作机会会增加还是减少？",
+    "en": "Do you think job opportunities will increase or decrease in the future?",
+    "zh_answer": "我认为未来的工作机会会增加，但会集中在新兴科技领域。",
+    "en_answer": "I think job opportunities will increase, but they will be focused on emerging technologies."
+  },
+  {
+    "index": 47,
+    "zh": "你对虚拟现实技术感兴趣吗？",
+    "en": "Are you interested in virtual reality technology?",
+    "zh_answer": "是的，我对虚拟现实技术感兴趣，我认为它在教育和娱乐方面有很大的潜力。",
+    "en_answer": "Yes, I'm interested in virtual reality technology. I think it has great potential in education and entertainment."
+  },
+  {
+    "index": 48,
+    "zh": "你觉得未来的家庭生活会有什么变化？",
+    "en": "How do you think family life will change in the future?",
+    "zh_answer": "我认为未来的家庭生活会更多地依赖科技，尤其是在沟通和家庭管理方面。",
+    "en_answer": "I think future family life will rely more on technology, especially in communication and household management."
+  },
+  {
+    "index": 49,
+    "zh": "你觉得教育系统需要改革吗？",
+    "en": "Do you think the education system needs reform?",
+    "zh_answer": "是的，我认为教育系统需要更灵活，以适应现代社会的变化。",
+    "en_answer": "Yes, I think the education system needs to be more flexible to adapt to the changes in modern society."
+  },
+  {
+    "index": 50,
+    "zh": "你认为健康的生活方式包括哪些方面？",
+    "en": "What aspects do you think are part of a healthy lifestyle?",
+    "zh_answer": "健康的生活方式包括均衡饮食、定期锻炼和保持良好的心理状态。",
+    "en_answer": "A healthy lifestyle includes a balanced diet, regular exercise, and maintaining good mental health."
+  },
+  {
+    "index": 51,
+    "zh": "你觉得社交媒体对人们的心理健康有何影响？",
+    "en": "How do you think social media affects people's mental health?",
+    "zh_answer": "社交媒体可能会导致焦虑和自我比较，但如果使用得当，它也能提供支持和信息。",
+    "en_answer": "Social media can cause anxiety and self-comparison, but if used properly, it can also provide support and information."
+  },
+  {
+    "index": 52,
+    "zh": "你更喜欢住在城市还是乡村？",
+    "en": "Do you prefer living in the city or the countryside?",
+    "zh_answer": "我更喜欢住在城市，因为那里有更多的机会和便利设施。",
+    "en_answer": "I prefer living in the city because there are more opportunities and conveniences."
+  },
+  {
+    "index": 53,
+    "zh": "你认为独立工作重要吗？",
+    "en": "Do you think it's important to work independently?",
+    "zh_answer": "是的，独立工作可以提高个人的责任感和解决问题的能力。",
+    "en_answer": "Yes, working independently enhances responsibility and problem-solving skills."
+  },
+  {
+    "index": 54,
+    "zh": "你喜欢参加社交活动吗？",
+    "en": "Do you enjoy attending social events?",
+    "zh_answer": "是的，我喜欢社交活动，因为它们让我有机会认识新朋友。",
+    "en_answer": "Yes, I enjoy social events because they give me a chance to meet new friends."
+  },
+  {
+    "index": 55,
+    "zh": "你觉得环境保护重要吗？",
+    "en": "Do you think environmental protection is important?",
+    "zh_answer": "是的，环境保护对我们和未来的子孙后代都至关重要。",
+    "en_answer": "Yes, environmental protection is crucial for us and future generations."
+  },
+  {
+    "index": 56,
+    "zh": "你对未来的工作有何计划？",
+    "en": "What are your plans for your future career?",
+    "zh_answer": "我计划继续学习，提升自己的专业技能，争取在我的领域内找到一份好工作。",
+    "en_answer": "I plan to continue studying, improving my professional skills, and finding a good job in my field."
+  },
+  {
+    "index": 57,
+    "zh": "你觉得自己是个勤奋的人吗？",
+    "en": "Do you consider yourself a hardworking person?",
+    "zh_answer": "是的，我一直努力工作，并且为自己的目标全力以赴。",
+    "en_answer": "Yes, I always work hard and give my best effort towards my goals."
+  },
+  {
+    "index": 58,
+    "zh": "你认为家庭对一个人有多重要？",
+    "en": "How important do you think family is to a person?",
+    "zh_answer": "我认为家庭对一个人非常重要，因为它提供了支持和归属感。",
+    "en_answer": "I think family is very important as it provides support and a sense of belonging."
+  },
+  {
+    "index": 59,
+    "zh": "你觉得团队中的领导角色重要吗？",
+    "en": "Do you think leadership is important in a team?",
+    "zh_answer": "是的，好的领导可以引导团队，促进合作并实现目标。",
+    "en_answer": "Yes, good leadership can guide the team, promote collaboration, and achieve goals."
+  },
+  {
+    "index": 60,
+    "zh": "你认为自己的优点是什么？",
+    "en": "What do you think your strengths are?",
+    "zh_answer": "我的优点是我有很强的责任心和解决问题的能力。",
+    "en_answer": "My strengths are that I have a strong sense of responsibility and problem-solving skills."
+  },
+  {
+    "index": 61,
+    "zh": "你觉得节省时间的方法是什么？",
+    "en": "What do you think are good ways to save time?",
+    "zh_answer": "我认为合理安排时间、优先处理重要任务是节省时间的好方法。",
+    "en_answer": "I think organizing time efficiently and prioritizing important tasks are good ways to save time."
+  },
+  {
+    "index": 62,
+    "zh": "你认为好习惯如何影响生活？",
+    "en": "How do you think good habits affect life?",
+    "zh_answer": "好习惯可以帮助我们提高效率、保持健康并达到长期目标。",
+    "en_answer": "Good habits help improve efficiency, maintain health, and achieve long-term goals."
+  },
+  {
+    "index": 63,
+    "zh": "你认为如何平衡工作与生活？",
+    "en": "How do you think you can balance work and life?",
+    "zh_answer": "我认为合理分配时间并确保有足够的休息和娱乐可以帮助平衡工作与生活。",
+    "en_answer": "I think managing time effectively and ensuring enough rest and leisure helps balance work and life."
+  },
+  {
+    "index": 64,
+    "zh": "你觉得保持积极心态的重要性是什么？",
+    "en": "What do you think is the importance of staying positive?",
+    "zh_answer": "保持积极的心态有助于应对困难，增强心理韧性，并提高生活质量。",
+    "en_answer": "Staying positive helps in overcoming challenges, building resilience, and improving the quality of life."
+  },
+  {
+    "index": 65,
+    "zh": "你认为全球化对经济的影响是什么？",
+    "en": "What do you think is the impact of globalization on the economy?",
+    "zh_answer": "全球化促进了国际贸易和经济合作，但也可能导致一些国家的经济不平等。",
+    "en_answer": "Globalization promotes international trade and economic cooperation, but it may also lead to economic inequality in some countries."
+  },
+  {
+    "index": 66,
+    "zh": "你觉得未来的城市生活会是什么样子？",
+    "en": "What do you think future city life will be like?",
+    "zh_answer": "我认为未来的城市生活将更加智能化，科技将在交通和生活质量方面发挥重要作用。",
+    "en_answer": "I think future city life will be more intelligent, with technology playing a major role in transportation and quality of life."
+  },
+  {
+    "index": 67,
+    "zh": "你觉得音乐对你的生活有何影响？",
+    "en": "How do you think music affects your life?",
+    "zh_answer": "音乐让我放松，也能提升我的情绪，是我日常生活中不可或缺的一部分。",
+    "en_answer": "Music helps me relax, uplifts my mood, and is an essential part of my daily life."
+  },
+  {
+    "index": 68,
+    "zh": "你觉得艺术对个人的影响是什么？",
+    "en": "What do you think is the impact of art on individuals?",
+    "zh_answer": "艺术能启发人的创造力，表达情感，也有助于提升文化素养。",
+    "en_answer": "Art inspires creativity, expresses emotions, and helps improve cultural awareness."
+  },
+  {
+    "index": 69,
+    "zh": "你觉得未来的交通方式会有哪些变化？",
+    "en": "How do you think future transportation will change?",
+    "zh_answer": "我认为未来的交通方式将更加环保和智能化，自动驾驶和电动车将更普及。",
+    "en_answer": "I think future transportation will be more eco-friendly and intelligent, with autonomous vehicles and electric cars becoming more common."
+  },
+  {
+    "index": 70,
+    "zh": "你觉得现在的教育系统需要什么改变？",
+    "en": "What changes do you think the current education system needs?",
+    "zh_answer": "我认为教育系统需要更多的个性化学习，以适应不同学生的需求和能力。",
+    "en_answer": "I think the education system needs more personalized learning to cater to the needs and abilities of different students."
+  },
+  {
+    "index": 71,
+    "zh": "你对工作的长期计划是什么？",
+    "en": "What are your long-term plans for your career?",
+    "zh_answer": "我的长期计划是不断提高自己的技能，最终成为行业内的专家。",
+    "en_answer": "My long-term plan is to continuously improve my skills and eventually become an expert in my field."
+  },
+  {
+    "index": 72,
+    "zh": "你觉得阅读如何帮助你成长？",
+    "en": "How do you think reading helps you grow?",
+    "zh_answer": "阅读让我增长知识、开阔视野，并帮助我在不同领域获得灵感。",
+    "en_answer": "Reading helps me gain knowledge, broaden my horizons, and provides inspiration in different areas."
+  },
+  {
+    "index": 73,
+    "zh": "你觉得旅游如何影响一个人的性格？",
+    "en": "How do you think traveling affects a person's character?",
+    "zh_answer": "旅行让人更开明、更具包容性，并能增强适应新环境的能力。",
+    "en_answer": "Traveling makes people more open-minded, inclusive, and enhances their ability to adapt to new environments."
+  },
+  {
+    "index": 74,
+    "zh": "你如何看待公共交通的改善？",
+    "en": "What is your opinion on the improvement of public transportation?",
+    "zh_answer": "公共交通的改善能缓解交通拥堵，减少污染，并为市民提供更便捷的出行选择。",
+    "en_answer": "Improving public transportation helps reduce traffic congestion, pollution, and offers more convenient travel options for citizens."
+  },
+  {
+    "index": 75,
+    "zh": "你认为运动对健康有多重要？",
+    "en": "How important do you think exercise is for health?",
+    "zh_answer": "运动对保持身体健康和心理健康都非常重要，可以帮助我们减压和提高体能。",
+    "en_answer": "Exercise is crucial for both physical and mental health. It helps reduce stress and improves fitness."
+  },
+  {
+    "index": 76,
+    "zh": "你觉得志愿者工作对个人发展有什么帮助？",
+    "en": "How do you think volunteering helps personal development?",
+    "zh_answer": "志愿者工作可以培养责任感、增强社交技能，并让我们感受到帮助他人的满足感。",
+    "en_answer": "Volunteering builds a sense of responsibility, improves social skills, and provides the satisfaction of helping others."
+  },
+  {
+    "index": 77,
+    "zh": "你觉得团队合作还是个人努力更重要？",
+    "en": "Do you think teamwork or individual effort is more important?",
+    "zh_answer": "我认为两者同样重要，团队合作能促进效率，而个人努力确保高质量的工作完成。",
+    "en_answer": "I believe both are equally important. Teamwork improves efficiency, while individual effort ensures quality work."
+  },
+  {
+    "index": 78,
+    "zh": "你觉得科技如何影响人们的日常生活？",
+    "en": "How do you think technology affects people's daily lives?",
+    "zh_answer": "科技改变了我们的交流方式、工作方式和学习方式，让生活变得更加方便。",
+    "en_answer": "Technology has transformed how we communicate, work, and learn, making life more convenient."
+  },
+  {
+    "index": 79,
+    "zh": "你认为现代生活中休闲时间的重要性如何？",
+    "en": "How important do you think leisure time is in modern life?",
+    "zh_answer": "在现代生活中，休闲时间非常重要，因为它帮助我们放松和恢复精力。",
+    "en_answer": "Leisure time is essential in modern life as it helps us relax and recharge."
+  },
+  {
+    "index": 80,
+    "zh": "你认为学习历史对当今社会有何意义？",
+    "en": "What do you think is the significance of learning history in today's society?",
+    "zh_answer": "学习历史让我们了解过去的错误和成就，从而做出更明智的决策。",
+    "en_answer": "Learning history helps us understand past mistakes and achievements, enabling us to make better decisions."
+  },
+  {
+    "index": 81,
+    "zh": "你觉得全球化对文化的影响是什么？",
+    "en": "What do you think is the impact of globalization on culture?",
+    "zh_answer": "全球化带来了文化交流，但也可能导致一些传统文化的流失。",
+    "en_answer": "Globalization promotes cultural exchange but may also lead to the loss of some traditional cultures."
+  },
+  {
+    "index": 82,
+    "zh": "你觉得未来的能源使用会有什么变化？",
+    "en": "How do you think future energy use will change?",
+    "zh_answer": "未来的能源使用将更倾向于可再生能源，如太阳能和风能，以减少对环境的影响。",
+    "en_answer": "Future energy use will likely focus more on renewable sources like solar and wind energy to reduce environmental impact."
+  },
+  {
+    "index": 83,
+    "zh": "你觉得在现代社会中，创造力的重要性是什么？",
+    "en": "How important do you think creativity is in modern society?",
+    "zh_answer": "在现代社会中，创造力对于解决问题和推动创新至关重要。",
+    "en_answer": "In modern society, creativity is crucial for problem-solving and driving innovation."
+  },
+  {
+    "index": 84,
+    "zh": "你觉得教育在塑造一个人的未来方面有多重要？",
+    "en": "How important do you think education is in shaping a person's future?",
+    "zh_answer": "教育对塑造一个人的未来至关重要，因为它提供了技能和知识，让我们为未来做好准备。",
+    "en_answer": "Education is essential in shaping a person's future as it provides the skills and knowledge to prepare for what's ahead."
+  },
+  {
+    "index": 85,
+    "zh": "你认为多样性在工作场所的重要性是什么？",
+    "en": "What do you think is the importance of diversity in the workplace?",
+    "zh_answer": "多样性促进创新和更广泛的观点，有助于解决问题并提高公司业绩。",
+    "en_answer": "Diversity fosters innovation and a broader range of perspectives, helping to solve problems and improve company performance."
+  },
+  {
+    "index": 86,
+    "zh": "你认为金钱对幸福的重要性如何？",
+    "en": "How important do you think money is to happiness?",
+    "zh_answer": "金钱虽然可以带来舒适和安全感，但真正的幸福往往来自于人际关系和自我满足。",
+    "en_answer": "While money provides comfort and security, true happiness often comes from relationships and personal fulfillment."
+  },
+  {
+    "index": 87,
+    "zh": "你认为健康的饮食对人的生活质量有何影响？",
+    "en": "How do you think a healthy diet affects a person's quality of life?",
+    "zh_answer": "健康的饮食可以提高能量水平，增强免疫力，并帮助预防疾病。",
+    "en_answer": "A healthy diet boosts energy levels, strengthens the immune system, and helps prevent diseases."
+  },
+  {
+    "index": 88,
+    "zh": "你觉得社交能力对职业成功有多重要？",
+    "en": "How important do you think social skills are for career success?",
+    "zh_answer": "社交能力对于职业成功至关重要，因为它们帮助我们建立关系、沟通和合作。",
+    "en_answer": "Social skills are crucial for career success as they help in building relationships, communication, and collaboration."
+  },
+  {
+    "index": 89,
+    "zh": "你觉得技术发展对娱乐产业有什么影响？",
+    "en": "What impact do you think technological development has on the entertainment industry?",
+    "zh_answer": "技术的发展使得娱乐更加多样化和互动化，如流媒体和虚拟现实。",
+    "en_answer": "Technological development has made entertainment more diverse and interactive, such as through streaming and virtual reality."
+  },
+  {
+    "index": 90,
+    "zh": "你觉得全球变暖是个严重的问题吗？",
+    "en": "Do you think global warming is a serious issue?",
+    "zh_answer": "是的，我认为全球变暖是一个非常严重的问题，因为它对环境和人类都有深远的影响。",
+    "en_answer": "Yes, I think global warming is a very serious issue because it has far-reaching effects on both the environment and humanity."
+  },
+  {
+    "index": 91,
+    "zh": "你觉得创新对社会进步有多重要？",
+    "en": "How important do you think innovation is for social progress?",
+    "zh_answer": "创新推动了技术和社会的发展，是社会进步的重要推动力。",
+    "en_answer": "Innovation drives technological and social advancements, and it is a key force behind social progress."
+  },
+  {
+    "index": 92,
+    "zh": "你认为学校应该如何培养学生的批判性思维？",
+    "en": "How do you think schools should cultivate students' critical thinking?",
+    "zh_answer": "学校应该通过开放性问题和互动讨论来培养学生的批判性思维。",
+    "en_answer": "Schools should foster critical thinking through open-ended questions and interactive discussions."
+  },
+  {
+    "index": 93,
+    "zh": "你认为未来的交通系统会有哪些改善？",
+    "en": "What improvements do you think future transportation systems will have?",
+    "zh_answer": "未来的交通系统可能会更加自动化、环保和高效，减少拥堵和污染。",
+    "en_answer": "Future transportation systems will likely be more automated, eco-friendly, and efficient, reducing congestion and pollution."
+  },
+  {
+    "index": 94,
+    "zh": "你认为社交网络如何改变了人们的沟通方式？",
+    "en": "How do you think social networks have changed the way people communicate?",
+    "zh_answer": "社交网络使沟通更加即时和广泛，但也可能导致浅层次的互动。",
+    "en_answer": "Social networks have made communication more instant and widespread, but they may also lead to more superficial interactions."
+  },
+  {
+    "index": 95,
+    "zh": "你认为工作与生活之间的平衡如何影响幸福感？",
+    "en": "How do you think work-life balance affects happiness?",
+    "zh_answer": "工作与生活的平衡有助于减少压力，提高幸福感，使人们在工作和个人生活中都能感到满足。",
+    "en_answer": "Work-life balance helps reduce stress and increases happiness, allowing people to feel fulfilled in both their work and personal lives."
+  },
+  {
+    "index": 96,
+    "zh": "你觉得现代技术对教育的影响如何？",
+    "en": "How do you think modern technology impacts education?",
+    "zh_answer": "现代技术改变了教育方式，使学习更加个性化和可访问，但也带来了一些挑战。",
+    "en_answer": "Modern technology has transformed education, making learning more personalized and accessible, though it also brings some challenges."
+  },
+  {
+    "index": 97,
+    "zh": "你认为领导力的关键特质是什么？",
+    "en": "What do you think are the key traits of leadership?",
+    "zh_answer": "我认为领导力的关键特质包括沟通能力、决策力和激励团队的能力。",
+    "en_answer": "I think the key traits of leadership include communication, decision-making, and the ability to motivate a team."
+  },
+  {
+    "index": 98,
+    "zh": "你觉得科技对人类社会的最大影响是什么？",
+    "en": "What do you think is the biggest impact of technology on human society?",
+    "zh_answer": "科技改变了我们的生活方式，尤其是在信息交流和工作效率方面产生了深远的影响。",
+    "en_answer": "Technology has changed the way we live, with profound impacts on communication and work efficiency."
+  },
+  {
+    "index": 99,
+    "zh": "你觉得企业如何才能更具社会责任感？",
+    "en": "How do you think businesses can become more socially responsible?",
+    "zh_answer": "企业可以通过减少环境影响、支持社区发展和维护员工福利来体现社会责任感。",
+    "en_answer": "Businesses can show social responsibility by reducing environmental impact, supporting community development, and maintaining employee welfare."
+  },
+  {
+    "index": 100,
+    "zh": "你认为人工智能如何改变未来的工作场所？",
+    "en": "How do you think AI will change the future workplace?",
+    "zh_answer": "人工智能将自动化许多任务，提高工作效率，但也可能导致一些职位的消失。",
+    "en_answer": "AI will automate many tasks, increasing efficiency, but it may also lead to the disappearance of some jobs."
+  },
+  {
+    "index": 101,
+    "zh": "你觉得休闲活动对工作压力的缓解有何作用？",
+    "en": "How do you think leisure activities help relieve work stress?",
+    "zh_answer": "休闲活动有助于放松身心，转移注意力，进而缓解工作压力。",
+    "en_answer": "Leisure activities help relax the body and mind, divert attention, and relieve work stress."
+  },
+  {
+    "index": 102,
+    "zh": "你认为全球化对小企业的影响如何？",
+    "en": "How do you think globalization affects small businesses?",
+    "zh_answer": "全球化为小企业带来了更多的市场机会，但也带来了更激烈的竞争。",
+    "en_answer": "Globalization offers more market opportunities for small businesses, but also brings increased competition."
+  },
+  {
+    "index": 103,
+    "zh": "你觉得环境问题对全球的最大威胁是什么？",
+    "en": "What do you think is the biggest environmental threat facing the world?",
+    "zh_answer": "我认为气候变化是全球面临的最大环境威胁，因为它影响了生态系统、农业和人类健康。",
+    "en_answer": "I think climate change is the biggest environmental threat, as it affects ecosystems, agriculture, and human health."
+  },
+  {
+    "index": 104,
+    "zh": "你认为学校应如何应对学生的心理健康问题？",
+    "en": "How do you think schools should address students' mental health issues?",
+    "zh_answer": "学校应提供心理辅导服务，开展心理健康教育，并营造一个支持性的学习环境。",
+    "en_answer": "Schools should provide counseling services, offer mental health education, and create a supportive learning environment."
+  },
+  {
+    "index": 105,
+    "zh": "你认为全球经济的未来趋势是什么？",
+    "en": "What do you think is the future trend of the global economy?",
+    "zh_answer": "我认为全球经济将朝着更加数字化、自动化和可持续发展的方向发展。",
+    "en_answer": "I think the global economy will move toward being more digital, automated, and sustainable."
+  },
+  {
+    "index": 106,
+    "zh": "你认为城市化对环境的影响如何？",
+    "en": "How do you think urbanization affects the environment?",
+    "zh_answer": "城市化增加了资源消耗和污染，但如果管理得当，也可以促进环保和可持续发展。",
+    "en_answer": "Urbanization increases resource consumption and pollution, but if managed well, it can also promote environmental protection and sustainability."
+  },
+  {
+    "index": 107,
+    "zh": "你觉得未来的医疗技术会有什么突破？",
+    "en": "What medical breakthroughs do you think the future will bring?",
+    "zh_answer": "我认为未来会有更多基因疗法和个性化医疗的突破，帮助更好地治疗疾病。",
+    "en_answer": "I think the future will bring more breakthroughs in gene therapy and personalized medicine, helping to better treat diseases."
+  },
+  {
+    "index": 108,
+    "zh": "你认为未来的人口增长会对全球产生什么影响？",
+    "en": "What do you think will be the global impact of future population growth?",
+    "zh_answer": "人口增长将对资源、环境和社会基础设施产生压力，但也可能推动创新和经济增长。",
+    "en_answer": "Population growth will put pressure on resources, the environment, and infrastructure, but it may also drive innovation and economic growth."
+  },
+  {
+    "index": 109,
+    "zh": "你觉得在未来教育中，线上学习的作用会如何变化？",
+    "en": "How do you think the role of online learning will change in future education?",
+    "zh_answer": "随着技术的发展，线上学习将在未来教育中变得更加普遍，提供更灵活和个性化的学习方式。",
+    "en_answer": "With technological advancements, online learning will become more common in future education, offering more flexible and personalized learning options."
+  },
+  {
+    "index": 110,
+    "zh": "你认为可持续发展对全球未来有多重要？",
+    "en": "How important do you think sustainability is for the future of the world?",
+    "zh_answer": "可持续发展对全球未来至关重要，因为它确保了资源的合理利用和环境保护。",
+    "en_answer": "Sustainability is crucial for the future of the world, as it ensures the responsible use of resources and environmental protection."
+  },
+  {
+    "index": 111,
+    "zh": "你认为媒体在社会中的作用是什么？",
+    "en": "What do you think is the role of media in society?",
+    "zh_answer": "媒体在社会中起着传播信息、引导舆论并提供娱乐的作用，但也需要保持客观性和责任感。",
+    "en_answer": "The media plays a role in disseminating information, shaping public opinion, and providing entertainment, but it also needs to maintain objectivity and responsibility."
+  },
+  {
+    "index": 112,
+    "zh": "你觉得未来的气候变化政策会如何影响全球经济？",
+    "en": "How do you think future climate change policies will affect the global economy?",
+    "zh_answer": "未来的气候变化政策可能会推动绿色技术的发展，创造新的经济机会，但也可能对某些行业产生负面影响。",
+    "en_answer": "Future climate change policies may drive the development of green technologies and create new economic opportunities, but they could also negatively affect certain industries."
+  },
+  {
+    "index": 113,
+    "zh": "你认为国际合作对全球问题的解决有多重要？",
+    "en": "How important do you think international cooperation is for solving global problems?",
+    "zh_answer": "国际合作对解决全球问题至关重要，因为许多问题如气候变化和传染病需要全球共同努力。",
+    "en_answer": "International cooperation is essential for solving global problems, as many issues like climate change and pandemics require collective global efforts."
+  },
+  {
+    "index": 114,
+    "zh": "你认为科技如何改变了我们的沟通方式？",
+    "en": "How do you think technology has changed the way we communicate?",
+    "zh_answer": "科技让沟通变得更加快速和便捷，但也可能减少面对面的交流，影响人际关系的深度。",
+    "en_answer": "Technology has made communication faster and more convenient, but it may also reduce face-to-face interactions and affect the depth of relationships."
+  },
+  {
+    "index": 115,
+    "zh": "你认为未来的能源政策应该如何应对全球变暖？",
+    "en": "How do you think future energy policies should address global warming?",
+    "zh_answer": "未来的能源政策应该更多地投资于可再生能源，减少对化石燃料的依赖，以应对全球变暖。",
+    "en_answer": "Future energy policies should invest more in renewable energy and reduce reliance on fossil fuels to address global warming."
+  }
+]

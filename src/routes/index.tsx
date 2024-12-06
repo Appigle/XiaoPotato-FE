@@ -4,13 +4,14 @@ import Home from '@/views/home/index.tsx';
 import ProfilePage from '@/views/profile/ProfileIndex.tsx';
 import Starry from '@/views/starry';
 import HeroSection from '@src/views/About.tsx';
+import Admin from '@src/views/admin/Admin.tsx';
+import AdminPostsPage from '@src/views/admin/AdminPostsPage.tsx';
+import IELTSTraining from '@src/views/IELTS/IELTSTraining.tsx';
 import PostList from '@src/views/index.tsx';
 import UserPostsPage from '@src/views/myPosts/myPosts.tsx';
 import type { RouteObject } from 'react-router-dom';
 import { createBrowserRouter } from 'react-router-dom';
-import Admin from '@src/views/admin/Admin.tsx';
 import App from '../App.tsx';
-import AdminPostsPage from '@src/views/admin/AdminPostsPage.tsx';
 
 const routers: RouteObject[] = [
   {
@@ -75,6 +76,11 @@ const routers: RouteObject[] = [
   {
     path: 'admin/posts',
     element: <AdminPostsPage />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: '/ielts',
+    element: <IELTSTraining />,
     errorElement: <ErrorPage />,
   },
 ];
