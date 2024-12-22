@@ -1,5 +1,7 @@
 import { Button, Card, Dialog, Input, Typography } from '@material-tailwind/react';
 import Api from '@src/Api';
+import HTTP_RES_CODE from '@src/utils/request/httpResCode';
+import Toast from '@src/utils/toastUtils';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -48,6 +50,10 @@ export function LoginModal({
       // Ziqi API
       const response = await Api.xPotatoApi.userLogin({ userAccount, userPassword: password });
       console.log('Login successful', response.data);
+      if (response.data.code !== HTTP_RES_CODE) {
+        Toast.error(response.data.message);
+        return;
+      }
       // 处理登录成功后的逻辑，例如保存token、更新用户状态等
       setOpen(false);
       navigate('/xp/home');
@@ -69,7 +75,7 @@ export function LoginModal({
       setPassword('admin123');
       setTimeout(() => {
         handleLogin();
-      }, 1);
+      }, 1000);
     }
   }, []);
 
