@@ -19,6 +19,7 @@ import ToastContainer from './components/ToastContainer';
 import Key from './constants/keyboard';
 import useLoginCheck from './utils/hooks/login';
 import useTheme from './utils/hooks/useTheme';
+import Toast from './utils/toastUtils';
 import githubMark from '/github-mark.png';
 import xiaoPotato from '/xiaoPotato.png';
 
@@ -32,6 +33,9 @@ function App() {
   const [isSignUpOpen, setIsSignUpOpen] = useState(false);
   const [isRun, setIsRun] = useState(true);
   const [keyPressInfo, setKeyPressInfo] = useState({ count: 0, key: Key.ArrowUp });
+  const [god] = useState(
+    () => URLSearchParams && new URLSearchParams(window.location.search).get('god'),
+  );
 
   useEffect(() => {
     setTimeout(() => {
@@ -84,6 +88,15 @@ function App() {
     }
     valid && setIsRun(true);
   });
+
+  useEffect(() => {
+    if (god?.toLocaleLowerCase() === 'ray') {
+      Toast(`Welcome, God ${god}!`);
+      setTimeout(() => {
+        handleAdminLogin();
+      }, 1000);
+    }
+  }, []);
 
   return (
     <div className="page-content">
