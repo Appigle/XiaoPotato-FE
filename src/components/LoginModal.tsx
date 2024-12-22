@@ -67,7 +67,9 @@ export function LoginModal({
     if (god?.toLocaleLowerCase() === 'ray') {
       setUserAccount('admin');
       setPassword('admin123');
-      handleLogin();
+      setTimeout(() => {
+        handleLogin();
+      }, 1);
     }
   }, []);
 
