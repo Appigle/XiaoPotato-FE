@@ -1,7 +1,9 @@
 import { Button, Card, Dialog, Input, Typography } from '@material-tailwind/react';
 import Api from '@src/Api';
-import HTTP_RES_CODE from '@src/utils/request/httpResCode';
+import useGlobalStore from '@src/stores/useGlobalStore';
+import useGod from '@src/utils/hooks/god';
 import Toast from '@src/utils/toastUtils';
+import utils from '@src/utils/utils';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -24,10 +26,10 @@ export function LoginModal({
   const [userAccount, setUserAccount] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const userChecking = useGlobalStore((s) => s.userChecking);
+  const btnRef = React.useRef<HTMLButtonElement>(null);
   const navigate = useNavigate();
-  const [god] = useState(
-    () => URLSearchParams && new URLSearchParams(window.location.search).get('god'),
-  );
+  const [isGod] = useGod();
 
   useEffect(() => {
     if (isGuest) {
@@ -50,7 +52,7 @@ export function LoginModal({
       // Ziqi API
       const response = await Api.xPotatoApi.userLogin({ userAccount, userPassword: password });
       console.log('Login successful', response.data);
-      if (response.data.code !== HTTP_RES_CODE) {
+      if (!response.data.token) {
         Toast.error(response.data.message);
         return;
       }
@@ -70,14 +72,18 @@ export function LoginModal({
   };
 
   useEffect(() => {
-    if (god?.toLocaleLowerCase() === 'ray') {
+    if (!userChecking && isGod) {
       setUserAccount('admin');
       setPassword('admin123');
-      setTimeout(() => {
-        handleLogin();
-      }, 1000);
+      utils.untilExpected(
+        () => !!btnRef.current,
+        true,
+        () => {
+          btnRef.current?.click();
+        },
+      );
     }
-  }, []);
+  }, [userChecking]);
 
   return (
     <Dialog
@@ -126,7 +132,7 @@ export function LoginModal({
             />
           </div>
 
-          <Button className="mt-6" fullWidth type="submit" disabled={isLoading}>
+          <Button className="mt-6" fullWidth type="submit" disabled={isLoading} ref={btnRef}>
             {isLoading ? 'Signing In...' : 'Sign In'}
           </Button>
 
