@@ -152,6 +152,16 @@ function App() {
               <Button className="w-fit px-4 py-2" onClick={handleGuestLoginClick}>
                 Guest
               </Button>
+              <Button className="w-fit px-4 py-2">
+                <Link
+                  key="Fireworks"
+                  reloadDocument
+                  className="p-2 text-blue-500"
+                  to="https://www.xiaopotato.top/fireworks/"
+                >
+                  Happy New Year! 🎆
+                </Link>
+              </Button>
             </div>
           </div>
           <p className="mt-10">
