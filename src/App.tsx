@@ -36,6 +36,9 @@ function App() {
   const [god] = useState(
     () => URLSearchParams && new URLSearchParams(window.location.search).get('god'),
   );
+  const [firework] = useState(
+    () => URLSearchParams && new URLSearchParams(window.location.search).get('firework'),
+  );
 
   useEffect(() => {
     setTimeout(() => {
@@ -89,13 +92,22 @@ function App() {
     valid && setIsRun(true);
   });
 
-  useEffect(() => {
+  const goToFirework = () => {
+    Number(firework) === 2025 && window.location.replace('https://www.xiaopotato.top/fireworks/');
+  };
+
+  const isGodMode = () => {
     if (god?.toLocaleLowerCase() === 'ray') {
       Toast(`Welcome, God ${god}!`);
       setTimeout(() => {
         handleAdminLogin();
       }, 1000);
     }
+  };
+
+  useEffect(() => {
+    goToFirework();
+    isGodMode();
   }, []);
 
   return (
