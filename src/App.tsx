@@ -93,7 +93,10 @@ function App() {
   });
 
   const goToFirework = () => {
-    Number(firework) === 2025 && window.location.replace('https://www.xiaopotato.top/fireworks/');
+    Number(firework) > 0 &&
+      window.location.replace(
+        `https://www.xiaopotato.top/fireworks?year=${new Date().getFullYear() + 1}`,
+      );
   };
 
   const isGodMode = () => {
