@@ -135,7 +135,7 @@ function App() {
           </h1>
           <div>
             <CountTimer />
-            <CityWeather />
+            <CityWeather city="waterloo" />
           </div>
           <div className="flex h-fit items-center justify-center py-2 text-lg">
             {menu.map((item) => {
