@@ -187,6 +187,16 @@ function App() {
                   🤖Talk With Gemini
                 </Link>
               </Button>
+              <Button className="w-fit px-4 py-2">
+                <Link
+                  key="prompts"
+                  reloadDocument
+                  className="p-2 text-blue-500"
+                  to="https://prompts.chat/"
+                >
+                  🤖Learn prompts
+                </Link>
+              </Button>
             </div>
           </div>
           <p className="mt-10">
