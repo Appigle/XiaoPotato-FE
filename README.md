@@ -4,7 +4,11 @@ Frontend of the XiaoPotato application
 
 ## Website
 
-![XiaoPotato](./public/XiaoPotatoQrCode002.png)
+[XiaoPotato](https://zfc.xiaopotato.top)
+
+<img src="./public/XiaoPotatoQrCode002.png" alt="XiaoPotato" width="200" height="200">
+
+Guest Account: Guest/Guest123
 
 ## Installation
 
@@ -12,6 +16,15 @@ Frontend of the XiaoPotato application
 git clone https://github.com/XiaoPotato-Team/XiaoPotato-FE.git
 cd XiaoPotato-FE
 pnpm install & pnpm run dev
+```
+
+Create/Modify the root/.env/.env file, add your own API_KEY
+
+```bash
+VITE_X_POTATO_BASE_URL="https://[URL]"
+VITE_WEATHER_API_KEY=""
+VITE_RESEND_API_KEY=""
+VITE_SOCKET_URL="wss://[URL]"
 ```
 
 ## Cloudflare Wrangler
