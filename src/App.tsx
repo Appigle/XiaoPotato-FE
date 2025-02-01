@@ -157,7 +157,7 @@ function App() {
             })}
           </div>
           <div className="my-4 flex flex-col items-center justify-center gap-4">
-            <div className="flex justify-center gap-4">
+            <div className="flex flex-wrap justify-center gap-4">
               <Button className="w-fit px-4 py-2" onClick={handleLoginClick}>
                 Login
               </Button>
@@ -199,7 +199,7 @@ function App() {
               </Button>
             </div>
           </div>
-          <p className="mt-10">
+          <p className="mt-10 hidden lg:block">
             <span className="ml-4 text-blue-gray-500 opacity-70">
               Press{' '}
               {new Array(4).fill('❥(^_-)').map((_, index) => {
