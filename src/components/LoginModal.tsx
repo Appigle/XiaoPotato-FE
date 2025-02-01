@@ -37,7 +37,7 @@ export function LoginModal({
       setPassword('Guest123');
     } else if (isAdmin) {
       setUserAccount('admin');
-      setPassword('admin123');
+      setPassword('');
     } else {
       setUserAccount(userAccount);
       setPassword(password);
@@ -74,7 +74,7 @@ export function LoginModal({
   useEffect(() => {
     if (!userChecking && isGod) {
       setUserAccount('admin');
-      setPassword('admin123');
+      setPassword('');
       utils.untilExpected(
         () => !!btnRef.current,
         true,
