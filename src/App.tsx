@@ -219,7 +219,7 @@ function App() {
             &#169; 2024, <span onDoubleClick={handleAdminLogin}>Z,MY/F,ZQ/C,L</span> Welcome the
             XiaoPotato World!
             <a
-              href="https://github.com/Appigle/XiaoPotato-FE"
+              href="https://github.com/Appigle/XiaoPotatoFE2"
               target="_blank"
               className="bg-slate-500 m-t-2 mx-4 inline-block h-6 w-6 rounded-full bg-gray-400"
             >
