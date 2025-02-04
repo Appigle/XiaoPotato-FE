@@ -45,4 +45,14 @@ const useGoToProfile = () => {
   );
 };
 
-export { useGoBack, useGoToMyPost, useGoToProfile };
+const useCheckIsRoute = (routes: string[] | string = [], exact: boolean = false) => {
+  const path = window.location.pathname || '';
+  const routesArray = Array.isArray(routes) ? routes : [routes];
+  if (exact) {
+    return routesArray.includes(path);
+  } else {
+    return routesArray.some((route) => path.includes(route));
+  }
+};
+
+export { useCheckIsRoute, useGoBack, useGoToMyPost, useGoToProfile };

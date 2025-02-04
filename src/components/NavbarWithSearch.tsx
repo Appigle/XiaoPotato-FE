@@ -16,6 +16,7 @@ import Key from '@src/constants/keyboard';
 import { X_ACCESS_TOKEN } from '@src/constants/LStorageKey';
 import useGlobalStore from '@src/stores/useGlobalStore';
 import useLoginCheck from '@src/utils/hooks/login';
+import { useCheckIsRoute } from '@src/utils/hooks/nav';
 import React, { useEffect } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { NavLink, useNavigate } from 'react-router-dom';
@@ -39,6 +40,7 @@ export function NavbarWithSearch(props: { search?: boolean }) {
   const [isFocused, setIsFocused] = React.useState(false);
   const inputRef = React.useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
+  const isHome = useCheckIsRoute('/xp/home', true);
   const { socketSent, isAlive } = useSocketContext();
 
   const handleSearch = () => {
@@ -75,6 +77,18 @@ export function NavbarWithSearch(props: { search?: boolean }) {
     navigate('/');
   };
 
+  const CustomMenuList = () => {
+    return (
+      <>
+        <MenuList>
+          {!isHome && <MenuItem onClick={() => navigate('/xp/home')}>Home</MenuItem>}
+          <MenuItem onClick={() => navigate('/xp/profile')}>Settings</MenuItem>
+          <MenuItem onClick={onLogout}>Logout</MenuItem>
+        </MenuList>
+      </>
+    );
+  };
+
   const navList = (
     <ul className="mb-4 mt-2 flex flex-col gap-2 sm:mb-0 sm:mt-0 sm:flex-row sm:items-center sm:gap-4">
       <Typography
@@ -92,6 +106,7 @@ export function NavbarWithSearch(props: { search?: boolean }) {
           <UserCircleIcon className="size-6" />
           {userDisplayName}
           <div></div>
+          {/* Websocket status dot */}
           <div className="absolute right-[20%] top-1 flex items-center justify-center">
             <div
               className={`${isAlive ? 'bg-green-300' : 'bg-red-300'} absolute left-[0%] top-[50%] h-2 w-2 animate-ping rounded-full opacity-55`}
@@ -113,10 +128,7 @@ export function NavbarWithSearch(props: { search?: boolean }) {
             <EllipsisHorizontalCircleIcon className="size-8 text-blue-gray-900 dark:text-gray-100" />
           </Typography>
         </MenuHandler>
-        <MenuList>
-          <MenuItem>Settings</MenuItem>
-          <MenuItem onClick={onLogout}>Logout</MenuItem>
-        </MenuList>
+        <CustomMenuList />
       </Menu>
     </ul>
   );
@@ -207,35 +219,56 @@ export function NavbarWithSearch(props: { search?: boolean }) {
             </div>
           )}
           <div>
-            <IconButton
-              variant="text"
-              className="ml-auto h-6 w-6 items-center text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent sm:flex md:hidden"
-              ripple={false}
-              onClick={() => setOpenNav(!openNav)}
-            >
-              {openNav ? (
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  className="h-6 w-6"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
+            <Menu>
+              <MenuHandler>
+                <Typography
+                  as="li"
+                  variant="small"
+                  color="blue-gray"
+                  className="flex cursor-pointer items-center gap-x-2 p-1 font-medium"
                 >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              ) : (
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-              )}
-            </IconButton>
+                  <IconButton
+                    variant="text"
+                    className="ml-auto h-6 w-6 items-center text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent sm:flex md:hidden"
+                    ripple={false}
+                    onClick={() => setOpenNav(!openNav)}
+                  >
+                    {openNav ? (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        className="h-6 w-6"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth={2}
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M6 18L18 6M6 6l12 12"
+                        />
+                      </svg>
+                    ) : (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-6 w-6"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth={2}
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M4 6h16M4 12h16M4 18h16"
+                        />
+                      </svg>
+                    )}
+                  </IconButton>
+                </Typography>
+              </MenuHandler>
+              <CustomMenuList />
+            </Menu>
+
             <div className="hidden md:block"> {navList}</div>
           </div>
         </div>

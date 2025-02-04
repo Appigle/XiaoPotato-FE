@@ -107,7 +107,7 @@ const Sidebar: React.FC = () => {
 
   return (
     <div
-      className={`bg-gray-100 text-gray-900 shadow-md transition-all duration-300 dark:bg-blue-gray-900 dark:text-white ${isExpanded ? 'w-56' : 'w-16'} flex flex-col justify-between`}
+      className={`bg-gray-100 text-gray-900 shadow-md transition-all duration-300 dark:bg-blue-gray-900 dark:text-white ${isExpanded ? 'sm:w-46 md:w-56' : 'w-16'} flex flex-col justify-between`}
     >
       <nav className="p-4">
         <ul>
@@ -118,7 +118,7 @@ const Sidebar: React.FC = () => {
               }}
               className="flex h-10 cursor-pointer items-center justify-start transition-all hover:rounded-xl hover:bg-gray-900/5 hover:dark:rounded-xl hover:dark:bg-gray-100/10"
             >
-              <IconButton variant="text" color={iconColor as color}>
+              <IconButton variant="text" color={iconColor as color} title="Discovery">
                 <MagnifyingGlassIcon className="h-5 w-5" />
               </IconButton>
               {isExpanded && (
@@ -135,7 +135,7 @@ const Sidebar: React.FC = () => {
               }}
               className="flex h-10 cursor-pointer items-center justify-start transition-all hover:rounded-xl hover:bg-gray-900/5 hover:dark:rounded-xl hover:dark:bg-gray-100/10"
             >
-              <IconButton variant="text" color={iconColor as color}>
+              <IconButton variant="text" color={iconColor as color} title="Post">
                 <PlusCircleIcon className="h-5 w-5" />
               </IconButton>
               {isExpanded && (
@@ -160,7 +160,7 @@ const Sidebar: React.FC = () => {
                   {notifyCount > 99 ? '99+' : notifyCount}
                 </div>
               )}
-              <IconButton variant="text" color={iconColor as color}>
+              <IconButton variant="text" color={iconColor as color} title="Notification">
                 <HeartIcon className="h-5 w-5" />
               </IconButton>
               {isExpanded && (
@@ -175,7 +175,7 @@ const Sidebar: React.FC = () => {
               to="/xp/email"
               className="flex h-10 items-center justify-start overflow-hidden transition-all"
             >
-              <IconButton variant="text" color={iconColor as color}>
+              <IconButton variant="text" color={iconColor as color} title="Invitation">
                 <MailPlus className="h-4 w-4" />
               </IconButton>
               {isExpanded && (
@@ -190,7 +190,7 @@ const Sidebar: React.FC = () => {
               to="/about"
               className="flex h-10 items-center justify-start overflow-hidden transition-all hover:rounded-xl hover:bg-gray-900/5 hover:dark:rounded-xl hover:dark:bg-gray-100/10"
             >
-              <IconButton variant="text" color={iconColor as color}>
+              <IconButton variant="text" color={iconColor as color} title="About">
                 <SpellCheck2 className="h-5 w-5" />
               </IconButton>
               {isExpanded && (
@@ -205,7 +205,7 @@ const Sidebar: React.FC = () => {
               to="/ielts"
               className="flex h-10 items-center justify-start overflow-hidden transition-all hover:rounded-xl hover:bg-gray-900/5 hover:dark:rounded-xl hover:dark:bg-gray-100/10"
             >
-              <IconButton variant="text" color={iconColor as color}>
+              <IconButton variant="text" color={iconColor as color} title="Ielts">
                 <EggIcon className="h-5 w-5" />
               </IconButton>
               {isExpanded && (
@@ -223,7 +223,7 @@ const Sidebar: React.FC = () => {
                   to="/admin/users"
                   className="flex h-10 items-center justify-start overflow-hidden transition-all hover:rounded-xl hover:bg-gray-900/5 hover:dark:rounded-xl hover:dark:bg-gray-100/10"
                 >
-                  <IconButton variant="text" color={iconColor as color}>
+                  <IconButton variant="text" color={iconColor as color} title="Manage Users">
                     <UsersIcon className="h-4 w-4" />
                   </IconButton>
                   {isExpanded && (
@@ -238,7 +238,7 @@ const Sidebar: React.FC = () => {
                   to="/admin/posts"
                   className="flex h-10 items-center justify-start overflow-hidden transition-all hover:rounded-xl hover:bg-gray-900/5 hover:dark:rounded-xl hover:dark:bg-gray-100/10"
                 >
-                  <IconButton variant="text" color={iconColor as color}>
+                  <IconButton variant="text" color={iconColor as color} title="Manage Posts">
                     <DocumentTextIcon className="h-4 w-4" />
                   </IconButton>
                   {isExpanded && (
@@ -255,7 +255,7 @@ const Sidebar: React.FC = () => {
                 to="/xp/profile"
                 className="flex h-10 items-center justify-start overflow-hidden transition-all hover:rounded-xl hover:bg-gray-900/5 hover:dark:rounded-xl hover:dark:bg-gray-100/10"
               >
-                <IconButton variant="text" color={iconColor as color}>
+                <IconButton variant="text" color={iconColor as color} title="Me">
                   <UserCircleIcon className="h-5 w-5" />
                 </IconButton>
                 {isExpanded && (
