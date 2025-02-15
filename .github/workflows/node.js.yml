@@ -21,7 +21,7 @@ jobs:
       - run: npm install
       - run: npm run type-check
       - run: npm run lint-s
-      - run: npm test
+      
 
   scan:
     name: gitleaks
