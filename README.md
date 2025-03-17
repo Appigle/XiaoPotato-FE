@@ -10,6 +10,11 @@ Frontend of the XiaoPotato application
 
 Guest Account: Guest/Guest123
 
+### Screenshop
+
+<img src="./public/XiaoPotatoIndex.png" alt="XiaoPotato Index page" height="200">
+<img src="./public/XiaoPotatoLoginPage.png" alt="XiaoPotato Index page" height="200">
+
 ## Installation
 
 ```bash
@@ -126,3 +131,21 @@ export default tseslint.config({
   },
 });
 ```
+
+## Contributors ✨
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tbody>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/Appigle"><img src="https://avatars.githubusercontent.com/u/12708299?v=4" width="100px;" alt="Ray Chen"/><br /><sub><b>Ray Chen</b></sub></a><br /><span title="Infrastructure (Hosting, Build-Tools, etc)">🚇 💻</span></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/zi7feng"><img src="https://avatars.githubusercontent.com/u/113199068?v=4" width="100px;" alt="Ziqi Feng"/><br /><sub><b>Ziqi Feng</b></sub></a><br /><span title="Infrastructure (Hosting, Build-Tools, etc)">🚇 💻</span></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/mengyaozhang888"><img src="https://avatars.githubusercontent.com/u/171214413?v=4" width="100px;" alt="Mengyao Zhang"/><br /><sub><b>Mengyao Zhang</b></sub></a><br />💻</td>
+         </tr>
+  </tbody>
+</table>
+
