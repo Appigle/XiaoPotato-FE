@@ -10,10 +10,10 @@ Frontend of the XiaoPotato application
 
 Guest Account: Guest/Guest123
 
-### Screenshop
+### Screenshots
 
-<img src="./public/XiaoPotatoIndex.png" alt="XiaoPotato Index page" height="200">
-<img src="./public/XiaoPotatoLoginPage.png" alt="XiaoPotato Index page" height="200">
+<img src="./public/xiaoPotatoLoginPage.png" alt="XiaoPotato Login page" height="400">
+<img src="./public/xiaoPotatoIndex.png" alt="XiaoPotato Index page" height="400">
 
 ## Installation
 
@@ -40,7 +40,7 @@ wrangler login
 wrangler pages dev dist
 ```
 
-## use puppeteer to craw the img
+## use puppeteer to craw the imgs from unsplash
 
 ```bash
 # fisrt update .puppeteer/index.cjs crawImgsPath and than execute the command
