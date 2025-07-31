@@ -40,6 +40,8 @@ wrangler login
 wrangler pages dev dist
 ```
 
+## Cloudflare page -> automatically deployment
+
 ## use puppeteer to craw the imgs from unsplash
 
 ```bash
