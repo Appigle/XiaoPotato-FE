@@ -172,7 +172,7 @@ function App() {
                   key="Fireworks"
                   reloadDocument
                   className="p-2 text-blue-500"
-                  to="https://www.xiaopotato.top/fireworks/"
+                  to="https://www.xiaopotato.top/Firework/index.html"
                 >
                   Happy New Year! 🎆
                 </Link>
