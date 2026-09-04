@@ -15,7 +15,7 @@ const directories = [
 const alias: AliasOptions = directories.reduce<Record<string, string>>(
   (acc, dir) => {
     const key = `@${path.basename(dir)}`;
-    acc[key] = path.resolve(__dirname, dir);
+    acc[key] = path.resolve(import.meta.dirname, dir);
     return acc;
   },
   {} as Record<string, string>,
@@ -26,7 +26,7 @@ export default defineConfig({
   plugins: [react(), ClosePlugin()],
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src'),
+      '@': path.resolve(import.meta.dirname, './src'),
       ...alias,
     },
   },
